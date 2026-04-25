@@ -1,0 +1,80 @@
+{
+  "comment_purpose": "Codegen target list. Each entry names a consumer repo whose receiver code is grepped for PERMISSIONS.X.slug references — every match contributes the consumer's PlatformSlug to the canonical PERMISSIONS.X.validatedBy array. Generated on every version bump by .github/workflows/regenerate-validatedby.yml; consumed by scripts/regenerate-validatedby.ts.",
+  "comment_v0_1_0": "Bootstrap state: zero consumers reference @rello-platform/permissions yet (Doc A Phase 2 + Phase 3 perform the import-path migration). Until then, the validatedBy values shipped in src/index.ts are inherited verbatim from api-client@v1.10.1's hand-authored snapshot. Each consumer below carries `tag: null` until they pin a real version of THIS package; codegen skips null-tagged entries.",
+  "consumers": [
+    {
+      "slug": "rello",
+      "github": "rello-platform/Rello",
+      "tag": null,
+      "_note": "Phase 2 of Doc A migrates Rello receivers from @rello-platform/api-client to @rello-platform/permissions. Pin once Rello bumps its package.json reference."
+    },
+    {
+      "slug": "newsletter-studio",
+      "github": "rello-platform/Newsletter-Studio",
+      "tag": null,
+      "_note": "Phase 3 of Doc A migrates NS's 11 receiver call sites from string-literal permissions to PERMISSIONS.X.slug."
+    },
+    {
+      "slug": "harvest-home",
+      "github": "rello-platform/Harvest-Home",
+      "tag": null,
+      "_note": "HH's requireIntakeBearer gates on intake:write today via api-client. Same migration as the other spokes."
+    },
+    {
+      "slug": "home-ready",
+      "github": "rello-platform/HomeReady",
+      "tag": null
+    },
+    {
+      "slug": "home-stretch",
+      "github": "rello-platform/TheHomeStretch",
+      "tag": null
+    },
+    {
+      "slug": "home-scout",
+      "github": "rello-platform/The-Home-Scout",
+      "tag": null
+    },
+    {
+      "slug": "the-drumbeat",
+      "github": "rello-platform/The-Drumbeat",
+      "tag": null
+    },
+    {
+      "slug": "open-house-hub",
+      "github": "rello-platform/Open-House-Hub",
+      "tag": null
+    },
+    {
+      "slug": "market-intel",
+      "github": "rello-platform/MarketIntel",
+      "tag": null
+    },
+    {
+      "slug": "pathfinder-pro",
+      "github": "rello-platform/PathfinderPro",
+      "tag": null
+    },
+    {
+      "slug": "the-oven",
+      "github": "rello-platform/The-Oven",
+      "tag": null
+    },
+    {
+      "slug": "milo-engine",
+      "github": "rello-platform/Milo-Engine",
+      "tag": null,
+      "_note": "Engines that receive engine:access auth are validators too — their receiver code is grepped same as spokes."
+    },
+    {
+      "slug": "property-engine",
+      "github": "rello-platform/Property-Engine",
+      "tag": null
+    },
+    {
+      "slug": "content-engine",
+      "github": "rello-platform/Content-Engine",
+      "tag": null
+    }
+  ]
+}
