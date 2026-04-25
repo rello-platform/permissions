@@ -313,6 +313,14 @@ export const PERMISSIONS = {
         validatedBy: ["harvest-home"],
         grantedTo: [],
     },
+    // ─── Provisioning (Rello → spoke per-caller credential, NA-080 pattern) ───
+    PROVISIONING_WRITE: {
+        slug: "provisioning:write",
+        label: "Write provisioning",
+        description: "Rello → spoke per-spoke provisioning push (agent / tenant / template). Replaces the per-spoke RELLO_PROVISIONING_SECRET env-var compare. Held by per-spoke (appSource=RELLO, targetApp=<SPOKE>) keys; checked by each spoke's receiver after the Bearer hash matches.",
+        validatedBy: ["newsletter-studio", "harvest-home", "home-ready", "home-stretch", "home-scout", "the-drumbeat", "open-house-hub", "the-oven", "market-intel", "pathfinder-pro"],
+        grantedTo: [],
+    },
     // ─── Tags ─────────────────────────────────────────────────────────────────
     TAGS_READ: {
         slug: "tags:read",

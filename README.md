@@ -66,5 +66,6 @@ interface PermissionDefinition {
 ## Versioning
 
 - `v0.1.0` — bootstrap; canonical set sourced from Rello's local `PERMISSIONS` const + 5 NS-only slugs + 3 broken-ref resolutions. `validatedBy` arrays empty (consumers not yet migrated). CHECK migration drafted, not applied.
-- `v0.2.0` — populated `validatedBy` after Rello + NS receivers migrate.
-- `v0.3.0` — orphan prune; entries with empty `validatedBy` removed; CHECK constraint applied.
+- `v0.2.0` — adds `provisioning:write` slug for the Rello → spoke per-spoke provisioning push migration (NA-080 pattern; replaces `RELLO_PROVISIONING_SECRET` env-var compare across 10 spokes). Hand-authored `validatedBy` enumerates the 10 spoke receivers per the audit doc. Phase 1 of `DISCOVERED-RELLO-PROVISIONING-AGENT-SHAREDSECRET-AUTH-TO-APIKEY-MIGRATION-042526`.
+- `v0.3.0` — populated `validatedBy` after Rello + NS receivers migrate.
+- `v0.4.0` — orphan prune; entries with empty `validatedBy` removed; CHECK constraint applied.

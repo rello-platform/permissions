@@ -312,6 +312,13 @@ export declare const PERMISSIONS: {
         readonly validatedBy: readonly ["harvest-home"];
         readonly grantedTo: readonly [];
     };
+    readonly PROVISIONING_WRITE: {
+        readonly slug: "provisioning:write";
+        readonly label: "Write provisioning";
+        readonly description: "Rello → spoke per-spoke provisioning push (agent / tenant / template). Replaces the per-spoke RELLO_PROVISIONING_SECRET env-var compare. Held by per-spoke (appSource=RELLO, targetApp=<SPOKE>) keys; checked by each spoke's receiver after the Bearer hash matches.";
+        readonly validatedBy: readonly ["newsletter-studio", "harvest-home", "home-ready", "home-stretch", "home-scout", "the-drumbeat", "open-house-hub", "the-oven", "market-intel", "pathfinder-pro"];
+        readonly grantedTo: readonly [];
+    };
     readonly TAGS_READ: {
         readonly slug: "tags:read";
         readonly label: "Read tags";
