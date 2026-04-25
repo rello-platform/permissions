@@ -4,7 +4,13 @@
   "description": "Canonical permission registry for the Rello ecosystem — single source of truth for inter-app permission slugs (Rello + 10 spokes + 6 engines).",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
-  "files": ["dist", "src", "migrations", "README.md", "LICENSE"],
+  "files": [
+    "dist",
+    "src",
+    "migrations",
+    "README.md",
+    "LICENSE"
+  ],
   "scripts": {
     "build": "tsc",
     "prepublishOnly": "npm run build",
@@ -19,7 +25,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "github:rello-platform/permissions"
+    "url": "git+https://github.com/rello-platform/permissions.git"
   },
   "publishConfig": {
     "registry": "https://npm.pkg.github.com"
