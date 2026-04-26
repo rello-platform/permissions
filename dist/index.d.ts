@@ -319,6 +319,20 @@ export declare const PERMISSIONS: {
         readonly validatedBy: readonly ["newsletter-studio", "harvest-home", "home-ready", "home-stretch", "home-scout", "the-drumbeat", "open-house-hub", "the-oven", "market-intel", "pathfinder-pro"];
         readonly grantedTo: readonly [];
     };
+    readonly PARCEL_READ: {
+        readonly slug: "parcel:read";
+        readonly label: "Read parcel-graph";
+        readonly description: "Property Engine receiver — GET /api/parcel-graph/by-lead/[leadId] and /api/parcel-graph/by-parcel/[parcelId]. Returns the joined Parcel + Mortgage + LeadProperty graph for a tenant-scoped lead. Held by Rello + Milo Engine outbound keys per the INVESTOR-PORTFOLIO-DATA-MODEL spec (Phase 2, Lock #7).";
+        readonly validatedBy: readonly ["property-engine"];
+        readonly grantedTo: readonly [];
+    };
+    readonly PARCEL_WRITE: {
+        readonly slug: "parcel:write";
+        readonly label: "Write parcel-graph";
+        readonly description: "Property Engine receiver — POST /api/parcel-graph/upsert-from-byol, POST /api/parcel-graph/upsert-from-intake, DELETE /api/parcel-graph/lead-property/[id]. Used by Harvest Home BYOL+intake writers and Rello lead-deletion cleanup per the INVESTOR-PORTFOLIO-DATA-MODEL spec (Phase 2, Lock #7).";
+        readonly validatedBy: readonly ["property-engine"];
+        readonly grantedTo: readonly [];
+    };
     readonly TAGS_READ: {
         readonly slug: "tags:read";
         readonly label: "Read tags";
