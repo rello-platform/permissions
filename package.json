@@ -13,6 +13,7 @@
   ],
   "scripts": {
     "build": "tsc",
+    "lint": "eslint .",
     "prepublishOnly": "npm run build",
     "regenerate:validatedBy": "tsx scripts/regenerate-validatedby.ts"
   },
@@ -20,6 +21,8 @@
     "@rello-platform/slugs": "github:rello-platform/slugs#v0.3.2"
   },
   "devDependencies": {
+    "@rello-platform/eslint-config": "github:rello-platform/eslint-config#v0.4.0",
+    "eslint": "^9",
     "tsx": "^4.19.2",
     "typescript": "^5.4.0"
   },
