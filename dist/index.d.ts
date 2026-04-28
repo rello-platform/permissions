@@ -158,6 +158,27 @@ export declare const PERMISSIONS: {
         readonly validatedBy: readonly ["newsletter-studio"];
         readonly grantedTo: readonly [];
     };
+    readonly NEWSLETTERS_SEND_LIFECYCLE: {
+        readonly slug: "newsletters:send-lifecycle";
+        readonly label: "Send lifecycle email (spoke-emitted)";
+        readonly description: "Spoke → NS dispatch via /api/newsletters/lifecycle-send. Distinct from newsletters:send (Milo-curated nurture via blueprint-send) — this covers spoke-emitted lifecycle emails (MI subscribe-welcome first; HS/HR/OHH welcomes; PA-004 hot-rate-alert) that share the SendAttempt idempotency invariant but are token-substituted templates triggered by spoke events rather than nurture decision flow. Closes the LIFECYCLE_SEND_API_KEY env-var Bearer bypass per CENTRALIZED-API-KEY-MIGRATION Phase 5b.";
+        readonly validatedBy: readonly ["newsletter-studio"];
+        readonly grantedTo: readonly [];
+    };
+    readonly PREVIEW_READ: {
+        readonly slug: "preview:read";
+        readonly label: "Read newsletter preview";
+        readonly description: "Spoke → NS dispatch via /api/preview/blueprint and /api/preview/content-package. Render-only HTML preview surfaces — no Mailgun, no DB writes, no SendAttempt. Used by Harvest Home and other spokes to preview Milo-composed nurture emails before send. Closes the NS_APP_SECRET X-App-Secret env-var bypass per CENTRALIZED-API-KEY-MIGRATION Phase 5b.";
+        readonly validatedBy: readonly ["newsletter-studio"];
+        readonly grantedTo: readonly [];
+    };
+    readonly LAB_SEND_TEST: {
+        readonly slug: "lab:send-test";
+        readonly label: "Send lab test newsletter";
+        readonly description: "Spoke → NS dispatch via /api/lab/send-test. One-off test sends from the design lab with up to 10 recipients per request — creates a real NewsletterSend row so footer links resolve. Closes the NS_APP_SECRET X-App-Secret env-var bypass per CENTRALIZED-API-KEY-MIGRATION Phase 5b.";
+        readonly validatedBy: readonly ["newsletter-studio"];
+        readonly grantedTo: readonly [];
+    };
     readonly TENANTS_VALIDATE: {
         readonly slug: "tenants:validate";
         readonly label: "Validate tenants";

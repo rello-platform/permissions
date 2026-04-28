@@ -180,6 +180,30 @@ export const PERMISSIONS = {
     grantedTo: [],
   },
 
+  NEWSLETTERS_SEND_LIFECYCLE: {
+    slug: "newsletters:send-lifecycle",
+    label: "Send lifecycle email (spoke-emitted)",
+    description: "Spoke → NS dispatch via /api/newsletters/lifecycle-send. Distinct from newsletters:send (Milo-curated nurture via blueprint-send) — this covers spoke-emitted lifecycle emails (MI subscribe-welcome first; HS/HR/OHH welcomes; PA-004 hot-rate-alert) that share the SendAttempt idempotency invariant but are token-substituted templates triggered by spoke events rather than nurture decision flow. Closes the LIFECYCLE_SEND_API_KEY env-var Bearer bypass per CENTRALIZED-API-KEY-MIGRATION Phase 5b.",
+    validatedBy: ["newsletter-studio"],
+    grantedTo: [],
+  },
+
+  PREVIEW_READ: {
+    slug: "preview:read",
+    label: "Read newsletter preview",
+    description: "Spoke → NS dispatch via /api/preview/blueprint and /api/preview/content-package. Render-only HTML preview surfaces — no Mailgun, no DB writes, no SendAttempt. Used by Harvest Home and other spokes to preview Milo-composed nurture emails before send. Closes the NS_APP_SECRET X-App-Secret env-var bypass per CENTRALIZED-API-KEY-MIGRATION Phase 5b.",
+    validatedBy: ["newsletter-studio"],
+    grantedTo: [],
+  },
+
+  LAB_SEND_TEST: {
+    slug: "lab:send-test",
+    label: "Send lab test newsletter",
+    description: "Spoke → NS dispatch via /api/lab/send-test. One-off test sends from the design lab with up to 10 recipients per request — creates a real NewsletterSend row so footer links resolve. Closes the NS_APP_SECRET X-App-Secret env-var bypass per CENTRALIZED-API-KEY-MIGRATION Phase 5b.",
+    validatedBy: ["newsletter-studio"],
+    grantedTo: [],
+  },
+
   TENANTS_VALIDATE: {
     slug: "tenants:validate",
     label: "Validate tenants",
