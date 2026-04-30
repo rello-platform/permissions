@@ -340,6 +340,13 @@ export declare const PERMISSIONS: {
         readonly validatedBy: readonly ["newsletter-studio", "harvest-home", "home-ready", "home-stretch", "home-scout", "the-drumbeat", "open-house-hub", "the-oven", "market-intel", "pathfinder-pro"];
         readonly grantedTo: readonly [];
     };
+    readonly ADMIN_INTERNAL: {
+        readonly slug: "admin:internal";
+        readonly label: "Internal admin operations";
+        readonly description: "Rello → spoke /api/admin/* + /api/skip-trace/* + /api/leads/[id]/raw-import per-caller credential. M2M cron + scoring + BYOL admin + skip-trace ledger callers. Replaces RELLO_PROVISIONING_SECRET env-var compare for HH's 15 admin-gate routes per DISCOVERED-HH-ADMIN-AUTH-MIGRATION-043026 + parent audit Phase 5.4-B unblock.";
+        readonly validatedBy: readonly ["harvest-home"];
+        readonly grantedTo: readonly [];
+    };
     readonly PARCEL_READ: {
         readonly slug: "parcel:read";
         readonly label: "Read parcel-graph";

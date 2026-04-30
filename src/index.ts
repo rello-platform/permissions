@@ -386,6 +386,15 @@ export const PERMISSIONS = {
     grantedTo: [],
   },
 
+  // ─── Admin internal (Rello → spoke admin/skip-trace/raw-import per-caller credential) ───
+  ADMIN_INTERNAL: {
+    slug: "admin:internal",
+    label: "Internal admin operations",
+    description: "Rello → spoke /api/admin/* + /api/skip-trace/* + /api/leads/[id]/raw-import per-caller credential. M2M cron + scoring + BYOL admin + skip-trace ledger callers. Replaces RELLO_PROVISIONING_SECRET env-var compare for HH's 15 admin-gate routes per DISCOVERED-HH-ADMIN-AUTH-MIGRATION-043026 + parent audit Phase 5.4-B unblock.",
+    validatedBy: ["harvest-home"],
+    grantedTo: [],
+  },
+
   // ─── Parcel-graph (Property Engine receiver, INVESTOR-PORTFOLIO-DATA-MODEL) ──
   PARCEL_READ: {
     slug: "parcel:read",
