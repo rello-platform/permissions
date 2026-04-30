@@ -452,6 +452,34 @@ export declare const PERMISSIONS: {
         readonly validatedBy: readonly ["rello"];
         readonly grantedTo: readonly [];
     };
+    readonly DAILY_REPORT_READ: {
+        readonly slug: "daily-report:read";
+        readonly label: "Read daily report (pull-summary receiver)";
+        readonly description: "Rello app-daily-report-orchestrator → spoke outbound — GET /api/summary/daily?tenantId=&date= returns the day's tenant-scoped activity summary. Pull direction (Rello calls spoke); distinct from reports:write which is the legacy push direction (spoke calls Rello). Held by Rello's outbound key per DISCOVERED-PLATFORM-DAILY-REPORT-ORCHESTRATOR-GAP-042926; first validator is home-scout per DISCOVERED-PLATFORM-MILO-SERVICE-KEY-DISTRIBUTION-GAP-042926.";
+        readonly validatedBy: readonly ["home-scout"];
+        readonly grantedTo: readonly [];
+    };
+    readonly CTA_REGISTRY_READ: {
+        readonly slug: "cta-registry:read";
+        readonly label: "Read CTA registry definitions";
+        readonly description: "Milo Engine → Scout outbound — GET /api/cta-registry/definitions returns effective CTAs for a (tenantId, agentId) pair via cascade resolution. Used by Milo's blueprint composer when picking outbound CTAs for newsletter sections.";
+        readonly validatedBy: readonly ["home-scout"];
+        readonly grantedTo: readonly [];
+    };
+    readonly CTA_REGISTRY_WRITE: {
+        readonly slug: "cta-registry:write";
+        readonly label: "Write CTA registry impressions";
+        readonly description: "Milo Engine → Scout outbound — POST /api/cta-registry/impression increments impression counters on Scout's CtaDefinition records. Fire-and-forget after blueprint assembly; CTR data feeds Milo's selection scoring.";
+        readonly validatedBy: readonly ["home-scout"];
+        readonly grantedTo: readonly [];
+    };
+    readonly SURVEY_GATE_WRITE: {
+        readonly slug: "survey-gate:write";
+        readonly label: "Write survey-gate pending question";
+        readonly description: "Milo Engine → Scout outbound — POST /api/survey-gate/pending-question creates a PENDING question request for a lead, injected into the lead's next tool survey flow by Scout's SurveyGate component.";
+        readonly validatedBy: readonly ["home-scout"];
+        readonly grantedTo: readonly [];
+    };
     readonly SOCIAL_READ: {
         readonly slug: "social:read";
         readonly label: "Read social credentials";

@@ -462,6 +462,35 @@ export const PERMISSIONS = {
         validatedBy: ["rello"],
         grantedTo: [],
     },
+    DAILY_REPORT_READ: {
+        slug: "daily-report:read",
+        label: "Read daily report (pull-summary receiver)",
+        description: "Rello app-daily-report-orchestrator → spoke outbound — GET /api/summary/daily?tenantId=&date= returns the day's tenant-scoped activity summary. Pull direction (Rello calls spoke); distinct from reports:write which is the legacy push direction (spoke calls Rello). Held by Rello's outbound key per DISCOVERED-PLATFORM-DAILY-REPORT-ORCHESTRATOR-GAP-042926; first validator is home-scout per DISCOVERED-PLATFORM-MILO-SERVICE-KEY-DISTRIBUTION-GAP-042926.",
+        validatedBy: ["home-scout"],
+        grantedTo: [],
+    },
+    // ─── Scout receiver — CTA registry + survey gate (Milo Engine → Scout) ────
+    CTA_REGISTRY_READ: {
+        slug: "cta-registry:read",
+        label: "Read CTA registry definitions",
+        description: "Milo Engine → Scout outbound — GET /api/cta-registry/definitions returns effective CTAs for a (tenantId, agentId) pair via cascade resolution. Used by Milo's blueprint composer when picking outbound CTAs for newsletter sections.",
+        validatedBy: ["home-scout"],
+        grantedTo: [],
+    },
+    CTA_REGISTRY_WRITE: {
+        slug: "cta-registry:write",
+        label: "Write CTA registry impressions",
+        description: "Milo Engine → Scout outbound — POST /api/cta-registry/impression increments impression counters on Scout's CtaDefinition records. Fire-and-forget after blueprint assembly; CTR data feeds Milo's selection scoring.",
+        validatedBy: ["home-scout"],
+        grantedTo: [],
+    },
+    SURVEY_GATE_WRITE: {
+        slug: "survey-gate:write",
+        label: "Write survey-gate pending question",
+        description: "Milo Engine → Scout outbound — POST /api/survey-gate/pending-question creates a PENDING question request for a lead, injected into the lead's next tool survey flow by Scout's SurveyGate component.",
+        validatedBy: ["home-scout"],
+        grantedTo: [],
+    },
     // ─── Social integrations ──────────────────────────────────────────────────
     SOCIAL_READ: {
         slug: "social:read",
