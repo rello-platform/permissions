@@ -32,46 +32,29 @@
  *   - Pattern reference: @rello-platform/slugs
  */
 export const PERMISSIONS = {
-    // ─── Leads / contacts ─────────────────────────────────────────────────────
-    CONTACTS_READ: {
-        slug: "contacts:read",
-        label: "Read contacts",
-        description: "Read lead/contact records via /api/contacts and related read paths.",
-        validatedBy: ["rello"],
-        grantedTo: [],
-    },
-    CONTACTS_WRITE: {
-        slug: "contacts:write",
-        label: "Write contacts",
-        description: "Create or update lead/contact records via /api/contacts.",
-        validatedBy: ["rello"],
-        grantedTo: [],
-    },
-    CONTACTS_DELETE: {
-        slug: "contacts:delete",
-        label: "Delete contacts",
-        description: "Delete lead/contact records via /api/contacts.",
-        validatedBy: ["rello"],
-        grantedTo: [],
-    },
+    // ─── Leads ────────────────────────────────────────────────────────────────
+    // Per platform "Lead not Contact" rule: code references use `lead`. The
+    // legacy `contacts:*` triplet retired in v0.7.0 — DISCOVERED-RELLO-LEADS-
+    // PERMISSION-SLUG-SPLIT-2026-04-30. Cross-platform grep confirmed no live
+    // ApiKey row held a `contacts:*`-only permission set at retirement time.
     LEADS_READ: {
         slug: "leads:read",
         label: "Read leads",
-        description: "Read lead records via /api/leads and related read paths.",
+        description: "Read lead records via `/api/leads/*` (sub-resources: emails, phones, custom-fields, etc.).",
         validatedBy: ["rello"],
         grantedTo: [],
     },
     LEADS_WRITE: {
         slug: "leads:write",
         label: "Write leads",
-        description: "Create or update lead records via /api/leads.",
+        description: "Create or update lead records via `/api/leads/*` (sub-resources: emails, phones, custom-fields, co-borrower, milo-insights, etc.).",
         validatedBy: ["rello"],
         grantedTo: [],
     },
     LEADS_DELETE: {
         slug: "leads:delete",
         label: "Delete leads",
-        description: "Delete lead records via /api/leads.",
+        description: "Delete lead records via `/api/leads/*`.",
         validatedBy: ["rello"],
         grantedTo: [],
     },

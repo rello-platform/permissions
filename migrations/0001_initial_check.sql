@@ -26,9 +26,6 @@
 ALTER TABLE "ApiKey" ADD CONSTRAINT "ApiKey_permissions_canonical_check"
   CHECK (
     permissions <@ ARRAY[
-      'contacts:read',
-      'contacts:write',
-      'contacts:delete',
       'leads:read',
       'leads:write',
       'leads:delete',

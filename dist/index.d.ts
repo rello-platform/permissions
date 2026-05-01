@@ -53,45 +53,24 @@ export interface PermissionDefinition {
     readonly grantedTo: readonly PlatformSlug[];
 }
 export declare const PERMISSIONS: {
-    readonly CONTACTS_READ: {
-        readonly slug: "contacts:read";
-        readonly label: "Read contacts";
-        readonly description: "Read lead/contact records via /api/contacts and related read paths.";
-        readonly validatedBy: readonly ["rello"];
-        readonly grantedTo: readonly [];
-    };
-    readonly CONTACTS_WRITE: {
-        readonly slug: "contacts:write";
-        readonly label: "Write contacts";
-        readonly description: "Create or update lead/contact records via /api/contacts.";
-        readonly validatedBy: readonly ["rello"];
-        readonly grantedTo: readonly [];
-    };
-    readonly CONTACTS_DELETE: {
-        readonly slug: "contacts:delete";
-        readonly label: "Delete contacts";
-        readonly description: "Delete lead/contact records via /api/contacts.";
-        readonly validatedBy: readonly ["rello"];
-        readonly grantedTo: readonly [];
-    };
     readonly LEADS_READ: {
         readonly slug: "leads:read";
         readonly label: "Read leads";
-        readonly description: "Read lead records via /api/leads and related read paths.";
+        readonly description: "Read lead records via `/api/leads/*` (sub-resources: emails, phones, custom-fields, etc.).";
         readonly validatedBy: readonly ["rello"];
         readonly grantedTo: readonly [];
     };
     readonly LEADS_WRITE: {
         readonly slug: "leads:write";
         readonly label: "Write leads";
-        readonly description: "Create or update lead records via /api/leads.";
+        readonly description: "Create or update lead records via `/api/leads/*` (sub-resources: emails, phones, custom-fields, co-borrower, milo-insights, etc.).";
         readonly validatedBy: readonly ["rello"];
         readonly grantedTo: readonly [];
     };
     readonly LEADS_DELETE: {
         readonly slug: "leads:delete";
         readonly label: "Delete leads";
-        readonly description: "Delete lead records via /api/leads.";
+        readonly description: "Delete lead records via `/api/leads/*`.";
         readonly validatedBy: readonly ["rello"];
         readonly grantedTo: readonly [];
     };
