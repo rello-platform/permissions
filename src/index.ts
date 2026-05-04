@@ -565,6 +565,170 @@ export const PERMISSIONS = {
     validatedBy: ["newsletter-studio"],
     grantedTo: [],
   },
+
+  // ─── Lifestyle (Content Engine receiver, Q7.1) ────────────────────────────
+  LIFESTYLE_READ: {
+    slug: "lifestyle:read",
+    label: "Read lifestyle data",
+    description: "Content Engine receiver — GET /api/local-spots/* (canonical lifestyle-data owner per APP-OWNERSHIP-MATRIX). Held by Rello admin proxy outbound key per Q7.1 lock 2026-05-01. Replaces PE-side LocalSpot admin proxy retiring per DISCOVERED-PLATFORM-LIFESTYLE-DATA-OWNERSHIP-DRIFT-042926.",
+    validatedBy: ["content-engine"],
+    grantedTo: [],
+  },
+  LIFESTYLE_WRITE: {
+    slug: "lifestyle:write",
+    label: "Write lifestyle data",
+    description: "Content Engine receiver — POST/PATCH/DELETE /api/local-spots/* (canonical lifestyle-data owner per APP-OWNERSHIP-MATRIX). Held by Rello admin proxy outbound key per Q7.1 lock 2026-05-01.",
+    validatedBy: ["content-engine"],
+    grantedTo: [],
+  },
+
+  // ─── Property Engine receiver narrows (Q7.7 Path A migration) ─────────────
+  LOOKUPS_READ: {
+    slug: "lookups:read",
+    label: "Read property lookups",
+    description: "Property Engine receiver — GET /api/lookups/* + /api/attom-lookup + /api/neighborhood-lookup (read-side property/parcel/attom lookup endpoints). Held by Rello → PE outbound key per Q7.7 lock 2026-05-01 to prevent over-grant relative to engine:access.",
+    validatedBy: ["property-engine"],
+    grantedTo: [],
+  },
+  LISTINGS_READ: {
+    slug: "listings:read",
+    label: "Read property listings",
+    description: "Property Engine receiver — GET /api/listings/* (MLS listings serving). Held by Rello → PE outbound key per Q7.7 lock 2026-05-01 to prevent over-grant relative to engine:access.",
+    validatedBy: ["property-engine"],
+    grantedTo: [],
+  },
+
+  // ─── Content Engine receiver narrows (Q7.7 Path A migration) ──────────────
+  WEBSITES_READ: {
+    slug: "websites:read",
+    label: "Read website diagnostics",
+    description: "Content Engine receiver — GET /api/websites/diagnose + /api/websites/* read endpoints. Held by Rello → CE outbound key per Q7.7 lock 2026-05-01 to prevent over-grant relative to engine:access.",
+    validatedBy: ["content-engine"],
+    grantedTo: [],
+  },
+
+  // ─── Signals — read + admin (Q8.6 SignalRulesManager gates) ───────────────
+  SIGNALS_READ: {
+    slug: "signals:read",
+    label: "Read signals + signal rules",
+    description: "Rello receiver — GET /api/admin/signal-rules/* + /api/admin/signals/* read endpoints. Cross-tenant signal-rules data + unhandled-signals view. Gates the read-only paths of the canonical <SignalRulesManager> component (Q8.6 lock 2026-05-01) shared between S&I Tab 2 + Tags Tab 3.",
+    validatedBy: ["rello"],
+    grantedTo: [],
+  },
+  SIGNALS_ADMIN: {
+    slug: "signals:admin",
+    label: "Administer signals + signal rules",
+    description: "Rello receiver — POST/PUT/DELETE /api/admin/signal-rules/* + seed/test endpoints. Gates the mutation paths of the canonical <SignalRulesManager> component (Q8.6 lock 2026-05-01).",
+    validatedBy: ["rello"],
+    grantedTo: [],
+  },
+
+  // ─── Admin-domain role permissions (Q9.9 — retires /admin/settings/security/page.tsx:18-27 hardcoded array) ─
+  TENANTS_READ: {
+    slug: "tenants:read",
+    label: "Read tenants (admin role)",
+    description: "Rello admin-role permission — read-side access to tenant records via Platform Admin tenant management surfaces. Distinct from tenants:validate which is the cross-app tenant lookup S2S surface.",
+    validatedBy: ["rello"],
+    grantedTo: [],
+  },
+  TENANTS_WRITE: {
+    slug: "tenants:write",
+    label: "Write tenants (admin role)",
+    description: "Rello admin-role permission — write-side access to tenant records (create, update) via Platform Admin tenant management surfaces.",
+    validatedBy: ["rello"],
+    grantedTo: [],
+  },
+  TENANTS_DELETE: {
+    slug: "tenants:delete",
+    label: "Delete tenants (admin role)",
+    description: "Rello admin-role permission — delete tenant records via Platform Admin tenant management surfaces.",
+    validatedBy: ["rello"],
+    grantedTo: [],
+  },
+  BILLING_READ: {
+    slug: "billing:read",
+    label: "Read billing (admin role)",
+    description: "Rello admin-role permission — read-side access to billing/Stripe surfaces via Platform Admin Billing pages.",
+    validatedBy: ["rello"],
+    grantedTo: [],
+  },
+  BILLING_WRITE: {
+    slug: "billing:write",
+    label: "Write billing (admin role)",
+    description: "Rello admin-role permission — write-side access to billing/Stripe surfaces (plan config, invoice ops) via Platform Admin Billing pages.",
+    validatedBy: ["rello"],
+    grantedTo: [],
+  },
+  SUPPORT_READ: {
+    slug: "support:read",
+    label: "Read support (admin role)",
+    description: "Rello admin-role permission — read-side access to support ticket surfaces via Platform Admin Support pages.",
+    validatedBy: ["rello"],
+    grantedTo: [],
+  },
+  SUPPORT_WRITE: {
+    slug: "support:write",
+    label: "Write support (admin role)",
+    description: "Rello admin-role permission — write-side access to support tickets (status changes, notes) via Platform Admin Support pages.",
+    validatedBy: ["rello"],
+    grantedTo: [],
+  },
+  ANALYTICS_READ: {
+    slug: "analytics:read",
+    label: "Read analytics (admin role)",
+    description: "Rello admin-role permission — read-side access to platform analytics + Insights surfaces.",
+    validatedBy: ["rello"],
+    grantedTo: [],
+  },
+  SETTINGS_READ: {
+    slug: "settings:read",
+    label: "Read platform settings (admin role)",
+    description: "Rello admin-role permission — read-side access to Platform Admin settings surfaces (api-keys list, security roles, feature flags).",
+    validatedBy: ["rello"],
+    grantedTo: [],
+  },
+  SETTINGS_WRITE: {
+    slug: "settings:write",
+    label: "Write platform settings (admin role)",
+    description: "Rello admin-role permission — write-side access to Platform Admin settings (mint api keys, edit security roles, toggle features).",
+    validatedBy: ["rello"],
+    grantedTo: [],
+  },
+  SYSTEM_READ: {
+    slug: "system:read",
+    label: "Read system health (admin role)",
+    description: "Rello admin-role permission — read-side access to System Health surfaces (operations, infrastructure, alerts, jobs, audit log).",
+    validatedBy: ["rello"],
+    grantedTo: [],
+  },
+  SYSTEM_WRITE: {
+    slug: "system:write",
+    label: "Write system health (admin role)",
+    description: "Rello admin-role permission — write-side access to System Health (alert config, job triggering, system actions).",
+    validatedBy: ["rello"],
+    grantedTo: [],
+  },
+  USERS_READ: {
+    slug: "users:read",
+    label: "Read users (admin role)",
+    description: "Rello admin-role permission — read-side access to platform-user records via Platform Admin Users surfaces.",
+    validatedBy: ["rello"],
+    grantedTo: [],
+  },
+  USERS_WRITE: {
+    slug: "users:write",
+    label: "Write users (admin role)",
+    description: "Rello admin-role permission — write-side access to platform-user records (create, update, role changes).",
+    validatedBy: ["rello"],
+    grantedTo: [],
+  },
+  IMPERSONATE: {
+    slug: "impersonate",
+    label: "Impersonate tenant users (admin role)",
+    description: "Rello admin-role permission — exercise impersonation flow to view a tenant's UI as one of its users for support/diagnosis. High-trust permission; audit-logged on every use per § Audit Logging on Mutations.",
+    validatedBy: ["rello"],
+    grantedTo: [],
+  },
 } as const satisfies Readonly<Record<string, PermissionDefinition>>;
 
 /** Compile-time-checked permission key (e.g., `"NEWSLETTERS_SEND"`). */

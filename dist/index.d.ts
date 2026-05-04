@@ -494,6 +494,160 @@ export declare const PERMISSIONS: {
         readonly validatedBy: readonly ["newsletter-studio"];
         readonly grantedTo: readonly [];
     };
+    readonly LIFESTYLE_READ: {
+        readonly slug: "lifestyle:read";
+        readonly label: "Read lifestyle data";
+        readonly description: "Content Engine receiver — GET /api/local-spots/* (canonical lifestyle-data owner per APP-OWNERSHIP-MATRIX). Held by Rello admin proxy outbound key per Q7.1 lock 2026-05-01. Replaces PE-side LocalSpot admin proxy retiring per DISCOVERED-PLATFORM-LIFESTYLE-DATA-OWNERSHIP-DRIFT-042926.";
+        readonly validatedBy: readonly ["content-engine"];
+        readonly grantedTo: readonly [];
+    };
+    readonly LIFESTYLE_WRITE: {
+        readonly slug: "lifestyle:write";
+        readonly label: "Write lifestyle data";
+        readonly description: "Content Engine receiver — POST/PATCH/DELETE /api/local-spots/* (canonical lifestyle-data owner per APP-OWNERSHIP-MATRIX). Held by Rello admin proxy outbound key per Q7.1 lock 2026-05-01.";
+        readonly validatedBy: readonly ["content-engine"];
+        readonly grantedTo: readonly [];
+    };
+    readonly LOOKUPS_READ: {
+        readonly slug: "lookups:read";
+        readonly label: "Read property lookups";
+        readonly description: "Property Engine receiver — GET /api/lookups/* + /api/attom-lookup + /api/neighborhood-lookup (read-side property/parcel/attom lookup endpoints). Held by Rello → PE outbound key per Q7.7 lock 2026-05-01 to prevent over-grant relative to engine:access.";
+        readonly validatedBy: readonly ["property-engine"];
+        readonly grantedTo: readonly [];
+    };
+    readonly LISTINGS_READ: {
+        readonly slug: "listings:read";
+        readonly label: "Read property listings";
+        readonly description: "Property Engine receiver — GET /api/listings/* (MLS listings serving). Held by Rello → PE outbound key per Q7.7 lock 2026-05-01 to prevent over-grant relative to engine:access.";
+        readonly validatedBy: readonly ["property-engine"];
+        readonly grantedTo: readonly [];
+    };
+    readonly WEBSITES_READ: {
+        readonly slug: "websites:read";
+        readonly label: "Read website diagnostics";
+        readonly description: "Content Engine receiver — GET /api/websites/diagnose + /api/websites/* read endpoints. Held by Rello → CE outbound key per Q7.7 lock 2026-05-01 to prevent over-grant relative to engine:access.";
+        readonly validatedBy: readonly ["content-engine"];
+        readonly grantedTo: readonly [];
+    };
+    readonly SIGNALS_READ: {
+        readonly slug: "signals:read";
+        readonly label: "Read signals + signal rules";
+        readonly description: "Rello receiver — GET /api/admin/signal-rules/* + /api/admin/signals/* read endpoints. Cross-tenant signal-rules data + unhandled-signals view. Gates the read-only paths of the canonical <SignalRulesManager> component (Q8.6 lock 2026-05-01) shared between S&I Tab 2 + Tags Tab 3.";
+        readonly validatedBy: readonly ["rello"];
+        readonly grantedTo: readonly [];
+    };
+    readonly SIGNALS_ADMIN: {
+        readonly slug: "signals:admin";
+        readonly label: "Administer signals + signal rules";
+        readonly description: "Rello receiver — POST/PUT/DELETE /api/admin/signal-rules/* + seed/test endpoints. Gates the mutation paths of the canonical <SignalRulesManager> component (Q8.6 lock 2026-05-01).";
+        readonly validatedBy: readonly ["rello"];
+        readonly grantedTo: readonly [];
+    };
+    readonly TENANTS_READ: {
+        readonly slug: "tenants:read";
+        readonly label: "Read tenants (admin role)";
+        readonly description: "Rello admin-role permission — read-side access to tenant records via Platform Admin tenant management surfaces. Distinct from tenants:validate which is the cross-app tenant lookup S2S surface.";
+        readonly validatedBy: readonly ["rello"];
+        readonly grantedTo: readonly [];
+    };
+    readonly TENANTS_WRITE: {
+        readonly slug: "tenants:write";
+        readonly label: "Write tenants (admin role)";
+        readonly description: "Rello admin-role permission — write-side access to tenant records (create, update) via Platform Admin tenant management surfaces.";
+        readonly validatedBy: readonly ["rello"];
+        readonly grantedTo: readonly [];
+    };
+    readonly TENANTS_DELETE: {
+        readonly slug: "tenants:delete";
+        readonly label: "Delete tenants (admin role)";
+        readonly description: "Rello admin-role permission — delete tenant records via Platform Admin tenant management surfaces.";
+        readonly validatedBy: readonly ["rello"];
+        readonly grantedTo: readonly [];
+    };
+    readonly BILLING_READ: {
+        readonly slug: "billing:read";
+        readonly label: "Read billing (admin role)";
+        readonly description: "Rello admin-role permission — read-side access to billing/Stripe surfaces via Platform Admin Billing pages.";
+        readonly validatedBy: readonly ["rello"];
+        readonly grantedTo: readonly [];
+    };
+    readonly BILLING_WRITE: {
+        readonly slug: "billing:write";
+        readonly label: "Write billing (admin role)";
+        readonly description: "Rello admin-role permission — write-side access to billing/Stripe surfaces (plan config, invoice ops) via Platform Admin Billing pages.";
+        readonly validatedBy: readonly ["rello"];
+        readonly grantedTo: readonly [];
+    };
+    readonly SUPPORT_READ: {
+        readonly slug: "support:read";
+        readonly label: "Read support (admin role)";
+        readonly description: "Rello admin-role permission — read-side access to support ticket surfaces via Platform Admin Support pages.";
+        readonly validatedBy: readonly ["rello"];
+        readonly grantedTo: readonly [];
+    };
+    readonly SUPPORT_WRITE: {
+        readonly slug: "support:write";
+        readonly label: "Write support (admin role)";
+        readonly description: "Rello admin-role permission — write-side access to support tickets (status changes, notes) via Platform Admin Support pages.";
+        readonly validatedBy: readonly ["rello"];
+        readonly grantedTo: readonly [];
+    };
+    readonly ANALYTICS_READ: {
+        readonly slug: "analytics:read";
+        readonly label: "Read analytics (admin role)";
+        readonly description: "Rello admin-role permission — read-side access to platform analytics + Insights surfaces.";
+        readonly validatedBy: readonly ["rello"];
+        readonly grantedTo: readonly [];
+    };
+    readonly SETTINGS_READ: {
+        readonly slug: "settings:read";
+        readonly label: "Read platform settings (admin role)";
+        readonly description: "Rello admin-role permission — read-side access to Platform Admin settings surfaces (api-keys list, security roles, feature flags).";
+        readonly validatedBy: readonly ["rello"];
+        readonly grantedTo: readonly [];
+    };
+    readonly SETTINGS_WRITE: {
+        readonly slug: "settings:write";
+        readonly label: "Write platform settings (admin role)";
+        readonly description: "Rello admin-role permission — write-side access to Platform Admin settings (mint api keys, edit security roles, toggle features).";
+        readonly validatedBy: readonly ["rello"];
+        readonly grantedTo: readonly [];
+    };
+    readonly SYSTEM_READ: {
+        readonly slug: "system:read";
+        readonly label: "Read system health (admin role)";
+        readonly description: "Rello admin-role permission — read-side access to System Health surfaces (operations, infrastructure, alerts, jobs, audit log).";
+        readonly validatedBy: readonly ["rello"];
+        readonly grantedTo: readonly [];
+    };
+    readonly SYSTEM_WRITE: {
+        readonly slug: "system:write";
+        readonly label: "Write system health (admin role)";
+        readonly description: "Rello admin-role permission — write-side access to System Health (alert config, job triggering, system actions).";
+        readonly validatedBy: readonly ["rello"];
+        readonly grantedTo: readonly [];
+    };
+    readonly USERS_READ: {
+        readonly slug: "users:read";
+        readonly label: "Read users (admin role)";
+        readonly description: "Rello admin-role permission — read-side access to platform-user records via Platform Admin Users surfaces.";
+        readonly validatedBy: readonly ["rello"];
+        readonly grantedTo: readonly [];
+    };
+    readonly USERS_WRITE: {
+        readonly slug: "users:write";
+        readonly label: "Write users (admin role)";
+        readonly description: "Rello admin-role permission — write-side access to platform-user records (create, update, role changes).";
+        readonly validatedBy: readonly ["rello"];
+        readonly grantedTo: readonly [];
+    };
+    readonly IMPERSONATE: {
+        readonly slug: "impersonate";
+        readonly label: "Impersonate tenant users (admin role)";
+        readonly description: "Rello admin-role permission — exercise impersonation flow to view a tenant's UI as one of its users for support/diagnosis. High-trust permission; audit-logged on every use per § Audit Logging on Mutations.";
+        readonly validatedBy: readonly ["rello"];
+        readonly grantedTo: readonly [];
+    };
 };
 /** Compile-time-checked permission key (e.g., `"NEWSLETTERS_SEND"`). */
 export type PermissionKey = keyof typeof PERMISSIONS;
