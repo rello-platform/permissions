@@ -648,6 +648,20 @@ export declare const PERMISSIONS: {
         readonly validatedBy: readonly ["rello"];
         readonly grantedTo: readonly [];
     };
+    readonly MLO_PARTNER_READ: {
+        readonly slug: "mlo-partner:read";
+        readonly label: "Read MLO partner directory";
+        readonly description: "Rello receiver — GET /api/proxy/mlo-partners* + /api/admin/mlo-partners*. Held by Rello → spoke admin proxies and by HR/HS → Rello directory proxy adapters per SPEC-MLOPARTNER-RELLO-CANONICAL.md (2026-05-03). Separate from mlo-partner:write per Q7.1 lifestyle:read/write pattern — supports role-tiered admin access (support-tier read-only vs ops-tier write).";
+        readonly validatedBy: readonly ["rello"];
+        readonly grantedTo: readonly [];
+    };
+    readonly MLO_PARTNER_WRITE: {
+        readonly slug: "mlo-partner:write";
+        readonly label: "Write MLO partner directory";
+        readonly description: "Rello receiver — POST/PATCH/DELETE /api/proxy/mlo-partners* + /api/admin/mlo-partners* + magic-link issuance. Held by HR/HS → Rello directory proxy adapter per SPEC-MLOPARTNER-RELLO-CANONICAL.md (2026-05-03).";
+        readonly validatedBy: readonly ["rello"];
+        readonly grantedTo: readonly [];
+    };
 };
 /** Compile-time-checked permission key (e.g., `"NEWSLETTERS_SEND"`). */
 export type PermissionKey = keyof typeof PERMISSIONS;

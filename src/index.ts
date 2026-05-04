@@ -729,6 +729,26 @@ export const PERMISSIONS = {
     validatedBy: ["rello"],
     grantedTo: [],
   },
+
+  // ─── MLO Partner directory (D-2 lock — Tier 1B.6 / Wave 2) ────────────────
+  // Per SPEC-MLOPARTNER-RELLO-CANONICAL.md (2026-05-03): per-tenant MLO
+  // directory centralized in Rello. Two separate slugs per Q7.1
+  // lifestyle:read/write pattern — supports role-tiered admin access
+  // (support-tier read-only vs ops-tier write).
+  MLO_PARTNER_READ: {
+    slug: "mlo-partner:read",
+    label: "Read MLO partner directory",
+    description: "Rello receiver — GET /api/proxy/mlo-partners* + /api/admin/mlo-partners*. Held by Rello → spoke admin proxies and by HR/HS → Rello directory proxy adapters per SPEC-MLOPARTNER-RELLO-CANONICAL.md (2026-05-03). Separate from mlo-partner:write per Q7.1 lifestyle:read/write pattern — supports role-tiered admin access (support-tier read-only vs ops-tier write).",
+    validatedBy: ["rello"],
+    grantedTo: [],
+  },
+  MLO_PARTNER_WRITE: {
+    slug: "mlo-partner:write",
+    label: "Write MLO partner directory",
+    description: "Rello receiver — POST/PATCH/DELETE /api/proxy/mlo-partners* + /api/admin/mlo-partners* + magic-link issuance. Held by HR/HS → Rello directory proxy adapter per SPEC-MLOPARTNER-RELLO-CANONICAL.md (2026-05-03).",
+    validatedBy: ["rello"],
+    grantedTo: [],
+  },
 } as const satisfies Readonly<Record<string, PermissionDefinition>>;
 
 /** Compile-time-checked permission key (e.g., `"NEWSLETTERS_SEND"`). */
