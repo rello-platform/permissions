@@ -683,6 +683,13 @@ export declare const PERMISSIONS: {
         readonly validatedBy: readonly ["content-engine"];
         readonly grantedTo: readonly [];
     };
+    readonly METRICS_INGEST: {
+        readonly slug: "metrics:ingest";
+        readonly label: "Ingest platform metric snapshots";
+        readonly description: "Rello inbound — POST /api/metrics/snapshot/ingest. Engine-side daily metric writer crons (Report Engine, Drumbeat Video Engine, Property Engine, Content Engine) emit batch records into PlatformMetricSnapshot via this endpoint. Held by each AUTHOR engine's <ENGINE> → RELLO ApiKey row per SPEC-METRICS-INGEST-PROXY.md §Phase C. Milo Engine writes direct shared-Neon and does NOT hold this permission. Journey Engine is SKIP/empty-state per SPEC-ENGINE-SIDE-METRIC-EMITTERS-TRIAGE.md §Journey-Skip.";
+        readonly validatedBy: readonly ["rello"];
+        readonly grantedTo: readonly [];
+    };
 };
 /** Compile-time-checked permission key (e.g., `"NEWSLETTERS_SEND"`). */
 export type PermissionKey = keyof typeof PERMISSIONS;

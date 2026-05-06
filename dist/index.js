@@ -722,6 +722,14 @@ export const PERMISSIONS = {
         validatedBy: ["content-engine"],
         grantedTo: [],
     },
+    // ─── Metrics (Rello inbound — engine-side metric snapshot ingest proxy) ────
+    METRICS_INGEST: {
+        slug: "metrics:ingest",
+        label: "Ingest platform metric snapshots",
+        description: "Rello inbound — POST /api/metrics/snapshot/ingest. Engine-side daily metric writer crons (Report Engine, Drumbeat Video Engine, Property Engine, Content Engine) emit batch records into PlatformMetricSnapshot via this endpoint. Held by each AUTHOR engine's <ENGINE> → RELLO ApiKey row per SPEC-METRICS-INGEST-PROXY.md §Phase C. Milo Engine writes direct shared-Neon and does NOT hold this permission. Journey Engine is SKIP/empty-state per SPEC-ENGINE-SIDE-METRIC-EMITTERS-TRIAGE.md §Journey-Skip.",
+        validatedBy: ["rello"],
+        grantedTo: [],
+    },
 };
 /**
  * Frozen list of every canonical permission slug — the universe a write-time
