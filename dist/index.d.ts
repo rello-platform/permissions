@@ -662,6 +662,27 @@ export declare const PERMISSIONS: {
         readonly validatedBy: readonly ["rello"];
         readonly grantedTo: readonly [];
     };
+    readonly QUERY: {
+        readonly slug: "query";
+        readonly label: "Query Content Engine read routes";
+        readonly description: "Content Engine receiver — GET /api/articles/* + /api/content/* + /api/voices/* + /api/sources/* + /api/confirmations/* + /api/websites/* + /api/tenants/[id]/* + /api/logs/* read endpoints. CE-internal verb gating every list/get route per CE's auth.ts:145-149 hasPermission() string-compare. Held by Rello → CE outbound key per SPEC-Q7-1-CE-PERMISSION-SURFACE-RECONCILIATION.md (2026-05-06).";
+        readonly validatedBy: readonly ["content-engine"];
+        readonly grantedTo: readonly [];
+    };
+    readonly INGEST: {
+        readonly slug: "ingest";
+        readonly label: "Ingest Content Engine write routes";
+        readonly description: "Content Engine receiver — POST/PUT/PATCH/DELETE /api/articles/ingest + /api/sources/* + /api/websites/* + /api/confirmations/confirm + /api/confirmations/dismiss write endpoints. CE-internal verb gating every write route per CE's auth.ts:145-149 hasPermission() string-compare. Held by Rello → CE outbound key per SPEC-Q7-1-CE-PERMISSION-SURFACE-RECONCILIATION.md (2026-05-06).";
+        readonly validatedBy: readonly ["content-engine"];
+        readonly grantedTo: readonly [];
+    };
+    readonly GENERATE: {
+        readonly slug: "generate";
+        readonly label: "Generate Content Engine output routes";
+        readonly description: "Content Engine receiver — POST /api/generate/digest + /api/generate/email-summary + /api/generate/podcast + /api/generate/newsletter + POST/PATCH /api/voices/* + POST /api/tenants/[id]/voices + POST /api/tenants/[id]/content-preferences. CE-internal verb gating every generation/voice route per CE's auth.ts:145-149 hasPermission() string-compare. Held by Rello → CE outbound key per SPEC-Q7-1-CE-PERMISSION-SURFACE-RECONCILIATION.md (2026-05-06).";
+        readonly validatedBy: readonly ["content-engine"];
+        readonly grantedTo: readonly [];
+    };
 };
 /** Compile-time-checked permission key (e.g., `"NEWSLETTERS_SEND"`). */
 export type PermissionKey = keyof typeof PERMISSIONS;

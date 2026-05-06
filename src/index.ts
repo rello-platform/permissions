@@ -749,6 +749,40 @@ export const PERMISSIONS = {
     validatedBy: ["rello"],
     grantedTo: [],
   },
+
+  // ─── Content Engine internal verbs (Q7.1-CE-RECONCILIATION Phase 1c) ──────
+  // Per SPEC-Q7-1-CE-PERMISSION-SURFACE-RECONCILIATION.md (2026-05-06): the
+  // canonical Rello → CE ApiKey mint shape covers both forward-looking
+  // domain-scope slugs (engine:access + lifestyle:read/write + websites:read)
+  // AND CE-internal verbs (query/ingest/generate) that CE's `hasPermission()`
+  // calls actually gate on across 32 source files. Promoting the verbs to
+  // the canonical registry pulls them under the same write-time validator
+  // (api-key-create.ts:VALID_PERMISSIONS) as every other slug — future
+  // re-mints via the admin UI will accept the full ≥7-slug shape without a
+  // target-app-aware carve-out (Option 1c-A per the spec). Mirrors the
+  // engine:access + lifestyle:read/write + parcel:read/write precedent
+  // (per-engine narrow permissions with validatedBy = ["content-engine"]).
+  QUERY: {
+    slug: "query",
+    label: "Query Content Engine read routes",
+    description: "Content Engine receiver — GET /api/articles/* + /api/content/* + /api/voices/* + /api/sources/* + /api/confirmations/* + /api/websites/* + /api/tenants/[id]/* + /api/logs/* read endpoints. CE-internal verb gating every list/get route per CE's auth.ts:145-149 hasPermission() string-compare. Held by Rello → CE outbound key per SPEC-Q7-1-CE-PERMISSION-SURFACE-RECONCILIATION.md (2026-05-06).",
+    validatedBy: ["content-engine"],
+    grantedTo: [],
+  },
+  INGEST: {
+    slug: "ingest",
+    label: "Ingest Content Engine write routes",
+    description: "Content Engine receiver — POST/PUT/PATCH/DELETE /api/articles/ingest + /api/sources/* + /api/websites/* + /api/confirmations/confirm + /api/confirmations/dismiss write endpoints. CE-internal verb gating every write route per CE's auth.ts:145-149 hasPermission() string-compare. Held by Rello → CE outbound key per SPEC-Q7-1-CE-PERMISSION-SURFACE-RECONCILIATION.md (2026-05-06).",
+    validatedBy: ["content-engine"],
+    grantedTo: [],
+  },
+  GENERATE: {
+    slug: "generate",
+    label: "Generate Content Engine output routes",
+    description: "Content Engine receiver — POST /api/generate/digest + /api/generate/email-summary + /api/generate/podcast + /api/generate/newsletter + POST/PATCH /api/voices/* + POST /api/tenants/[id]/voices + POST /api/tenants/[id]/content-preferences. CE-internal verb gating every generation/voice route per CE's auth.ts:145-149 hasPermission() string-compare. Held by Rello → CE outbound key per SPEC-Q7-1-CE-PERMISSION-SURFACE-RECONCILIATION.md (2026-05-06).",
+    validatedBy: ["content-engine"],
+    grantedTo: [],
+  },
 } as const satisfies Readonly<Record<string, PermissionDefinition>>;
 
 /** Compile-time-checked permission key (e.g., `"NEWSLETTERS_SEND"`). */
