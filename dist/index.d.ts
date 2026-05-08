@@ -704,6 +704,13 @@ export declare const PERMISSIONS: {
         readonly validatedBy: readonly ["the-oven"];
         readonly grantedTo: readonly ["harvest-home"];
     };
+    readonly MEETINGS_WRITE: {
+        readonly slug: "meetings:write";
+        readonly label: "Write meetings";
+        readonly description: "Rello booking + meeting surface — POST /api/meetings/book (cross-app inter-app booker, e.g. HS booking page → Rello), POST /api/meetings/[id]/{complete,cancel,no-show}, PATCH /api/meetings/[id], plus BookingLink + TeamPool + TeamPoolMember CRUD endpoints under /api/booking-links/* and /api/team-pools/*. Held by per-spoke ApiKey rows whose surface authors meetings into Rello (HS booking page is the canonical caller; future cross-app integrations may also acquire).";
+        readonly validatedBy: readonly ["rello"];
+        readonly grantedTo: readonly [];
+    };
     readonly METRICS_INGEST: {
         readonly slug: "metrics:ingest";
         readonly label: "Ingest platform metric snapshots";

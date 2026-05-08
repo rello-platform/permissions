@@ -758,6 +758,21 @@ export const PERMISSIONS = {
         validatedBy: ["the-oven"],
         grantedTo: ["harvest-home"],
     },
+    // ─── Meetings (Rello inbound — booking surface, cross-app HS → Rello) ─────
+    // RCAL Phase 2 — POST /api/meetings/book is the cross-app booking entry
+    // point: HS booking page authors a meeting against a Rello-hosted
+    // BookingLink, creating Lead-if-new + Meeting + AuditLog + outbound
+    // rello.meeting_booked signal. Permission also gates the meeting-state
+    // mutation surface (cancel via cancellation token, reschedule, complete,
+    // no-show) and the BookingLink + TeamPool CRUD endpoints. Naming follows
+    // the noun-plural:write precedent (leads:write, signals:write, intake:write).
+    MEETINGS_WRITE: {
+        slug: "meetings:write",
+        label: "Write meetings",
+        description: "Rello booking + meeting surface — POST /api/meetings/book (cross-app inter-app booker, e.g. HS booking page → Rello), POST /api/meetings/[id]/{complete,cancel,no-show}, PATCH /api/meetings/[id], plus BookingLink + TeamPool + TeamPoolMember CRUD endpoints under /api/booking-links/* and /api/team-pools/*. Held by per-spoke ApiKey rows whose surface authors meetings into Rello (HS booking page is the canonical caller; future cross-app integrations may also acquire).",
+        validatedBy: ["rello"],
+        grantedTo: [],
+    },
     // ─── Metrics (Rello inbound — engine-side metric snapshot ingest proxy) ────
     METRICS_INGEST: {
         slug: "metrics:ingest",
