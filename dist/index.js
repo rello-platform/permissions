@@ -722,6 +722,27 @@ export const PERMISSIONS = {
         validatedBy: ["content-engine"],
         grantedTo: [],
     },
+    // ─── Lead Marketplace (PE receiver, SPEC-PE-LEAD-PROVIDERS-FRAMEWORK §4.7) ──
+    // Per SPEC-PE-LEAD-PROVIDERS-FRAMEWORK.md (2026-05-07) — Property Engine
+    // serves Harvest Home's commercial Discovery Marketplace via Path A inter-app
+    // auth. Verify shares lead-marketplace:search per §4.5 lock (preview-tier
+    // read pairs cleanly with search semantics). grantedTo: ["harvest-home"] is
+    // pre-launch over-granted on the existing HARVEST_HOME → PROPERTY_ENGINE
+    // ApiKey row at Phase 4 (per pre-launch over-grant tolerance + §4.8 lock).
+    LEAD_MARKETPLACE_SEARCH: {
+        slug: "lead-marketplace:search",
+        label: "Search lead-marketplace inventory",
+        description: "PE serving endpoints `GET /api/lead-providers/search` + `POST /api/lead-providers/verify` (verify shares search permission per §4.5 lock).",
+        validatedBy: ["property-engine"],
+        grantedTo: ["harvest-home"],
+    },
+    LEAD_MARKETPLACE_UNLOCK: {
+        slug: "lead-marketplace:unlock",
+        label: "Unlock lead-marketplace record",
+        description: "PE serving endpoint `POST /api/lead-providers/unlock`.",
+        validatedBy: ["property-engine"],
+        grantedTo: ["harvest-home"],
+    },
     // ─── Metrics (Rello inbound — engine-side metric snapshot ingest proxy) ────
     METRICS_INGEST: {
         slug: "metrics:ingest",

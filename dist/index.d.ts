@@ -683,6 +683,20 @@ export declare const PERMISSIONS: {
         readonly validatedBy: readonly ["content-engine"];
         readonly grantedTo: readonly [];
     };
+    readonly LEAD_MARKETPLACE_SEARCH: {
+        readonly slug: "lead-marketplace:search";
+        readonly label: "Search lead-marketplace inventory";
+        readonly description: "PE serving endpoints `GET /api/lead-providers/search` + `POST /api/lead-providers/verify` (verify shares search permission per §4.5 lock).";
+        readonly validatedBy: readonly ["property-engine"];
+        readonly grantedTo: readonly ["harvest-home"];
+    };
+    readonly LEAD_MARKETPLACE_UNLOCK: {
+        readonly slug: "lead-marketplace:unlock";
+        readonly label: "Unlock lead-marketplace record";
+        readonly description: "PE serving endpoint `POST /api/lead-providers/unlock`.";
+        readonly validatedBy: readonly ["property-engine"];
+        readonly grantedTo: readonly ["harvest-home"];
+    };
     readonly METRICS_INGEST: {
         readonly slug: "metrics:ingest";
         readonly label: "Ingest platform metric snapshots";
