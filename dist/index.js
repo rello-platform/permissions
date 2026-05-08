@@ -773,6 +773,22 @@ export const PERMISSIONS = {
         validatedBy: ["rello"],
         grantedTo: [],
     },
+    // RCAL Phase 7 — read-side counterpart that gates the public-booking
+    // discovery surface: HS server components rendering
+    // (public)/[agentSlug]/tools/book-a-call/* call Rello to list active
+    // BookingLinks for an agent slug and to resolve a specific BookingLink by
+    // (agentSlug, meetingTypeSlug). Token-bearer paths (cancellation-token
+    // meeting reads, ?token= cancel) and POST /api/availability/[agentId]/slots
+    // remain unauthenticated as in Phase 2; meetings:read is the explicit gate
+    // for the BookingLink discovery surface where ApiKey traceability is
+    // required even though the data is public-facing.
+    MEETINGS_READ: {
+        slug: "meetings:read",
+        label: "Read meetings",
+        description: "Rello booking discovery surface — GET /api/booking-links/by-agent/[agentSlug] (lists active BookingLinks for a public agent slug) + GET /api/booking-links/by-slug?agentSlug=X&meetingTypeSlug=Y (resolves a single BookingLink for the slot-picker page). Held by HS → Rello ApiKey rows whose public-route components need to enumerate booking surfaces without an agent session. Naming follows the noun-plural:read precedent (signals:read, leads:read).",
+        validatedBy: ["rello"],
+        grantedTo: [],
+    },
     // ─── Metrics (Rello inbound — engine-side metric snapshot ingest proxy) ────
     METRICS_INGEST: {
         slug: "metrics:ingest",

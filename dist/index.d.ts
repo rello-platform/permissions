@@ -711,6 +711,13 @@ export declare const PERMISSIONS: {
         readonly validatedBy: readonly ["rello"];
         readonly grantedTo: readonly [];
     };
+    readonly MEETINGS_READ: {
+        readonly slug: "meetings:read";
+        readonly label: "Read meetings";
+        readonly description: "Rello booking discovery surface — GET /api/booking-links/by-agent/[agentSlug] (lists active BookingLinks for a public agent slug) + GET /api/booking-links/by-slug?agentSlug=X&meetingTypeSlug=Y (resolves a single BookingLink for the slot-picker page). Held by HS → Rello ApiKey rows whose public-route components need to enumerate booking surfaces without an agent session. Naming follows the noun-plural:read precedent (signals:read, leads:read).";
+        readonly validatedBy: readonly ["rello"];
+        readonly grantedTo: readonly [];
+    };
     readonly METRICS_INGEST: {
         readonly slug: "metrics:ingest";
         readonly label: "Ingest platform metric snapshots";
