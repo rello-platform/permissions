@@ -797,6 +797,43 @@ export const PERMISSIONS = {
         validatedBy: ["rello"],
         grantedTo: [],
     },
+    // ─── Homeowner Hub (HHUB Phase 4 — HS ↔ Oven cross-spoke surface) ─────────
+    // Per SPEC HOMEOWNER-HUB.md (2026-05-08) — the consumer-facing past-client
+    // engagement surface in Home Scout's `(owner)` route group reads CTA
+    // selection + visit tracking + HomeownerProfile from The Oven, and Oven's
+    // cta-selector reads CtaDefinition rows from Home Scout. Three slugs gate
+    // the HS → Oven direction; one slug gates the new Oven → HS direction
+    // (cta-definitions read). Atomic per Rule C with the cta-selector +
+    // visit-tracker bundle. Pre-launch over-grant tolerance: grantedTo arrays
+    // reflect the only minted callers at ship time.
+    OVEN_CTA_SELECT: {
+        slug: "oven:cta-select",
+        label: "Select Hub CTAs from The Oven",
+        description: "Home Scout → The Oven POST /api/homeowner-cta-select per-caller credential. The Oven's deterministic ranker reads HomeownerProfile + OvenScore + recent ClientSignal rows + HS CtaDefinition registry and returns the top-N CTA slugs for the Hub render. Per spec § BLOCKERS B-03 lock — pull-architecture, signal-driven, no pinning. Validated by The Oven's requireServiceBearer.",
+        validatedBy: ["the-oven"],
+        grantedTo: ["home-scout"],
+    },
+    OVEN_VISIT_TRACK: {
+        slug: "oven:visit-track",
+        label: "Track Hub visits to The Oven",
+        description: "Home Scout → The Oven POST /api/homeowner-hub/visit-track per-caller credential. Records HomeownerHubVisit rows (ctas shown / clicked / duration / referrer) for telemetry attribution and ranker feedback. Fire-and-forget with RelloSyncQueue retry path per spec § Durable Pattern Analysis #6. Validated by The Oven's requireServiceBearer.",
+        validatedBy: ["the-oven"],
+        grantedTo: ["home-scout"],
+    },
+    OVEN_HOMEOWNER_PROFILE_READ: {
+        slug: "oven:homeowner-profile-read",
+        label: "Read HomeownerProfile from The Oven",
+        description: "Home Scout → The Oven GET /api/homeowner-profile/[leadId] per-caller credential. Returns HomeownerProfile + OvenScore + recent (30d) ClientSignal rows for the Hub data-assembly to populate the homeowner block (name + score + temperature + lifeEvents). Lock E commitment from HHUB Phase 3 — atomic with cta-selector cross-repo work. Validated by The Oven's requireServiceBearer.",
+        validatedBy: ["the-oven"],
+        grantedTo: ["home-scout"],
+    },
+    HOME_SCOUT_CTA_DEFINITIONS_READ: {
+        slug: "home-scout:cta-definitions-read",
+        label: "Read CTA definitions from Home Scout",
+        description: "The Oven → Home Scout GET /api/cta-definitions?audiences=OWNER per-caller credential. Lets Oven's cta-selector enumerate active OWNER-audience CtaDefinition rows (slug + label + priority + applicableIntents/Goals/Stages + excludeIfSignals + requireSignals + audiences) without crossing the canonical-owner boundary on HS's CtaDefinition table. First Oven → HS inter-app path; mints the direction. Validated by Home Scout's requireServiceBearer.",
+        validatedBy: ["home-scout"],
+        grantedTo: ["the-oven"],
+    },
 };
 /**
  * Frozen list of every canonical permission slug — the universe a write-time

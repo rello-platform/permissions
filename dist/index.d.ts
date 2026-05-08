@@ -725,6 +725,34 @@ export declare const PERMISSIONS: {
         readonly validatedBy: readonly ["rello"];
         readonly grantedTo: readonly [];
     };
+    readonly OVEN_CTA_SELECT: {
+        readonly slug: "oven:cta-select";
+        readonly label: "Select Hub CTAs from The Oven";
+        readonly description: "Home Scout → The Oven POST /api/homeowner-cta-select per-caller credential. The Oven's deterministic ranker reads HomeownerProfile + OvenScore + recent ClientSignal rows + HS CtaDefinition registry and returns the top-N CTA slugs for the Hub render. Per spec § BLOCKERS B-03 lock — pull-architecture, signal-driven, no pinning. Validated by The Oven's requireServiceBearer.";
+        readonly validatedBy: readonly ["the-oven"];
+        readonly grantedTo: readonly ["home-scout"];
+    };
+    readonly OVEN_VISIT_TRACK: {
+        readonly slug: "oven:visit-track";
+        readonly label: "Track Hub visits to The Oven";
+        readonly description: "Home Scout → The Oven POST /api/homeowner-hub/visit-track per-caller credential. Records HomeownerHubVisit rows (ctas shown / clicked / duration / referrer) for telemetry attribution and ranker feedback. Fire-and-forget with RelloSyncQueue retry path per spec § Durable Pattern Analysis #6. Validated by The Oven's requireServiceBearer.";
+        readonly validatedBy: readonly ["the-oven"];
+        readonly grantedTo: readonly ["home-scout"];
+    };
+    readonly OVEN_HOMEOWNER_PROFILE_READ: {
+        readonly slug: "oven:homeowner-profile-read";
+        readonly label: "Read HomeownerProfile from The Oven";
+        readonly description: "Home Scout → The Oven GET /api/homeowner-profile/[leadId] per-caller credential. Returns HomeownerProfile + OvenScore + recent (30d) ClientSignal rows for the Hub data-assembly to populate the homeowner block (name + score + temperature + lifeEvents). Lock E commitment from HHUB Phase 3 — atomic with cta-selector cross-repo work. Validated by The Oven's requireServiceBearer.";
+        readonly validatedBy: readonly ["the-oven"];
+        readonly grantedTo: readonly ["home-scout"];
+    };
+    readonly HOME_SCOUT_CTA_DEFINITIONS_READ: {
+        readonly slug: "home-scout:cta-definitions-read";
+        readonly label: "Read CTA definitions from Home Scout";
+        readonly description: "The Oven → Home Scout GET /api/cta-definitions?audiences=OWNER per-caller credential. Lets Oven's cta-selector enumerate active OWNER-audience CtaDefinition rows (slug + label + priority + applicableIntents/Goals/Stages + excludeIfSignals + requireSignals + audiences) without crossing the canonical-owner boundary on HS's CtaDefinition table. First Oven → HS inter-app path; mints the direction. Validated by Home Scout's requireServiceBearer.";
+        readonly validatedBy: readonly ["home-scout"];
+        readonly grantedTo: readonly ["the-oven"];
+    };
 };
 /** Compile-time-checked permission key (e.g., `"NEWSLETTERS_SEND"`). */
 export type PermissionKey = keyof typeof PERMISSIONS;
