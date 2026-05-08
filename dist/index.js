@@ -743,6 +743,21 @@ export const PERMISSIONS = {
         validatedBy: ["property-engine"],
         grantedTo: ["harvest-home"],
     },
+    // ─── Homeowner Sync (The Oven receiver, HH → Oven post-close profile push) ──
+    // Per CENTRALIZED-API-KEY-MIGRATION.md Phase 5 receiver-first session — Harvest
+    // Home pushes homeowner-profile records to The Oven for retention tracking +
+    // equity-digest enrollment after lead transitions to closed. Closes the
+    // silently-dead OVEN_APP_SECRET X-App-Secret pattern (HH outbound's header
+    // never matched any Oven receiver gate; feature was 401'ing in prod). Pre-launch
+    // over-grant tolerance: grantedTo: ["harvest-home"] is the only minted caller at
+    // ship time; future spoke→Oven retention pushers may also acquire this slug.
+    HOMEOWNER_SYNC_WRITE: {
+        slug: "homeowner-sync:write",
+        label: "Sync homeowner profile to retention spoke",
+        description: "Harvest Home → The Oven POST /api/homeowners per-caller credential for post-close homeowner-profile sync (retention tracking + equity-digest enrollment). Replaces the silently-dead OVEN_APP_SECRET X-App-Secret pattern per CENTRALIZED-API-KEY-MIGRATION Phase 5 receiver-first session. The Oven's requireServiceBearer enforces this permission via createServiceBearerGuard.",
+        validatedBy: ["the-oven"],
+        grantedTo: ["harvest-home"],
+    },
     // ─── Metrics (Rello inbound — engine-side metric snapshot ingest proxy) ────
     METRICS_INGEST: {
         slug: "metrics:ingest",

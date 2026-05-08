@@ -697,6 +697,13 @@ export declare const PERMISSIONS: {
         readonly validatedBy: readonly ["property-engine"];
         readonly grantedTo: readonly ["harvest-home"];
     };
+    readonly HOMEOWNER_SYNC_WRITE: {
+        readonly slug: "homeowner-sync:write";
+        readonly label: "Sync homeowner profile to retention spoke";
+        readonly description: "Harvest Home → The Oven POST /api/homeowners per-caller credential for post-close homeowner-profile sync (retention tracking + equity-digest enrollment). Replaces the silently-dead OVEN_APP_SECRET X-App-Secret pattern per CENTRALIZED-API-KEY-MIGRATION Phase 5 receiver-first session. The Oven's requireServiceBearer enforces this permission via createServiceBearerGuard.";
+        readonly validatedBy: readonly ["the-oven"];
+        readonly grantedTo: readonly ["harvest-home"];
+    };
     readonly METRICS_INGEST: {
         readonly slug: "metrics:ingest";
         readonly label: "Ingest platform metric snapshots";
