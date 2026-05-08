@@ -834,6 +834,23 @@ export const PERMISSIONS = {
         validatedBy: ["home-scout"],
         grantedTo: ["the-oven"],
     },
+    // ─── Milo Compose-Homeowner-Hub (Milo receiver, HHUB Phase 5) ──────────────
+    // Per HOMEOWNER-HUB.md § Build Plan Phase 5 — Home Scout's Hub data-assembly
+    // calls Milo's pure composition layer (greeting + per-CTA bodies) using the
+    // Oven-selected slugs from Phase 4 + the homeowner profile context. Milo
+    // composes tone only — never reorders, adds, or drops Oven's selection
+    // (B-03 lock). Pure composition: input contract { homeownerProfileId,
+    // dormantStage, ovenScore, selectedCtaSlugs[], context }, output contract
+    // { greeting, ctaBodies: Record<slug, body> }. Mints the direction
+    // home-scout → milo-engine for Hub render. Validated by Milo's centralized
+    // ApiKey middleware (validatePlatformBearer).
+    MILO_COMPOSE_HOMEOWNER_HUB: {
+        slug: "milo:compose-homeowner-hub",
+        label: "Compose Homeowner Hub greeting + CTA bodies via Milo",
+        description: "Home Scout → Milo Engine POST /api/compose-homeowner-hub per-caller credential. Returns Sonnet-composed greeting (1-2 sentences) + per-CTA body text (1-2 sentences each) keyed by Oven-selected CTA slug. Pure composition layer — Milo never reorders / adds / drops Oven's selection per spec § BLOCKERS B-03. Validated by Milo's centralized ApiKey middleware (Path A: Bearer rello_*). HHUB Phase 5.",
+        validatedBy: ["milo-engine"],
+        grantedTo: ["home-scout"],
+    },
 };
 /**
  * Frozen list of every canonical permission slug — the universe a write-time

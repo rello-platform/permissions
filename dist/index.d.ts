@@ -753,6 +753,13 @@ export declare const PERMISSIONS: {
         readonly validatedBy: readonly ["home-scout"];
         readonly grantedTo: readonly ["the-oven"];
     };
+    readonly MILO_COMPOSE_HOMEOWNER_HUB: {
+        readonly slug: "milo:compose-homeowner-hub";
+        readonly label: "Compose Homeowner Hub greeting + CTA bodies via Milo";
+        readonly description: "Home Scout → Milo Engine POST /api/compose-homeowner-hub per-caller credential. Returns Sonnet-composed greeting (1-2 sentences) + per-CTA body text (1-2 sentences each) keyed by Oven-selected CTA slug. Pure composition layer — Milo never reorders / adds / drops Oven's selection per spec § BLOCKERS B-03. Validated by Milo's centralized ApiKey middleware (Path A: Bearer rello_*). HHUB Phase 5.";
+        readonly validatedBy: readonly ["milo-engine"];
+        readonly grantedTo: readonly ["home-scout"];
+    };
 };
 /** Compile-time-checked permission key (e.g., `"NEWSLETTERS_SEND"`). */
 export type PermissionKey = keyof typeof PERMISSIONS;
