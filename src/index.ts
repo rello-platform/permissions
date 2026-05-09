@@ -937,6 +937,24 @@ export const PERMISSIONS = {
     validatedBy: ["the-drumbeat"],
     grantedTo: ["rello"],
   },
+
+  // ─── Home Stretch platform-default config sync (Rello → HS) ────────────────
+  // Per SPEC-HS-INBOUND-AUTH-CANONICALIZATION.md (2026-05-09) — closes the
+  // SHAPE-01-class non-canonical SHA-256-hash X-API-Key compare on HS's articles
+  // and rewards platform-default sync receivers. Single slug covers both
+  // receivers; both surfaces are platform-default config push from Rello to HS
+  // (articles to populate StepArticle module rows, rewards config to populate
+  // TenantAppConfig.rewardsEnabled + rewardTiers). Mints the direction
+  // rello → home-stretch for platform-default config push. Validated by HS's
+  // existing requireServiceBearer (createServiceBearerGuard against centralized
+  // ApiKey table; SHA-256 hash match advances ApiKey.lastUsedAt).
+  HOME_STRETCH_PLATFORM_SYNC: {
+    slug: "home-stretch:platform-sync",
+    label: "Sync platform-default config to Home Stretch",
+    description: "Rello → Home Stretch POST /api/admin/articles/platform + POST /api/admin/rewards/sync per-caller credential. Rello platform admin pushes platform-default articles (StepArticle source=PLATFORM) and platform-default rewards config (TenantAppConfig.rewardsEnabled + rewardTiers) to HS. Validated by HS's requireServiceBearer.",
+    validatedBy: ["home-stretch"],
+    grantedTo: ["rello"],
+  },
 } as const satisfies Readonly<Record<string, PermissionDefinition>>;
 
 /** Compile-time-checked permission key (e.g., `"NEWSLETTERS_SEND"`). */

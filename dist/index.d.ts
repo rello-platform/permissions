@@ -767,6 +767,13 @@ export declare const PERMISSIONS: {
         readonly validatedBy: readonly ["the-drumbeat"];
         readonly grantedTo: readonly ["rello"];
     };
+    readonly HOME_STRETCH_PLATFORM_SYNC: {
+        readonly slug: "home-stretch:platform-sync";
+        readonly label: "Sync platform-default config to Home Stretch";
+        readonly description: "Rello → Home Stretch POST /api/admin/articles/platform + POST /api/admin/rewards/sync per-caller credential. Rello platform admin pushes platform-default articles (StepArticle source=PLATFORM) and platform-default rewards config (TenantAppConfig.rewardsEnabled + rewardTiers) to HS. Validated by HS's requireServiceBearer.";
+        readonly validatedBy: readonly ["home-stretch"];
+        readonly grantedTo: readonly ["rello"];
+    };
 };
 /** Compile-time-checked permission key (e.g., `"NEWSLETTERS_SEND"`). */
 export type PermissionKey = keyof typeof PERMISSIONS;
