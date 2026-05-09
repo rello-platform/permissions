@@ -919,6 +919,24 @@ export const PERMISSIONS = {
     validatedBy: ["milo-engine"],
     grantedTo: ["home-scout"],
   },
+
+  // ─── Drumbeat content-cadence read (RCAL Phase 4 — Rello → Drumbeat) ───────
+  // Per RELLO-CALENDAR.md § Build Plan Phase 4 — Rello's multi-source calendar
+  // event aggregator (`GET /api/calendar/events?layers=…`) calls Drumbeat's
+  // `GET /api/calendar/content-cadence-feed` to fetch ContentCalendarEntry
+  // rows for the Drumbeat layer of the Calendar UI. Read-only; tenant-scoped
+  // by the receiver via the inbound x-tenant-id query param resolved against
+  // the caller's session-derived tenant. Mints the direction rello →
+  // the-drumbeat for cross-app calendar aggregation. Validated by Drumbeat's
+  // requireServiceBearer (createServiceBearerGuard against centralized
+  // ApiKey table; SHA-256 hash match advances ApiKey.lastUsedAt).
+  DRUMBEAT_CONTENT_CADENCE_READ: {
+    slug: "drumbeat:content-cadence-read",
+    label: "Read Drumbeat content cadence for calendar aggregation",
+    description: "Rello → The Drumbeat GET /api/calendar/content-cadence-feed per-caller credential. Returns ContentCalendarEntry rows (id, title, scheduledDate, channelType) for a given (tenantId, agentId, from, to) window so Rello's calendar event aggregator can render the Drumbeat layer of the multi-source Calendar UI. Per spec § External contracts line 476-482. Validated by The Drumbeat's requireServiceBearer. RCAL Phase 4.",
+    validatedBy: ["the-drumbeat"],
+    grantedTo: ["rello"],
+  },
 } as const satisfies Readonly<Record<string, PermissionDefinition>>;
 
 /** Compile-time-checked permission key (e.g., `"NEWSLETTERS_SEND"`). */

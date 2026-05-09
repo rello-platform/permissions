@@ -760,6 +760,13 @@ export declare const PERMISSIONS: {
         readonly validatedBy: readonly ["milo-engine"];
         readonly grantedTo: readonly ["home-scout"];
     };
+    readonly DRUMBEAT_CONTENT_CADENCE_READ: {
+        readonly slug: "drumbeat:content-cadence-read";
+        readonly label: "Read Drumbeat content cadence for calendar aggregation";
+        readonly description: "Rello → The Drumbeat GET /api/calendar/content-cadence-feed per-caller credential. Returns ContentCalendarEntry rows (id, title, scheduledDate, channelType) for a given (tenantId, agentId, from, to) window so Rello's calendar event aggregator can render the Drumbeat layer of the multi-source Calendar UI. Per spec § External contracts line 476-482. Validated by The Drumbeat's requireServiceBearer. RCAL Phase 4.";
+        readonly validatedBy: readonly ["the-drumbeat"];
+        readonly grantedTo: readonly ["rello"];
+    };
 };
 /** Compile-time-checked permission key (e.g., `"NEWSLETTERS_SEND"`). */
 export type PermissionKey = keyof typeof PERMISSIONS;
