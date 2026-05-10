@@ -774,6 +774,13 @@ export declare const PERMISSIONS: {
         readonly validatedBy: readonly ["home-stretch"];
         readonly grantedTo: readonly ["rello"];
     };
+    readonly LANDING_PAGE_READ: {
+        readonly slug: "landing-page:read";
+        readonly label: "Read Home Scout landing-page library";
+        readonly description: "The Drumbeat → Home Scout GET /api/landing-pages per-caller credential. Returns Scout's canonical LandingPage rows (id, title, slug, status, updatedAt) for a (tenantId, agentId) pair so Drumbeat's Pages tab can render Scout's landing-page library in place of Drumbeat's retired local landing-page CRUD. Mirrors cta-registry:read shape per ~API-KEY-LIFECYCLE-README.md:101. Validated by Home Scout's validateApiKey.";
+        readonly validatedBy: readonly ["home-scout"];
+        readonly grantedTo: readonly ["the-drumbeat"];
+    };
 };
 /** Compile-time-checked permission key (e.g., `"NEWSLETTERS_SEND"`). */
 export type PermissionKey = keyof typeof PERMISSIONS;

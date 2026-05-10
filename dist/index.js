@@ -885,6 +885,24 @@ export const PERMISSIONS = {
         validatedBy: ["home-stretch"],
         grantedTo: ["rello"],
     },
+    // ─── Scout receiver — landing-page library read (Drumbeat → Scout) ─────────
+    // Per SPEC-DRUM-LANDING-PAGES-RETIRE-LOCAL.md (2026-05-09) Phase 0b — closes
+    // Drumbeat's local landing-page surface by routing the Pages tab (formerly
+    // local /api/landing-pages CRUD on LandingPage / LandingPageVersion /
+    // LandingPagePublish models) to Home Scout's canonical landing-page library
+    // via GET /api/landing-pages. Mirrors cta-registry:read shape verbatim per
+    // ~API-KEY-LIFECYCLE-README.md:101 (validatedBy: home-scout, grantedTo: peer
+    // spoke). Mints the direction the-drumbeat → home-scout for landing-page
+    // library reads. Validated by Scout's validateApiKey (SHA-256 hash match
+    // advances ApiKey.lastUsedAt; per-pair appSource/targetApp isolation
+    // enforced).
+    LANDING_PAGE_READ: {
+        slug: "landing-page:read",
+        label: "Read Home Scout landing-page library",
+        description: "The Drumbeat → Home Scout GET /api/landing-pages per-caller credential. Returns Scout's canonical LandingPage rows (id, title, slug, status, updatedAt) for a (tenantId, agentId) pair so Drumbeat's Pages tab can render Scout's landing-page library in place of Drumbeat's retired local landing-page CRUD. Mirrors cta-registry:read shape per ~API-KEY-LIFECYCLE-README.md:101. Validated by Home Scout's validateApiKey.",
+        validatedBy: ["home-scout"],
+        grantedTo: ["the-drumbeat"],
+    },
 };
 /**
  * Frozen list of every canonical permission slug — the universe a write-time
