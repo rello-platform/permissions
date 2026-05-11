@@ -802,6 +802,13 @@ export declare const PERMISSIONS: {
         readonly validatedBy: readonly ["rello"];
         readonly grantedTo: readonly ["milo-engine"];
     };
+    readonly AUDIT_WRITE: {
+        readonly slug: "audit:write";
+        readonly label: "Write cross-app AuditLog row";
+        readonly description: "Spoke → Rello POST /api/internal/audit per-caller credential. Authenticates the caller via narrow ApiKey, validates the body against AuditLog field shape, then writes prisma.auditLog.create on Rello's Prisma client. Pattern B (non-fatal-on-audit-failure) per ~AUDIT-LOGGING-DRIFT-PREVENTION-README.md §4 — caller swallows audit-fetch errors with console.error and continues. Used when a spoke is Neon-isolated from Rello's Prisma client and cross-Prisma-client atomic $transaction is structurally impossible (single-client constraint). Initial caller: market-intel Publication / Branding / future tenant-policy mutations per MI-PUBLICATION-MODEL DL6. Validated by Rello's validateApiKey (Path A: Bearer rello_*).";
+        readonly validatedBy: readonly ["rello"];
+        readonly grantedTo: readonly ["market-intel"];
+    };
 };
 /** Compile-time-checked permission key (e.g., `"NEWSLETTERS_SEND"`). */
 export type PermissionKey = keyof typeof PERMISSIONS;

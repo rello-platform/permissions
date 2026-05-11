@@ -952,6 +952,26 @@ export const PERMISSIONS = {
         validatedBy: ["rello"],
         grantedTo: ["milo-engine"],
     },
+    // ─── Cross-app AuditLog write (Spoke → Rello, MI-PUBLICATION-MODEL DL6) ───
+    // Spoke writes its own admin-managed tenant-policy mutation locally (its own
+    // Prisma client), then POSTs to Rello's /api/internal/audit so Rello writes
+    // the AuditLog row via Rello's Prisma client. Required because Prisma
+    // $transaction is single-client — atomic [prismaSpoke.X.update,
+    // prismaRello.auditLog.create] is structurally impossible across two Neon
+    // databases. Pattern B (non-fatal-on-audit-failure) per
+    // ~AUDIT-LOGGING-DRIFT-PREVENTION-README.md §4 — spoke wraps fetch in
+    // try/catch + console.error and continues on audit failure. Initial caller:
+    // market-intel Publication / Branding / future tenant-policy mutations.
+    // Per Rule I D-4 narrow-per-purpose: held by spoke-side ApiKey rows
+    // (appSource=<SPOKE>, targetApp=RELLO) — NOT extending the spoke's existing
+    // MILO_API_KEY or PROVISIONING key.
+    AUDIT_WRITE: {
+        slug: "audit:write",
+        label: "Write cross-app AuditLog row",
+        description: "Spoke → Rello POST /api/internal/audit per-caller credential. Authenticates the caller via narrow ApiKey, validates the body against AuditLog field shape, then writes prisma.auditLog.create on Rello's Prisma client. Pattern B (non-fatal-on-audit-failure) per ~AUDIT-LOGGING-DRIFT-PREVENTION-README.md §4 — caller swallows audit-fetch errors with console.error and continues. Used when a spoke is Neon-isolated from Rello's Prisma client and cross-Prisma-client atomic $transaction is structurally impossible (single-client constraint). Initial caller: market-intel Publication / Branding / future tenant-policy mutations per MI-PUBLICATION-MODEL DL6. Validated by Rello's validateApiKey (Path A: Bearer rello_*).",
+        validatedBy: ["rello"],
+        grantedTo: ["market-intel"],
+    },
 };
 /**
  * Frozen list of every canonical permission slug — the universe a write-time
