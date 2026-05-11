@@ -630,6 +630,13 @@ export const PERMISSIONS = {
         validatedBy: ["rello"],
         grantedTo: [],
     },
+    BILLING_ADMIN: {
+        slug: "billing:admin",
+        label: "Administer billing (admin role)",
+        description: "Rello admin-role permission — most-privileged billing scope (cancel subscriptions, issue refunds, grant trial extensions) via Platform Admin Billing pages. Per CROSS-APP-BILLING-V2.md §Permissions.",
+        validatedBy: ["rello"],
+        grantedTo: [],
+    },
     SUPPORT_READ: {
         slug: "support:read",
         label: "Read support (admin role)",
@@ -971,6 +978,20 @@ export const PERMISSIONS = {
         description: "Spoke → Rello POST /api/internal/audit per-caller credential. Authenticates the caller via narrow ApiKey, validates the body against AuditLog field shape, then writes prisma.auditLog.create on Rello's Prisma client. Pattern B (non-fatal-on-audit-failure) per ~AUDIT-LOGGING-DRIFT-PREVENTION-README.md §4 — caller swallows audit-fetch errors with console.error and continues. Used when a spoke is Neon-isolated from Rello's Prisma client and cross-Prisma-client atomic $transaction is structurally impossible (single-client constraint). Initial caller: market-intel Publication / Branding / future tenant-policy mutations per MI-PUBLICATION-MODEL DL6. Validated by Rello's validateApiKey (Path A: Bearer rello_*).",
         validatedBy: ["rello"],
         grantedTo: ["market-intel"],
+    },
+    // ─── Public-pricing checkout (Spoke → Rello, CROSS-APP-BILLING-V2 §A3) ────
+    // Spoke renders its own public /pricing page; when a visitor clicks "Buy",
+    // the spoke POSTs to Rello's hub-side Stripe Checkout session creator on
+    // behalf of an unauthenticated visitor (no Rello session). Per §A3 lock,
+    // this replaces the prior parallel HMAC keyspace — the spoke→Rello ApiKey
+    // row IS the public-checkout credential. Granted to every spoke that
+    // exposes a public /pricing surface (Per Rule I D-4 narrow-per-purpose).
+    PUBLIC_CHECKOUT_WRITE: {
+        slug: "public-checkout:write",
+        label: "Initiate public Stripe Checkout session",
+        description: "Spoke → Rello POST /api/v1/billing/public-checkout per-caller credential. Initiates a Stripe Checkout session for an unauthenticated visitor of the spoke's public /pricing page; Rello returns the hosted Checkout URL. Replaces the parallel HMAC keyspace previously proposed for the public-pricing flow per CROSS-APP-BILLING-V2.md §A3 lock — the spoke→Rello ApiKey row carries this scope as a narrow-per-purpose permission. Validated by Rello's validateApiKey (Path A: Bearer rello_*).",
+        validatedBy: ["rello"],
+        grantedTo: [],
     },
 };
 /**

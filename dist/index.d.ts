@@ -592,6 +592,13 @@ export declare const PERMISSIONS: {
         readonly validatedBy: readonly ["rello"];
         readonly grantedTo: readonly [];
     };
+    readonly BILLING_ADMIN: {
+        readonly slug: "billing:admin";
+        readonly label: "Administer billing (admin role)";
+        readonly description: "Rello admin-role permission — most-privileged billing scope (cancel subscriptions, issue refunds, grant trial extensions) via Platform Admin Billing pages. Per CROSS-APP-BILLING-V2.md §Permissions.";
+        readonly validatedBy: readonly ["rello"];
+        readonly grantedTo: readonly [];
+    };
     readonly SUPPORT_READ: {
         readonly slug: "support:read";
         readonly label: "Read support (admin role)";
@@ -808,6 +815,13 @@ export declare const PERMISSIONS: {
         readonly description: "Spoke → Rello POST /api/internal/audit per-caller credential. Authenticates the caller via narrow ApiKey, validates the body against AuditLog field shape, then writes prisma.auditLog.create on Rello's Prisma client. Pattern B (non-fatal-on-audit-failure) per ~AUDIT-LOGGING-DRIFT-PREVENTION-README.md §4 — caller swallows audit-fetch errors with console.error and continues. Used when a spoke is Neon-isolated from Rello's Prisma client and cross-Prisma-client atomic $transaction is structurally impossible (single-client constraint). Initial caller: market-intel Publication / Branding / future tenant-policy mutations per MI-PUBLICATION-MODEL DL6. Validated by Rello's validateApiKey (Path A: Bearer rello_*).";
         readonly validatedBy: readonly ["rello"];
         readonly grantedTo: readonly ["market-intel"];
+    };
+    readonly PUBLIC_CHECKOUT_WRITE: {
+        readonly slug: "public-checkout:write";
+        readonly label: "Initiate public Stripe Checkout session";
+        readonly description: "Spoke → Rello POST /api/v1/billing/public-checkout per-caller credential. Initiates a Stripe Checkout session for an unauthenticated visitor of the spoke's public /pricing page; Rello returns the hosted Checkout URL. Replaces the parallel HMAC keyspace previously proposed for the public-pricing flow per CROSS-APP-BILLING-V2.md §A3 lock — the spoke→Rello ApiKey row carries this scope as a narrow-per-purpose permission. Validated by Rello's validateApiKey (Path A: Bearer rello_*).";
+        readonly validatedBy: readonly ["rello"];
+        readonly grantedTo: readonly [];
     };
 };
 /** Compile-time-checked permission key (e.g., `"NEWSLETTERS_SEND"`). */
