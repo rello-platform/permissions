@@ -480,6 +480,13 @@ export declare const PERMISSIONS: {
         readonly validatedBy: readonly ["home-scout"];
         readonly grantedTo: readonly [];
     };
+    readonly SMS_SEND: {
+        readonly slug: "sms:send";
+        readonly label: "Send transactional SMS via Rello Twilio chokepoint";
+        readonly description: "Rello receiver — POST /api/sms/service-send. Service-to-service Twilio SMS dispatch for spoke MLO-internal notifications (e.g. PathfinderPro view-notifier). Payload carries resolved recipient `to`; sender is platform TWILIO_DEFAULT_FROM. Restores PathfinderPro view-notifier MLO SMS path (was silently 404ing NS /api/emails/send). Validated by Rello's validateApiKey.";
+        readonly validatedBy: readonly ["rello"];
+        readonly grantedTo: readonly ["pathfinder-pro"];
+    };
     readonly SOCIAL_READ: {
         readonly slug: "social:read";
         readonly label: "Read social credentials";

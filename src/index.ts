@@ -567,6 +567,26 @@ export const PERMISSIONS = {
     grantedTo: [],
   },
 
+  // ─── SMS (Twilio chokepoint) ──────────────────────────────────────────────
+  // Rello is the platform's SMS chokepoint per
+  // feedback-vendor-key-chokepoint-per-data-domain — the Twilio account, sender pool,
+  // STOP suppression, and sender reputation all live at Rello. This permission gates
+  // the service-to-service SMS-send surface used by spokes that need to dispatch
+  // MLO-internal transactional SMS (initially: PathfinderPro view-notifier MLO
+  // view-of-deliverable notifications). Distinct from the session-auth
+  // /api/inbox/sms/send receiver which handles user-initiated lead-reply SMS —
+  // sms:send is service-to-service, payload-resolved recipient, default-from sender.
+  // Per-MLO sender provisioning is a documented gap (DISCOVERED
+  // per-agent-twilio-sender-provisioning-gap-2026-05-11) — today all sends go from
+  // platform TWILIO_DEFAULT_FROM.
+  SMS_SEND: {
+    slug: "sms:send",
+    label: "Send transactional SMS via Rello Twilio chokepoint",
+    description: "Rello receiver — POST /api/sms/service-send. Service-to-service Twilio SMS dispatch for spoke MLO-internal notifications (e.g. PathfinderPro view-notifier). Payload carries resolved recipient `to`; sender is platform TWILIO_DEFAULT_FROM. Restores PathfinderPro view-notifier MLO SMS path (was silently 404ing NS /api/emails/send). Validated by Rello's validateApiKey.",
+    validatedBy: ["rello"],
+    grantedTo: ["pathfinder-pro"],
+  },
+
   // ─── Social integrations ──────────────────────────────────────────────────
   SOCIAL_READ: {
     slug: "social:read",
