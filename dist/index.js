@@ -231,6 +231,24 @@ export const PERMISSIONS = {
         validatedBy: ["newsletter-studio"],
         grantedTo: [],
     },
+    // ─── Agent-domain warmup state (The Oven → NS read receiver) ──────────────
+    // Per SPEC-OVEN-NS-NURTURE-ORCHESTRATION-RECEIVERS Phase C — the 7th
+    // endpoint that completes the canonical Bearer cutover. The Oven's
+    // `domain-check.resolveAgentDomain()` (signal-driven nurture pre-send hook)
+    // calls GET /api/domains/agent/[agentId] to decide whether to use the
+    // per-agent warmed Mailgun subdomain or fall back to the brokerage-level
+    // domain. Receiver maps NS's AgentDomainStatus (PENDING|WARMING|ACTIVE|
+    // FAILED) into Oven's DomainStatus contract (PROVISIONING|WARMING|READY|
+    // SUSPENDED): PENDING→PROVISIONING, WARMING→WARMING, ACTIVE→READY,
+    // FAILED→SUSPENDED — preserves Oven's `status === "READY"` gating
+    // semantics. Validated by NS's requireServiceBearer.
+    DOMAINS_READ: {
+        slug: "domains:read",
+        label: "Read agent-sending-domain warmup state",
+        description: "NS receiver — GET /api/domains/agent/[agentId]. Returns the per-agent Mailgun-subdomain warmup state (PROVISIONING|WARMING|READY|SUSPENDED + warmupProgress + estimatedReadyDate) so callers can decide whether to route a send through the warmed agent subdomain or fall back to the brokerage-level domain. Closes the legacy X-API-Key bypass on The Oven's `domain-check.ts` per CENTRALIZED-API-KEY-MIGRATION Phase C — restores the agent-custom-warmed-domain feature (was silently always falling back to brokerage because the receiver was missing). Validated by NS's requireServiceBearer.",
+        validatedBy: ["newsletter-studio"],
+        grantedTo: ["the-oven"],
+    },
     // ─── Agents ───────────────────────────────────────────────────────────────
     AGENTS_READ: {
         slug: "agents:read",

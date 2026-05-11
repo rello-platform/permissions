@@ -228,6 +228,13 @@ export declare const PERMISSIONS: {
         readonly validatedBy: readonly ["newsletter-studio"];
         readonly grantedTo: readonly [];
     };
+    readonly DOMAINS_READ: {
+        readonly slug: "domains:read";
+        readonly label: "Read agent-sending-domain warmup state";
+        readonly description: "NS receiver — GET /api/domains/agent/[agentId]. Returns the per-agent Mailgun-subdomain warmup state (PROVISIONING|WARMING|READY|SUSPENDED + warmupProgress + estimatedReadyDate) so callers can decide whether to route a send through the warmed agent subdomain or fall back to the brokerage-level domain. Closes the legacy X-API-Key bypass on The Oven's `domain-check.ts` per CENTRALIZED-API-KEY-MIGRATION Phase C — restores the agent-custom-warmed-domain feature (was silently always falling back to brokerage because the receiver was missing). Validated by NS's requireServiceBearer.";
+        readonly validatedBy: readonly ["newsletter-studio"];
+        readonly grantedTo: readonly ["the-oven"];
+    };
     readonly AGENTS_READ: {
         readonly slug: "agents:read";
         readonly label: "Read agents";
