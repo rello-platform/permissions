@@ -788,6 +788,13 @@ export declare const PERMISSIONS: {
         readonly validatedBy: readonly ["home-scout"];
         readonly grantedTo: readonly ["the-drumbeat"];
     };
+    readonly HUB_ISSUE_MAGIC_LINK: {
+        readonly slug: "hub:issue-magic-link";
+        readonly label: "Issue homeowner-hub magic-link session token";
+        readonly description: "Milo Engine → Rello POST /api/leads/[id]/send-hub-link per-caller credential. Mints a homeowner-hub magic-link session token for the lead so Milo's HOMEOWNER_HUB_INTRODUCE flow (Path 2) can autonomously enroll a homeowner into the Hub. Distinct from the session-auth + source: 'agent-manual' path (DNC-bypass allowed); this ApiKey-auth + source: 'milo-introduce' path enforces DNC suppression at the issueMagicLink library layer. Validated by Rello's validateApiKey (Path A: Bearer rello_*). HHUB Phase 7.";
+        readonly validatedBy: readonly ["rello"];
+        readonly grantedTo: readonly ["milo-engine"];
+    };
 };
 /** Compile-time-checked permission key (e.g., `"NEWSLETTERS_SEND"`). */
 export type PermissionKey = keyof typeof PERMISSIONS;

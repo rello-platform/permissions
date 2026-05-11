@@ -986,6 +986,26 @@ export const PERMISSIONS = {
     validatedBy: ["home-scout"],
     grantedTo: ["the-drumbeat"],
   },
+
+  // ─── Hub magic-link issuance (Milo Engine → Rello) ────────────────────────
+  // Per HHUB Phase 7 Step 8b — Milo Engine's HOMEOWNER_HUB_INTRODUCE flow
+  // (Path 2) calls Rello's POST /api/leads/[id]/send-hub-link to mint a
+  // homeowner-hub magic-link session token. The Rello receiver (widened in
+  // Step 6.3b) branches on auth: session-auth + source: 'agent-manual' (the
+  // existing path, DNC-bypass allowed) vs ApiKey-auth + source:
+  // 'milo-introduce' (the new path, DNC suppression enforced). This slug
+  // gates the ApiKey-auth branch. Mints the direction milo-engine → rello
+  // for autonomous hub-link issuance during introduce-flow execution.
+  // Validated by Rello's validateApiKey (Path A: Bearer rello_*; SHA-256
+  // hash match advances ApiKey.lastUsedAt; per-pair appSource/targetApp
+  // isolation enforced).
+  HUB_ISSUE_MAGIC_LINK: {
+    slug: "hub:issue-magic-link",
+    label: "Issue homeowner-hub magic-link session token",
+    description: "Milo Engine → Rello POST /api/leads/[id]/send-hub-link per-caller credential. Mints a homeowner-hub magic-link session token for the lead so Milo's HOMEOWNER_HUB_INTRODUCE flow (Path 2) can autonomously enroll a homeowner into the Hub. Distinct from the session-auth + source: 'agent-manual' path (DNC-bypass allowed); this ApiKey-auth + source: 'milo-introduce' path enforces DNC suppression at the issueMagicLink library layer. Validated by Rello's validateApiKey (Path A: Bearer rello_*). HHUB Phase 7.",
+    validatedBy: ["rello"],
+    grantedTo: ["milo-engine"],
+  },
 } as const satisfies Readonly<Record<string, PermissionDefinition>>;
 
 /** Compile-time-checked permission key (e.g., `"NEWSLETTERS_SEND"`). */
