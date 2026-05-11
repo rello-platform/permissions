@@ -190,6 +190,18 @@ export const PERMISSIONS = {
         validatedBy: ["newsletter-studio"],
         grantedTo: [],
     },
+    // Narrow per-lead enrollment-read added for SPEC-OVEN-NS-NURTURE-ORCHESTRATION-
+    // RECEIVERS Phase A. Distinct from flows:read-milo-managed (Milo-scoped fan-out
+    // read) — flows:read is the spoke-scoped per-lead read: "what flows is THIS lead
+    // currently enrolled in?". Used by The Oven (and future spokes) to check
+    // FlowSubscription state before enrolling / unenrolling / acting on a lead.
+    FLOWS_READ: {
+        slug: "flows:read",
+        label: "Read lead flow subscriptions",
+        description: "NS receiver — GET /api/leads/[id]/flows. Returns the active FlowSubscription rows + recent FlowTransition history for a given lead. Spoke-scoped per-lead enrollment read (distinct from flows:read-milo-managed Milo fan-out read). Used by The Oven monthly equity digest, post-close welcome, scheduled review requests etc. to check enrollment state before acting. Validated by NS's platform-key-validator.",
+        validatedBy: ["newsletter-studio"],
+        grantedTo: [],
+    },
     // ─── Newsletter Studio — engagement / preferences / suppression ───────────
     ENGAGEMENT_READ: {
         slug: "engagement:read",

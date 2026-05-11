@@ -193,6 +193,13 @@ export declare const PERMISSIONS: {
         readonly validatedBy: readonly ["newsletter-studio"];
         readonly grantedTo: readonly [];
     };
+    readonly FLOWS_READ: {
+        readonly slug: "flows:read";
+        readonly label: "Read lead flow subscriptions";
+        readonly description: "NS receiver — GET /api/leads/[id]/flows. Returns the active FlowSubscription rows + recent FlowTransition history for a given lead. Spoke-scoped per-lead enrollment read (distinct from flows:read-milo-managed Milo fan-out read). Used by The Oven monthly equity digest, post-close welcome, scheduled review requests etc. to check enrollment state before acting. Validated by NS's platform-key-validator.";
+        readonly validatedBy: readonly ["newsletter-studio"];
+        readonly grantedTo: readonly [];
+    };
     readonly ENGAGEMENT_READ: {
         readonly slug: "engagement:read";
         readonly label: "Read engagement";
