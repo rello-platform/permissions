@@ -473,6 +473,13 @@ export declare const PERMISSIONS: {
         readonly validatedBy: readonly ["home-scout"];
         readonly grantedTo: readonly [];
     };
+    readonly HOMEOWNER_MAGIC_LINK_ISSUE: {
+        readonly slug: "homeowner:magic-link:issue";
+        readonly label: "Issue homeowner Hub magic-link";
+        readonly description: "Rello → Scout outbound — POST /api/internal/homeowner/magic-link/issue mints a one-time magic-link token for a homeowner Lead and dispatches the email via Newsletter Studio. Service transport for the HHUB Send-Hub-Link path; siblings the public browser transport at /api/homeowner/auth/magic-link (which has no bearer auth and preserves never-leak-Lead-existence semantics).";
+        readonly validatedBy: readonly ["home-scout"];
+        readonly grantedTo: readonly [];
+    };
     readonly SOCIAL_READ: {
         readonly slug: "social:read";
         readonly label: "Read social credentials";

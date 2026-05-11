@@ -558,6 +558,15 @@ export const PERMISSIONS = {
     grantedTo: [],
   },
 
+  // ─── Scout receiver — homeowner Hub magic-link issuance (Rello → Scout, HHUB-HOTFIX-D) ───
+  HOMEOWNER_MAGIC_LINK_ISSUE: {
+    slug: "homeowner:magic-link:issue",
+    label: "Issue homeowner Hub magic-link",
+    description: "Rello → Scout outbound — POST /api/internal/homeowner/magic-link/issue mints a one-time magic-link token for a homeowner Lead and dispatches the email via Newsletter Studio. Service transport for the HHUB Send-Hub-Link path; siblings the public browser transport at /api/homeowner/auth/magic-link (which has no bearer auth and preserves never-leak-Lead-existence semantics).",
+    validatedBy: ["home-scout"],
+    grantedTo: [],
+  },
+
   // ─── Social integrations ──────────────────────────────────────────────────
   SOCIAL_READ: {
     slug: "social:read",
