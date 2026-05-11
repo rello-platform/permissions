@@ -235,6 +235,13 @@ export declare const PERMISSIONS: {
         readonly validatedBy: readonly ["newsletter-studio"];
         readonly grantedTo: readonly ["the-oven"];
     };
+    readonly DOMAINS_WRITE: {
+        readonly slug: "domains:write";
+        readonly label: "Provision a per-agent warmed sending domain";
+        readonly description: "NS receiver — POST /api/domains/agent. Creates AgentDomain row in WARMING + calls Mailgun provisionSendingDomain(agentSlug) to create the {slug}.mg.nsmail.app subdomain + provisions the reply-tracking inbound route + sets warmupStarted=now. Kicks off the existing warmup-domains daily Trigger.dev task which advances WARMING → ACTIVE over 60 days. Idempotent: returns the existing row if one is already present for the agent. Initiated by Rello platform admin UI. Validated by NS's requireServiceBearer.";
+        readonly validatedBy: readonly ["newsletter-studio"];
+        readonly grantedTo: readonly ["rello"];
+    };
     readonly AGENTS_READ: {
         readonly slug: "agents:read";
         readonly label: "Read agents";

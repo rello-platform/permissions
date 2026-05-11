@@ -249,6 +249,27 @@ export const PERMISSIONS = {
         validatedBy: ["newsletter-studio"],
         grantedTo: ["the-oven"],
     },
+    // ─── Per-agent warmed sending domain provisioning ─────────────────────────
+    // NS owns per-agent Mailgun subdomain provisioning + the 60-day warmup state
+    // machine. Rello (platform admin) initiates provisioning via the admin UI
+    // surface at /admin/agents/warmed-domains. This permission gates the NS POST
+    // receiver that creates the AgentDomain row + calls Mailgun to provision the
+    // {slug}.mg.nsmail.app subdomain + sets status WARMING with warmupStarted,
+    // kicking off the existing daily warmup-domains Trigger.dev task which
+    // advances WARMING → ACTIVE over 60 days. Receiver also calls
+    // provisionInboundRoute(domain) so replies on the agent subdomain route back
+    // to NS's inbound webhook (without it, email_replied CRITICAL signals are
+    // lost). Paired with domains:read (Phase C — Oven reads the warmup state to
+    // decide warmed-subdomain vs brokerage-level fallback). Closes the
+    // writer-path gap documented in DISCOVERED
+    // ns-agent-domain-no-writer-path-2026-05-11 (Phase D).
+    DOMAINS_WRITE: {
+        slug: "domains:write",
+        label: "Provision a per-agent warmed sending domain",
+        description: "NS receiver — POST /api/domains/agent. Creates AgentDomain row in WARMING + calls Mailgun provisionSendingDomain(agentSlug) to create the {slug}.mg.nsmail.app subdomain + provisions the reply-tracking inbound route + sets warmupStarted=now. Kicks off the existing warmup-domains daily Trigger.dev task which advances WARMING → ACTIVE over 60 days. Idempotent: returns the existing row if one is already present for the agent. Initiated by Rello platform admin UI. Validated by NS's requireServiceBearer.",
+        validatedBy: ["newsletter-studio"],
+        grantedTo: ["rello"],
+    },
     // ─── Agents ───────────────────────────────────────────────────────────────
     AGENTS_READ: {
         slug: "agents:read",
