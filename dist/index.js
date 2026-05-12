@@ -368,6 +368,14 @@ export const PERMISSIONS = {
         validatedBy: ["harvest-home"],
         grantedTo: [],
     },
+    // ─── Intake from spoke (Spoke → PFP cross-app per-caller credential) ──────
+    INTAKE_FROM_SPOKE_WRITE: {
+        slug: "pfp-intake-from-spoke:write",
+        label: "Write PFP intake from spoke",
+        description: "Spoke → Pathfinder Pro /api/intakes/from-spoke per-caller credential. Used by HS get-pre-approved CTA (and any future spoke-originated PFP LeadIntake creation) to write a row with status: 'QUICK_ESTIMATE' that the MLO sees in the cockpit. Receiver validates via requireServiceBearer + @rello-platform/pfp-intake-from-spoke::PfpIntakeFromSpokePayloadSchema. Topology #4 (Spoke → Spoke) per API-KEY-LIFECYCLE-README §2.",
+        validatedBy: ["pathfinder-pro"],
+        grantedTo: [],
+    },
     // ─── Provisioning (Rello → spoke per-caller credential, NA-080 pattern) ───
     PROVISIONING_WRITE: {
         slug: "provisioning:write",
