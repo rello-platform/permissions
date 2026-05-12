@@ -837,6 +837,20 @@ export declare const PERMISSIONS: {
         readonly validatedBy: readonly ["rello"];
         readonly grantedTo: readonly ["market-intel"];
     };
+    readonly NOTIFICATIONS_READ: {
+        readonly slug: "notifications:read";
+        readonly label: "Read notification settings";
+        readonly description: "Read per-tenant notification settings (cron schedules, send windows, channel toggles, role audiences) on a spoke that owns the cron-send cascade. Validated by the spoke's requireServiceBearer (Path A: Bearer rello_*).";
+        readonly validatedBy: readonly [];
+        readonly grantedTo: readonly [];
+    };
+    readonly NOTIFICATIONS_WRITE: {
+        readonly slug: "notifications:write";
+        readonly label: "Write notification settings";
+        readonly description: "Update per-tenant notification settings (cron schedules, send windows, channel toggles, role audiences) on a spoke that owns the cron-send cascade. Validated by the spoke's requireServiceBearer (Path A: Bearer rello_*). Initial caller: Rello platform-admin proxy at /api/admin/apps/[slug]/notifications → spoke /api/admin/notification-settings.";
+        readonly validatedBy: readonly [];
+        readonly grantedTo: readonly [];
+    };
     readonly PUBLIC_CHECKOUT_WRITE: {
         readonly slug: "public-checkout:write";
         readonly label: "Initiate public Stripe Checkout session";

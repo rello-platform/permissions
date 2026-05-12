@@ -1105,6 +1105,31 @@ export const PERMISSIONS = {
     grantedTo: ["market-intel"],
   },
 
+  // ─── Notifications (Rello → spoke admin notification-settings, NA-080 pattern) ───
+  // Rello platform admin proxies tenant notification-settings reads/writes to
+  // the spoke app that owns the cron-send cascade (e.g. Home Ready, Home
+  // Stretch). The spoke validates the inbound Bearer via its `requireService
+  // Bearer` against Rello's central `ApiKey` table; this scope is the narrow
+  // grant on the `(appSource=RELLO, targetApp=<SPOKE>)` ApiKey row. Bundle
+  // dispatch: PA-CLOSEOUT-RULEI-003-NOTIFICATIONS-NA-080-BUNDLE retires the
+  // legacy shared-secret `HOME_READY_CRON_SECRET` fallback on the Rello
+  // outbound call site. Pattern reference: NA-080 (HH outbound auth Bearer
+  // cutover) per ~/Rello/CLAUDE.md §92-95.
+  NOTIFICATIONS_READ: {
+    slug: "notifications:read",
+    label: "Read notification settings",
+    description: "Read per-tenant notification settings (cron schedules, send windows, channel toggles, role audiences) on a spoke that owns the cron-send cascade. Validated by the spoke's requireServiceBearer (Path A: Bearer rello_*).",
+    validatedBy: [],
+    grantedTo: [],
+  },
+  NOTIFICATIONS_WRITE: {
+    slug: "notifications:write",
+    label: "Write notification settings",
+    description: "Update per-tenant notification settings (cron schedules, send windows, channel toggles, role audiences) on a spoke that owns the cron-send cascade. Validated by the spoke's requireServiceBearer (Path A: Bearer rello_*). Initial caller: Rello platform-admin proxy at /api/admin/apps/[slug]/notifications → spoke /api/admin/notification-settings.",
+    validatedBy: [],
+    grantedTo: [],
+  },
+
   // ─── Public-pricing checkout (Spoke → Rello, CROSS-APP-BILLING-V2 §A3) ────
   // Spoke renders its own public /pricing page; when a visitor clicks "Buy",
   // the spoke POSTs to Rello's hub-side Stripe Checkout session creator on
