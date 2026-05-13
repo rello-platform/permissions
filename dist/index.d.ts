@@ -900,6 +900,20 @@ export declare const PERMISSIONS: {
         readonly validatedBy: readonly ["pathfinder-pro"];
         readonly grantedTo: readonly ["rello"];
     };
+    readonly COMPLIANCE_PHRASE_RULES_READ: {
+        readonly slug: "compliance:phrase-rules:read";
+        readonly label: "Read Rello FairLendingPhraseRule registry (versioned phrase-library)";
+        readonly description: "Cross-app read access to Rello-canonical FairLendingPhraseRule registry. Consumers: PFP MLO Compliance Gates scan path + Drumbeat MLO Compliance Gates scan path. Both apply Rello-canonical phrase rules at compliance-scan time. Per SPEC-PFP-MLO-COMPLIANCE-GATES B-02 + SPEC-DRUM-MLO-COMPLIANCE-GATES B-02. Versioned per regulator-change; consumers receive effectiveAt + supersededAt for caller-side cache-bust. Validated by Rello's validateApiKey.";
+        readonly validatedBy: readonly ["rello"];
+        readonly grantedTo: readonly ["pathfinder-pro", "the-drumbeat"];
+    };
+    readonly COMPLIANCE_SCAN_RULES_READ: {
+        readonly slug: "compliance:scan-rules:read";
+        readonly label: "Read Rello ComplianceScanRule registry (severity + remediation mapping)";
+        readonly description: "Cross-app read access to Rello-canonical ComplianceScanRule registry. Consumers: PFP + Drumbeat MLO compliance scanners apply rule severity + remediation mapping at scan time. Per SPEC-PFP-MLO-COMPLIANCE-GATES B-02 + SPEC-DRUM-MLO-COMPLIANCE-GATES B-02. Validated by Rello's validateApiKey.";
+        readonly validatedBy: readonly ["rello"];
+        readonly grantedTo: readonly ["pathfinder-pro", "the-drumbeat"];
+    };
 };
 /** Compile-time-checked permission key (e.g., `"NEWSLETTERS_SEND"`). */
 export type PermissionKey = keyof typeof PERMISSIONS;

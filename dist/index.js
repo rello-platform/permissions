@@ -1184,6 +1184,39 @@ export const PERMISSIONS = {
         validatedBy: ["pathfinder-pro"],
         grantedTo: ["rello"],
     },
+    // ─── Compliance phrase-rules cross-app read (PFP + Drumbeat → Rello, SPEC-PFP-MLO-COMPLIANCE-GATES + SPEC-DRUM-MLO-COMPLIANCE-GATES) ──
+    // Per SPEC-PFP-MLO-COMPLIANCE-GATES B-02 + Drumbeat sibling SPEC: Rello owns
+    // the canonical FairLendingPhraseRule registry (versioned phrase-library
+    // with regulator-pinned version + effectiveAt + supersededAt). PFP +
+    // Drumbeat consumers read the registry via cross-app Bearer to apply phrase
+    // matching at compliance-scan time.
+    //
+    // Surface: Rello GET /api/v1/compliance/phrase-rules (and future scoped
+    // variants). Validated by Rello's validateApiKey (Path A: Bearer rello_*;
+    // SHA-256 hash match advances ApiKey.lastUsedAt; per-pair appSource/targetApp
+    // isolation enforced). Pre-launch grantedTo = ["pathfinder-pro", "the-drumbeat"]
+    // (both compliance consumers per their MLO-COMPLIANCE-GATES SPECs).
+    COMPLIANCE_PHRASE_RULES_READ: {
+        slug: "compliance:phrase-rules:read",
+        label: "Read Rello FairLendingPhraseRule registry (versioned phrase-library)",
+        description: "Cross-app read access to Rello-canonical FairLendingPhraseRule registry. Consumers: PFP MLO Compliance Gates scan path + Drumbeat MLO Compliance Gates scan path. Both apply Rello-canonical phrase rules at compliance-scan time. Per SPEC-PFP-MLO-COMPLIANCE-GATES B-02 + SPEC-DRUM-MLO-COMPLIANCE-GATES B-02. Versioned per regulator-change; consumers receive effectiveAt + supersededAt for caller-side cache-bust. Validated by Rello's validateApiKey.",
+        validatedBy: ["rello"],
+        grantedTo: ["pathfinder-pro", "the-drumbeat"],
+    },
+    // ─── Compliance scan-rules cross-app read (PFP + Drumbeat → Rello) ──
+    // Companion to COMPLIANCE_PHRASE_RULES_READ. Rello owns the canonical
+    // ComplianceScanRule registry (per-rule type → severity + remediation
+    // suggestion mapping). PFP + Drumbeat consumers read at scan time.
+    //
+    // Surface: Rello GET /api/v1/compliance/scan-rules. Validated by Rello's
+    // validateApiKey. Pre-launch grantedTo = ["pathfinder-pro", "the-drumbeat"].
+    COMPLIANCE_SCAN_RULES_READ: {
+        slug: "compliance:scan-rules:read",
+        label: "Read Rello ComplianceScanRule registry (severity + remediation mapping)",
+        description: "Cross-app read access to Rello-canonical ComplianceScanRule registry. Consumers: PFP + Drumbeat MLO compliance scanners apply rule severity + remediation mapping at scan time. Per SPEC-PFP-MLO-COMPLIANCE-GATES B-02 + SPEC-DRUM-MLO-COMPLIANCE-GATES B-02. Validated by Rello's validateApiKey.",
+        validatedBy: ["rello"],
+        grantedTo: ["pathfinder-pro", "the-drumbeat"],
+    },
 };
 /**
  * Frozen list of every canonical permission slug — the universe a write-time
