@@ -907,6 +907,13 @@ export declare const PERMISSIONS: {
         readonly validatedBy: readonly ["pathfinder-pro"];
         readonly grantedTo: readonly ["rello"];
     };
+    readonly RATES_EFFECTIVE_READ: {
+        readonly slug: "rates-effective:read";
+        readonly label: "Read Rello-aggregated effective rates";
+        readonly description: "HS → Rello GET /api/tenants/[tenantId]/rates/effective per-caller credential. Used by The-Home-Scout's embed/rates widget cross-app fetch to render the freshest per-rateType effective rate (PFP AgentRateSheet cascade → FRED fallback per ANSWERS.md B-03/B-04/B-05; D3 entitlement gate per ANSWERS.md:45-47 — non-MLO tenants receive response shape with source:\"fred_fallback\" rows, not 404; D5 disclosure invariant per ANSWERS.md:95-108 — every row carries disclosureText). Rello is canonical owner of the cross-tenant effective-rates aggregator per APP-OWNERSHIP-MATRIX + Track B 2026-05-13. Receiver validates via validateEngineAuth (Path A: Bearer rello_*). Topology #1 (Rello-validated, Rello-granted) per API-KEY-LIFECYCLE-README §2 — sibling to compliance:phrase-rules:read.";
+        readonly validatedBy: readonly ["rello"];
+        readonly grantedTo: readonly ["home-scout"];
+    };
     readonly COMPLIANCE_PHRASE_RULES_READ: {
         readonly slug: "compliance:phrase-rules:read";
         readonly label: "Read Rello FairLendingPhraseRule registry (versioned phrase-library)";

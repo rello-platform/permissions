@@ -1206,6 +1206,32 @@ export const PERMISSIONS = {
         validatedBy: ["pathfinder-pro"],
         grantedTo: ["rello"],
     },
+    // ─── Effective rates cross-app read (HS → Rello aggregator, MLO Rate Sheet Ingestion Track B) ──
+    // Inverse direction sibling to RATE_SHEETS_READ. Rello is the canonical
+    // cross-tenant aggregator of effective per-rateType rates (resolves the
+    // PFP AgentRateSheet → FRED fallback cascade per ANSWERS.md B-03 / B-05,
+    // applies business-day-aware freshness per B-04, enforces D3 entitlement
+    // gate via TenantApp WHERE app.slug = 'pathfinder-pro' AND isEnabled = true
+    // — when unmet, response shape is preserved with every row source:
+    // "fred_fallback" rather than 404'ing). HS's embed/rates widget consumes
+    // via cross-app Bearer to render disclosure-adjacent rates (D5 disclosure
+    // invariant per ANSWERS.md:95-108 — every EffectiveRate row carries
+    // TILA-compliant disclosureText for its source).
+    //
+    // Surface: Rello GET /api/tenants/[tenantId]/rates/effective. Validated by
+    // Rello's validateEngineAuth / validateApiKey path (Path A: Bearer rello_*;
+    // SHA-256 hash match advances ApiKey.lastUsedAt; per-pair
+    // appSource/targetApp isolation enforced — appSource=THE_HOME_SCOUT,
+    // targetApp=RELLO). Topology #1 (Rello-validated, Rello-granted) per
+    // API-KEY-LIFECYCLE-README §2 — sibling to compliance:phrase-rules:read +
+    // compliance:scan-rules:read.
+    RATES_EFFECTIVE_READ: {
+        slug: "rates-effective:read",
+        label: "Read Rello-aggregated effective rates",
+        description: "HS → Rello GET /api/tenants/[tenantId]/rates/effective per-caller credential. Used by The-Home-Scout's embed/rates widget cross-app fetch to render the freshest per-rateType effective rate (PFP AgentRateSheet cascade → FRED fallback per ANSWERS.md B-03/B-04/B-05; D3 entitlement gate per ANSWERS.md:45-47 — non-MLO tenants receive response shape with source:\"fred_fallback\" rows, not 404; D5 disclosure invariant per ANSWERS.md:95-108 — every row carries disclosureText). Rello is canonical owner of the cross-tenant effective-rates aggregator per APP-OWNERSHIP-MATRIX + Track B 2026-05-13. Receiver validates via validateEngineAuth (Path A: Bearer rello_*). Topology #1 (Rello-validated, Rello-granted) per API-KEY-LIFECYCLE-README §2 — sibling to compliance:phrase-rules:read.",
+        validatedBy: ["rello"],
+        grantedTo: ["home-scout"],
+    },
     // ─── Compliance phrase-rules cross-app read (PFP + Drumbeat → Rello, SPEC-PFP-MLO-COMPLIANCE-GATES + SPEC-DRUM-MLO-COMPLIANCE-GATES) ──
     // Per SPEC-PFP-MLO-COMPLIANCE-GATES B-02 + Drumbeat sibling SPEC: Rello owns
     // the canonical FairLendingPhraseRule registry (versioned phrase-library
