@@ -1184,6 +1184,28 @@ export const PERMISSIONS = {
         validatedBy: ["pathfinder-pro"],
         grantedTo: ["rello"],
     },
+    // ─── Effective rate sheets cross-app read (Rello → PFP, MLO Rate Sheet Ingestion) ──
+    // Per D1 lock 2026-05-13 + APP-OWNERSHIP-MATRIX:321: PFP is the canonical
+    // owner of AgentRateSheet ingestion (MLO uploads daily rate-sheet PDFs to PFP;
+    // PFP parses, validates, and exposes CONFIRMED + non-expired + broadcasting
+    // rows per rateType). Rello's TodaysRates widget consumes via cross-app
+    // Bearer to render the freshest effective rate per rateType on the spoke
+    // dashboard (MLO-tier tenants only per D3 lock — gate via TenantApp WHERE
+    // app.slug = 'pathfinder-pro' AND isEnabled = true).
+    //
+    // Surface: PFP GET /api/tenants/[tenantId]/rate-sheets/effective. Validated
+    // by PFP's requireServiceBearer (Path A: Bearer rello_*; SHA-256 hash match
+    // advances ApiKey.lastUsedAt; per-pair appSource/targetApp isolation
+    // enforced). Topology #3 (Spoke-validated, Rello-granted) per API-KEY-
+    // LIFECYCLE-README §2 — sibling to pfp-intake-from-spoke:write and
+    // credit:pull-soft.
+    RATE_SHEETS_READ: {
+        slug: "rate-sheets:read",
+        label: "Read effective rate sheets",
+        description: "Rello → Pathfinder Pro GET /api/tenants/[tenantId]/rate-sheets/effective per-caller credential. Used by Rello's TodaysRates widget cross-app fetch (MLO-tier tenants per D3 lock — gate via TenantApp WHERE app.slug = 'pathfinder-pro' AND isEnabled = true) to read the freshest CONFIRMED + non-expired + broadcasting AgentRateSheet per rateType. PFP is canonical owner of AgentRateSheet ingestion per APP-OWNERSHIP-MATRIX:321 + D1 lock 2026-05-13. Receiver validates via requireServiceBearer (Path A: Bearer rello_*). Topology #3 (Spoke-validated, Rello-granted) per API-KEY-LIFECYCLE-README §2 — sibling to pfp-intake-from-spoke:write and credit:pull-soft.",
+        validatedBy: ["pathfinder-pro"],
+        grantedTo: ["rello"],
+    },
     // ─── Compliance phrase-rules cross-app read (PFP + Drumbeat → Rello, SPEC-PFP-MLO-COMPLIANCE-GATES + SPEC-DRUM-MLO-COMPLIANCE-GATES) ──
     // Per SPEC-PFP-MLO-COMPLIANCE-GATES B-02 + Drumbeat sibling SPEC: Rello owns
     // the canonical FairLendingPhraseRule registry (versioned phrase-library

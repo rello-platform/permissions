@@ -900,6 +900,13 @@ export declare const PERMISSIONS: {
         readonly validatedBy: readonly ["pathfinder-pro"];
         readonly grantedTo: readonly ["rello"];
     };
+    readonly RATE_SHEETS_READ: {
+        readonly slug: "rate-sheets:read";
+        readonly label: "Read effective rate sheets";
+        readonly description: "Rello → Pathfinder Pro GET /api/tenants/[tenantId]/rate-sheets/effective per-caller credential. Used by Rello's TodaysRates widget cross-app fetch (MLO-tier tenants per D3 lock — gate via TenantApp WHERE app.slug = 'pathfinder-pro' AND isEnabled = true) to read the freshest CONFIRMED + non-expired + broadcasting AgentRateSheet per rateType. PFP is canonical owner of AgentRateSheet ingestion per APP-OWNERSHIP-MATRIX:321 + D1 lock 2026-05-13. Receiver validates via requireServiceBearer (Path A: Bearer rello_*). Topology #3 (Spoke-validated, Rello-granted) per API-KEY-LIFECYCLE-README §2 — sibling to pfp-intake-from-spoke:write and credit:pull-soft.";
+        readonly validatedBy: readonly ["pathfinder-pro"];
+        readonly grantedTo: readonly ["rello"];
+    };
     readonly COMPLIANCE_PHRASE_RULES_READ: {
         readonly slug: "compliance:phrase-rules:read";
         readonly label: "Read Rello FairLendingPhraseRule registry (versioned phrase-library)";
