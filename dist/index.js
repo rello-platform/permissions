@@ -1093,6 +1093,54 @@ export const PERMISSIONS = {
         validatedBy: ["rello"],
         grantedTo: [],
     },
+    // ─── Partnership write (Pathfinder Pro → Rello, SPEC-PFP-MLO-EVENTS) ──────
+    // Per PFP ANSWERS Q4.9 lock (2026-05-12) + SPEC-PFP-MLO-EVENTS Hard Prereq
+    // #3 — Pathfinder Pro's MLO Events surface classifies attendees as LEAD /
+    // AGENT_PARTNER / UNCLASSIFIED. AGENT_PARTNER attendees route to Rello's
+    // Partnership surface via the `agent_partner.*` signal family (signal emit
+    // from PFP → Rello signal-router). This slug gates the PFP-side ApiKey row
+    // that carries the partnership write scope on the (appSource=PATHFINDER_PRO,
+    // targetApp=RELLO) direction; Rello-side receiver validates via
+    // validateApiKey (Path A: Bearer rello_*). RESPA-discipline for
+    // AGENT_PARTNER follow-up is enforced at the Rello Partnership surface,
+    // not at this slug grant. Per Q4.9 Part 2 + AOM line 591 OHH-disclaims-MLO-
+    // events carve-out — PFP is the canonical owner of MLO-led event capture
+    // (`MloEvent` + `MloEventAttendee`); partnership write is the
+    // attendee-classification handoff into Rello's canonical Partnership home.
+    PARTNERSHIP_WRITE: {
+        slug: "partnership:write",
+        label: "Write partnership signal (agent_partner.*)",
+        description: "Pathfinder Pro → Rello partnership signal emit per-caller credential. Pathfinder Pro's MLO Events surface (per SPEC-PFP-MLO-EVENTS Hard Prereq #3) classifies attendees and routes AGENT_PARTNER attendees to Rello's canonical Partnership surface via the agent_partner.* signal family. Validated by Rello's validateApiKey (Path A: Bearer rello_*). Per PFP ANSWERS Q4.9 lock 2026-05-12 + AOM line 591 OHH-disclaims-MLO-events carve-out — PFP is canonical owner of MLO-led event capture; this slug is the attendee-classification handoff into Rello's Partnership home.",
+        validatedBy: ["rello"],
+        grantedTo: ["pathfinder-pro"],
+    },
+    // ─── Credit pull soft (Pathfinder Pro → Rello, SPEC-PFP-CREDIT-PULL-DECISION) ──
+    // Per PFP ANSWERS Q4.8 lock (2026-05-12) — Pathfinder Pro is the canonical
+    // owner of the credit-data domain (tri-merge soft-pull aggregator
+    // chokepoint per `feedback-vendor-key-chokepoint-per-data-domain`). PFP
+    // ships `CreditProvider` interface + `MockProvider` registry entry
+    // pre-launch; live vendor activation is a single Railway env-var write
+    // post-launch (zero code change per Q4.8 chokepoint activation path).
+    //
+    // Scope: SOFT credit-pull only. Hard-pull at LOS export is a separate
+    // post-launch slug (Q4.8 hard-pull deferral). Per Q4.8 lock #8 — future
+    // cross-app credit-pull consumers (Harvest Home refi-prospect
+    // score-validate, The Drumbeat refi-trigger eligibility, Home Stretch
+    // post-launch use-cases) consume via this slug on their (appSource=<SPOKE>,
+    // targetApp=PATHFINDER_PRO) ApiKey row. Pre-launch grant is PFP-internal
+    // only; cross-app callers grant added at post-launch consumer cutover.
+    //
+    // Surface: PFP-owned credit-pull endpoint (soft-pull at intake per
+    // SPEC-PFP-CREDIT-PULL-DECISION). Validated by PFP's requireServiceBearer
+    // (Path A: Bearer rello_*; SHA-256 hash match advances ApiKey.lastUsedAt;
+    // per-pair appSource/targetApp isolation enforced).
+    CREDIT_PULL_SOFT: {
+        slug: "credit:pull-soft",
+        label: "Credit pull (soft)",
+        description: "Cross-app soft credit-pull consumer scope per PFP ANSWERS Q4.8 lock 2026-05-12 (lock #8). Pathfinder Pro is canonical owner of credit-data domain (tri-merge soft-pull aggregator chokepoint). Soft-pull only — hard-pull at LOS export is a separate post-launch slug. Pre-launch is PFP-internal (PFP's MockProvider registry; no cross-app callers granted yet); post-launch cross-app consumers (Harvest Home refi-prospect score-validate, The Drumbeat refi-trigger eligibility, Home Stretch use-cases) carry this slug on (appSource=<SPOKE>, targetApp=PATHFINDER_PRO) ApiKey rows. Validated by Pathfinder Pro's requireServiceBearer (Path A: Bearer rello_*).",
+        validatedBy: ["pathfinder-pro"],
+        grantedTo: [],
+    },
 };
 /**
  * Frozen list of every canonical permission slug — the universe a write-time

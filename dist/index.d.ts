@@ -872,6 +872,20 @@ export declare const PERMISSIONS: {
         readonly validatedBy: readonly ["rello"];
         readonly grantedTo: readonly [];
     };
+    readonly PARTNERSHIP_WRITE: {
+        readonly slug: "partnership:write";
+        readonly label: "Write partnership signal (agent_partner.*)";
+        readonly description: "Pathfinder Pro → Rello partnership signal emit per-caller credential. Pathfinder Pro's MLO Events surface (per SPEC-PFP-MLO-EVENTS Hard Prereq #3) classifies attendees and routes AGENT_PARTNER attendees to Rello's canonical Partnership surface via the agent_partner.* signal family. Validated by Rello's validateApiKey (Path A: Bearer rello_*). Per PFP ANSWERS Q4.9 lock 2026-05-12 + AOM line 591 OHH-disclaims-MLO-events carve-out — PFP is canonical owner of MLO-led event capture; this slug is the attendee-classification handoff into Rello's Partnership home.";
+        readonly validatedBy: readonly ["rello"];
+        readonly grantedTo: readonly ["pathfinder-pro"];
+    };
+    readonly CREDIT_PULL_SOFT: {
+        readonly slug: "credit:pull-soft";
+        readonly label: "Credit pull (soft)";
+        readonly description: "Cross-app soft credit-pull consumer scope per PFP ANSWERS Q4.8 lock 2026-05-12 (lock #8). Pathfinder Pro is canonical owner of credit-data domain (tri-merge soft-pull aggregator chokepoint). Soft-pull only — hard-pull at LOS export is a separate post-launch slug. Pre-launch is PFP-internal (PFP's MockProvider registry; no cross-app callers granted yet); post-launch cross-app consumers (Harvest Home refi-prospect score-validate, The Drumbeat refi-trigger eligibility, Home Stretch use-cases) carry this slug on (appSource=<SPOKE>, targetApp=PATHFINDER_PRO) ApiKey rows. Validated by Pathfinder Pro's requireServiceBearer (Path A: Bearer rello_*).";
+        readonly validatedBy: readonly ["pathfinder-pro"];
+        readonly grantedTo: readonly [];
+    };
 };
 /** Compile-time-checked permission key (e.g., `"NEWSLETTERS_SEND"`). */
 export type PermissionKey = keyof typeof PERMISSIONS;
