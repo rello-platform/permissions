@@ -1224,6 +1224,51 @@ export const PERMISSIONS = {
     validatedBy: ["pathfinder-pro"],
     grantedTo: [],
   },
+
+  // ─── Past borrowers cross-app read (Drumbeat → PFP, SPEC-PFP-PAST-BORROWERS-CANONICAL) ──
+  // Per PFP ANSWERS Q4.5 + Q4.8 + D20 close 2026-05-13: PFP is the canonical
+  // owner of the past-borrower domain (Pipeline.status = "CLOSED" rows +
+  // computed refi-scoring). PFP exposes GET /api/v1/past-borrowers; Drumbeat
+  // consumes after retiring its local `RefinanceCandidate` model +
+  // `mlo-refi-analyzer` cron + migrating /settings/mlo/refi UI per Rule K
+  // rewrite-not-delete (D13-amended 2026-05-13).
+  //
+  // Surface: PFP GET /api/v1/past-borrowers (and future scoped variants).
+  // Validated by PFP's requireServiceBearer (Path A: Bearer rello_*; SHA-256
+  // hash match advances ApiKey.lastUsedAt; per-pair appSource/targetApp
+  // isolation enforced). Pre-launch grantedTo = ["the-drumbeat"] (first
+  // consumer per D13-amended). Newsletter Studio + Content Engine + Home
+  // Stretch + future cross-app consumers add via separate per-consumer
+  // permission-append micro-dispatches as their consumer surfaces ship —
+  // mirrors CREDIT_PULL_SOFT's "grantedTo grows per-consumer" pattern.
+  PAST_BORROWERS_READ: {
+    slug: "past-borrowers:read",
+    label: "Read past-borrower domain (PFP-canonical)",
+    description: "Cross-app read access to PFP-canonical past-borrower domain (Pipeline.status = CLOSED rows + computed refi-scoring helper). First consumer: The Drumbeat /settings/mlo/refi surface per D13-amended SPEC-DRUM-PFP-REFI-CONSUMER 2026-05-13. PFP retires Drumbeat's local RefinanceCandidate model + mlo-refi-analyzer cron + migrates UI to fetch from PFP. Per PFP ANSWERS Q4.5/Q4.8 + AOM PFP MLO-workstation lock + D20 PFP-canonical past-borrower domain ownership. Validated by PFP's requireServiceBearer. Future consumers (Newsletter Studio + Content Engine + Home Stretch) granted via separate per-consumer ApiKey row provisioning.",
+    validatedBy: ["pathfinder-pro"],
+    grantedTo: ["the-drumbeat"],
+  },
+
+  // ─── PFP receiver webhook delivery (Rello router → PFP, MLO-EVENTS hop-2) ──
+  // Per BPB §9.2 router-to-spoke outbound webhook delivery topology #3 — Rello
+  // signal router holds an ApiKey targeting PFP for the canonical hop-2 path
+  // when MLO-Events / partnership.* / past-borrowers.* signals delivered to PFP
+  // need to traverse Rello's router rather than direct emit. Replaces the
+  // placeholder `webhooks:deliver` slug on the D4 row 11 RELLO → PATHFINDER_PRO
+  // ApiKey row per DISCOVERED-PFP-SPEC-MLO-EVENTS-HOP-2-KEY-TOPOLOGY-DRIFT-
+  // 2026-05-13 disposition.
+  //
+  // Topology #3 (per BPB §9.2): caller = Rello router; receiver = PFP. PFP
+  // validates the slug at its inbound webhook receiver via requireServiceBearer
+  // (Path A). Rello holds the slug on its (appSource=RELLO, targetApp=
+  // PATHFINDER_PRO) ApiKey row.
+  PFP_RECEIVER_WEBHOOK: {
+    slug: "pfp-receiver:webhook",
+    label: "Deliver outbound webhook to PFP receiver",
+    description: "Rello router → PFP /api/webhooks/rello (or per-event-family path) outbound webhook delivery per BPB §9.2 topology #3. Held by Rello on (appSource=RELLO, targetApp=PATHFINDER_PRO) ApiKey row; validated by PFP's requireServiceBearer at receiver. Replaces placeholder webhooks:deliver per DISCOVERED-PFP-SPEC-MLO-EVENTS-HOP-2-KEY-TOPOLOGY-DRIFT-2026-05-13 disposition. Anchors the canonical hop-2 router path when MLO-Events / partnership.* / past-borrowers.* signals routed through Rello before delivery to PFP.",
+    validatedBy: ["pathfinder-pro"],
+    grantedTo: ["rello"],
+  },
 } as const satisfies Readonly<Record<string, PermissionDefinition>>;
 
 /** Compile-time-checked permission key (e.g., `"NEWSLETTERS_SEND"`). */

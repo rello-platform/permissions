@@ -886,6 +886,20 @@ export declare const PERMISSIONS: {
         readonly validatedBy: readonly ["pathfinder-pro"];
         readonly grantedTo: readonly [];
     };
+    readonly PAST_BORROWERS_READ: {
+        readonly slug: "past-borrowers:read";
+        readonly label: "Read past-borrower domain (PFP-canonical)";
+        readonly description: "Cross-app read access to PFP-canonical past-borrower domain (Pipeline.status = CLOSED rows + computed refi-scoring helper). First consumer: The Drumbeat /settings/mlo/refi surface per D13-amended SPEC-DRUM-PFP-REFI-CONSUMER 2026-05-13. PFP retires Drumbeat's local RefinanceCandidate model + mlo-refi-analyzer cron + migrates UI to fetch from PFP. Per PFP ANSWERS Q4.5/Q4.8 + AOM PFP MLO-workstation lock + D20 PFP-canonical past-borrower domain ownership. Validated by PFP's requireServiceBearer. Future consumers (Newsletter Studio + Content Engine + Home Stretch) granted via separate per-consumer ApiKey row provisioning.";
+        readonly validatedBy: readonly ["pathfinder-pro"];
+        readonly grantedTo: readonly ["the-drumbeat"];
+    };
+    readonly PFP_RECEIVER_WEBHOOK: {
+        readonly slug: "pfp-receiver:webhook";
+        readonly label: "Deliver outbound webhook to PFP receiver";
+        readonly description: "Rello router → PFP /api/webhooks/rello (or per-event-family path) outbound webhook delivery per BPB §9.2 topology #3. Held by Rello on (appSource=RELLO, targetApp=PATHFINDER_PRO) ApiKey row; validated by PFP's requireServiceBearer at receiver. Replaces placeholder webhooks:deliver per DISCOVERED-PFP-SPEC-MLO-EVENTS-HOP-2-KEY-TOPOLOGY-DRIFT-2026-05-13 disposition. Anchors the canonical hop-2 router path when MLO-Events / partnership.* / past-borrowers.* signals routed through Rello before delivery to PFP.";
+        readonly validatedBy: readonly ["pathfinder-pro"];
+        readonly grantedTo: readonly ["rello"];
+    };
 };
 /** Compile-time-checked permission key (e.g., `"NEWSLETTERS_SEND"`). */
 export type PermissionKey = keyof typeof PERMISSIONS;
