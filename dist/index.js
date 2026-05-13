@@ -978,6 +978,26 @@ export const PERMISSIONS = {
         validatedBy: ["home-stretch"],
         grantedTo: ["rello"],
     },
+    // ─── Rewards platform-config sync (Rello → Home Stretch) ──────────────────
+    // Per PA-CLOSEOUT-Q37 + ANSWERS Q3.7 §5 (locked 2026-05-12) — per-purpose
+    // slug for the rewards sync surface, NOT reusing HOME_STRETCH_PLATFORM_SYNC
+    // umbrella. Reasoning: per-purpose granularity gives separate lastUsedAt
+    // attribution, per-purpose revocation without blast-radius, and a separate
+    // audit trail vs articles. Articles' use of the umbrella platform-sync
+    // slug is a prior naming compromise — this slug does not propagate it.
+    //
+    // Surface: Rello POST /api/admin/apps/[slug]/rewards/sync (sender) →
+    // HS POST /api/admin/rewards/platform (receiver, requireServiceBearer
+    // permission gate). Receiver writes the singleton PlatformRewardsConfig
+    // row. Per-tenant overrides via TenantAppConfig.rewardsEnabled +
+    // rewardTiers continue to win over this platform default.
+    HOME_STRETCH_REWARDS_SYNC: {
+        slug: "home-stretch:rewards-sync",
+        label: "Sync rewards platform-default to Home Stretch",
+        description: "Rello → Home Stretch POST /api/admin/rewards/platform per-caller credential. Rello platform admin pushes platform-default rewards config (PlatformRewardsConfig singleton: rewardsEnabled + rewardTiers) to HS. Per-tenant TenantAppConfig overrides still win; this is the platform-default fallback layer in HS's 3-layer coalesce (TenantAppConfig → PlatformRewardsConfig → DEFAULT_REWARD_TIERS). Per-purpose slug per Q3.7 §5 lock — distinct from HOME_STRETCH_PLATFORM_SYNC umbrella. Validated by HS's requireServiceBearer.",
+        validatedBy: ["home-stretch"],
+        grantedTo: ["rello"],
+    },
     // ─── Scout receiver — landing-page library read (Drumbeat → Scout) ─────────
     // Per SPEC-DRUM-LANDING-PAGES-RETIRE-LOCAL.md (2026-05-09) Phase 0b — closes
     // Drumbeat's local landing-page surface by routing the Pages tab (formerly

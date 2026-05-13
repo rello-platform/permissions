@@ -1,7 +1,7 @@
 {
   "name": "@rello-platform/permissions",
-  "version": "0.30.0",
-  "description": "Canonical permission registry for the Rello ecosystem — single source of truth for inter-app permission slugs (Rello + 10 spokes + 6 engines).",
+  "version": "0.31.0",
+  "description": "Canonical permission registry for the Rello ecosystem \u2014 single source of truth for inter-app permission slugs (Rello + 10 spokes + 6 engines).",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "files": [

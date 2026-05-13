@@ -823,6 +823,13 @@ export declare const PERMISSIONS: {
         readonly validatedBy: readonly ["home-stretch"];
         readonly grantedTo: readonly ["rello"];
     };
+    readonly HOME_STRETCH_REWARDS_SYNC: {
+        readonly slug: "home-stretch:rewards-sync";
+        readonly label: "Sync rewards platform-default to Home Stretch";
+        readonly description: "Rello → Home Stretch POST /api/admin/rewards/platform per-caller credential. Rello platform admin pushes platform-default rewards config (PlatformRewardsConfig singleton: rewardsEnabled + rewardTiers) to HS. Per-tenant TenantAppConfig overrides still win; this is the platform-default fallback layer in HS's 3-layer coalesce (TenantAppConfig → PlatformRewardsConfig → DEFAULT_REWARD_TIERS). Per-purpose slug per Q3.7 §5 lock — distinct from HOME_STRETCH_PLATFORM_SYNC umbrella. Validated by HS's requireServiceBearer.";
+        readonly validatedBy: readonly ["home-stretch"];
+        readonly grantedTo: readonly ["rello"];
+    };
     readonly LANDING_PAGE_READ: {
         readonly slug: "landing-page:read";
         readonly label: "Read Home Scout landing-page library";
