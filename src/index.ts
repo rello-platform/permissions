@@ -83,6 +83,22 @@ export const PERMISSIONS = {
     grantedTo: [],
   },
 
+  // ─── Realtor Prospects ────────────────────────────────────────────────────
+  // Distinct from `agents:*` (canonical agent-roster CRUD) and `leads:*`
+  // (consumer borrower-side prospect). RealtorProspect is the MLO-side
+  // referral-courtship target (real-estate agents the MLO is cultivating as
+  // referral partners). REALTOR-PROSPECT-PIPELINE workstream §6.4 — granted
+  // to PathfinderPro for cross-app intake signals
+  // (pathfinder-pro.realtor_prospect.intake_received) routed through
+  // /api/signals/batch handler-arm on Rello.
+  REALTOR_PROSPECTS_WRITE: {
+    slug: "realtor-prospects:write",
+    label: "Write realtor prospects",
+    description: "Write access to RealtorProspect intake + lifecycle endpoints on Rello. Granted to PathfinderPro for cross-app event-attendee intake signals (pathfinder-pro.realtor_prospect.intake_received) — receiver creates RealtorProspect + Activity + AuditLog inside a single $transaction and invokes the Wave-3 Milo nurture boundary helper post-commit.",
+    validatedBy: ["rello"],
+    grantedTo: [],
+  },
+
   // ─── Journeys ─────────────────────────────────────────────────────────────
   JOURNEYS_READ: {
     slug: "journeys:read",

@@ -74,6 +74,13 @@ export declare const PERMISSIONS: {
         readonly validatedBy: readonly ["rello"];
         readonly grantedTo: readonly [];
     };
+    readonly REALTOR_PROSPECTS_WRITE: {
+        readonly slug: "realtor-prospects:write";
+        readonly label: "Write realtor prospects";
+        readonly description: "Write access to RealtorProspect intake + lifecycle endpoints on Rello. Granted to PathfinderPro for cross-app event-attendee intake signals (pathfinder-pro.realtor_prospect.intake_received) — receiver creates RealtorProspect + Activity + AuditLog inside a single $transaction and invokes the Wave-3 Milo nurture boundary helper post-commit.";
+        readonly validatedBy: readonly ["rello"];
+        readonly grantedTo: readonly [];
+    };
     readonly JOURNEYS_READ: {
         readonly slug: "journeys:read";
         readonly label: "Read journeys";
