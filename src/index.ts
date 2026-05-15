@@ -83,6 +83,20 @@ export const PERMISSIONS = {
     grantedTo: [],
   },
 
+  // Narrow custom-fields-only write permission. Distinct from `leads:write`
+  // which carries broader lead-CRUD authority. Granted to callers (e.g., The
+  // Oven scoring outputs) that only need to attach key/value custom fields to
+  // an existing lead — not to mutate the lead's identity, contact channels,
+  // co-borrower, or milo-insights. SPEC-OVEN-API-KEY-MINT-9-PAIRS Phase A
+  // 2026-05-15.
+  CUSTOM_FIELDS_WRITE: {
+    slug: "custom-fields:write",
+    label: "Write lead custom fields",
+    description: "Rello receiver — narrow write access to lead custom-field sub-resource (`/api/leads/[id]/custom-fields/*`). Minimum-grant alternative to `leads:write` for callers that only need to attach scoring outputs or app-derived key/value attributes to an existing lead. Granted to The Oven for ColdLeadRevival + OvenScore attribute writebacks per Q4.1 lock.",
+    validatedBy: ["rello"],
+    grantedTo: [],
+  },
+
   // ─── Realtor Prospects ────────────────────────────────────────────────────
   // Distinct from `agents:*` (canonical agent-roster CRUD) and `leads:*`
   // (consumer borrower-side prospect). RealtorProspect is the MLO-side
@@ -95,6 +109,21 @@ export const PERMISSIONS = {
     slug: "realtor-prospects:write",
     label: "Write realtor prospects",
     description: "Write access to RealtorProspect intake + lifecycle endpoints on Rello. Granted to PathfinderPro for cross-app event-attendee intake signals (pathfinder-pro.realtor_prospect.intake_received) — receiver creates RealtorProspect + Activity + AuditLog inside a single $transaction and invokes the Wave-3 Milo nurture boundary helper post-commit.",
+    validatedBy: ["rello"],
+    grantedTo: [],
+  },
+
+  // ─── Referrals (canonical Rello-side referral graph) ──────────────────────
+  // ReferralEdge is Rello's canonical model for past-client → new-prospect
+  // referral relationships. The Oven owns referral *surfacing* (ReferralProgram
+  // UI, ImplicitReferral detection, NetworkScore composition) per app-ownership
+  // matrix, but the underlying graph rows live in Rello's relational model so
+  // every spoke sees a consistent edge set. SPEC-OVEN-API-KEY-MINT-9-PAIRS
+  // Phase A 2026-05-15.
+  REFERRAL_EDGES_WRITE: {
+    slug: "referral-edges:write",
+    label: "Write referral edges",
+    description: "Rello receiver — write access to the canonical ReferralEdge graph via `/api/referral-edges/*`. Used by The Oven to materialize explicit referral relationships (ReferralProgram acknowledgments, ImplicitReferral promotions, NetworkScore inputs) into Rello's relational store. Per ownership matrix: The Oven owns surfacing + scoring; Rello owns the canonical edge rows.",
     validatedBy: ["rello"],
     grantedTo: [],
   },
@@ -345,6 +374,51 @@ export const PERMISSIONS = {
     slug: "articles:sync",
     label: "Sync articles",
     description: "Content Engine → Rello article sync ingest.",
+    validatedBy: ["rello"],
+    grantedTo: [],
+  },
+
+  // Spoke → Content Engine narrow read of the article corpus. Distinct from
+  // the broader `query` slug (CE-internal verb gating) and from `articles:sync`
+  // (CE → Rello article sync ingest). Granted to The Oven for Reviving 8-week
+  // content selection (`/api/articles/relevant`) and Homeowner Hub content
+  // embeds. SPEC-OVEN-API-KEY-MINT-9-PAIRS Phase A 2026-05-15.
+  ARTICLES_READ: {
+    slug: "articles:read",
+    label: "Read articles (CE corpus)",
+    description: "Content Engine receiver — narrow read access to article corpus selection endpoints (`POST /api/articles/relevant` and adjacent tiered-selection surfaces). Narrower than the broader `query` slug; explicitly granted to The Oven for Reviving 8-week content selection + Homeowner Hub content embeds per Q4.3 lock.",
+    validatedBy: ["content-engine"],
+    grantedTo: [],
+  },
+
+  // ─── Prompts (Rello-served Milo prompt templates) ─────────────────────────
+  // Rello hosts the prompt-template registry that Milo and spoke composers
+  // read at compose time. Read-only slug for callers that need to fetch the
+  // current template body for a given prompt key (versioned by tenant +
+  // template-id). The Oven reads templates for Reviving-step + review-request
+  // + referral-thanks + handoff-briefing composition (Q4.2 surfaces) prior to
+  // calling Milo's `/api/decide` or `/api/analyze`.
+  // SPEC-OVEN-API-KEY-MINT-9-PAIRS Phase A 2026-05-15.
+  PROMPTS_READ: {
+    slug: "prompts:read",
+    label: "Read Milo prompt templates",
+    description: "Rello receiver — read access to the prompt-template registry (`/api/prompts/*`). Returns versioned prompt-template bodies for a given key + tenant scope. Granted to spoke composers (The Oven Reviving/review-request/referral-thanks/handoff-briefing surfaces; future surfaces) that fetch the canonical template body prior to invoking Milo composition.",
+    validatedBy: ["rello"],
+    grantedTo: [],
+  },
+
+  // ─── AI usage logging (Rello-side cost-attribution + telemetry sink) ──────
+  // Centralized AI usage logger lives at Rello `/api/admin/ai/usage-log`. Every
+  // Milo-composing spoke posts per-call attribution (`sourceApp`, `cronSource`,
+  // tokens, latency, decisionTier, etc.) so the platform-admin AI-cost surface
+  // can aggregate per-tenant + per-surface spend. The Oven posts from all 5
+  // compose surfaces per Q4.2 inventory; Newsletter Studio, Home Stretch, and
+  // Harvest Home post from their own Milo callers. SPEC-OVEN-API-KEY-MINT-9-
+  // PAIRS Phase A 2026-05-15.
+  AI_USAGE_WRITE: {
+    slug: "ai-usage:write",
+    label: "Write AI usage logs",
+    description: "Rello receiver — write per-call AI usage logs to the centralized cost-attribution surface (`/api/admin/ai/usage-log`). Used by Milo-composing spokes (The Oven, Newsletter Studio, Home Stretch, Harvest Home, future composers) to post per-call attribution (tokens, latency, decisionTier, sourceApp, cronSource) for platform-admin AI-cost aggregation.",
     validatedBy: ["rello"],
     grantedTo: [],
   },
@@ -714,6 +788,20 @@ export const PERMISSIONS = {
     grantedTo: [],
   },
 
+  // Spoke → Content Engine write of article-engagement events (sent / opened /
+  // clicked / scroll-deep) tied to a leadId. CE upserts to hourly buckets +
+  // fires `content-engine.article_<action>` signal back to Rello for downstream
+  // ClientSignal handler fanout. Granted to The Oven for Reviving-send +
+  // Homeowner Hub article-interaction telemetry per Q4.3 lock.
+  // SPEC-OVEN-API-KEY-MINT-9-PAIRS Phase A 2026-05-15.
+  ENGAGEMENT_WRITE: {
+    slug: "engagement:write",
+    label: "Write article engagement",
+    description: "Content Engine receiver — write access to article-engagement event ingest (`POST /api/articles/engagement`). Accepts single or batch events with `action: sent|opened|clicked|scroll_deep`; CE collapses session dupes via hourly-bucket upsert and emits `content-engine.article_<action>` signals back to Rello for downstream handler fanout. Granted to The Oven for Reviving send + Homeowner Hub article-interaction telemetry per Q4.3 lock.",
+    validatedBy: ["content-engine"],
+    grantedTo: [],
+  },
+
   // ─── Signals — read + admin (Q8.6 SignalRulesManager gates) ───────────────
   SIGNALS_READ: {
     slug: "signals:read",
@@ -934,6 +1022,26 @@ export const PERMISSIONS = {
     description: "Harvest Home → The Oven POST /api/homeowners per-caller credential for post-close homeowner-profile sync (retention tracking + equity-digest enrollment). Replaces the silently-dead OVEN_APP_SECRET X-App-Secret pattern per CENTRALIZED-API-KEY-MIGRATION Phase 5 receiver-first session. The Oven's requireServiceBearer enforces this permission via createServiceBearerGuard.",
     validatedBy: ["the-oven"],
     grantedTo: ["harvest-home"],
+  },
+
+  // ─── The Oven inbound receivers (Rello → Oven cross-app surfaces) ─────────
+  // Two complementary slugs for Platform Admin / Rello-side surfaces that
+  // need to push or pull tenant-scoped data on Oven. Both gated by The Oven's
+  // requireServiceBearer + per-caller ApiKey row (RELLO → THE_OVEN appSource
+  // pair) per Q4.1 lock. SPEC-OVEN-API-KEY-MINT-9-PAIRS Phase A 2026-05-15.
+  ENGAGEMENT_CONFIG_WRITE: {
+    slug: "engagement-config:write",
+    label: "Write engagement config to Oven",
+    description: "The Oven receiver — write access to per-tenant EngagementConfig records (`/api/engagement-config/*`). Used by Rello Platform Admin (Tab 5 admin surface) to push tenant-level engagement thresholds, signal-rule overrides, and cadence configuration into The Oven. The Oven stores the canonical config row and re-fans changes downstream into ColdLeadRevival + nurture orchestration. Granted to Rello per Q4.1 lock.",
+    validatedBy: ["the-oven"],
+    grantedTo: [],
+  },
+  PAST_CLIENT_READ: {
+    slug: "past-client:read",
+    label: "Read past-client data from Oven",
+    description: "The Oven receiver — read access to past-client activity + scoring + signal aggregates (`/api/past-clients/*`). Used by Rello to render the SeePastClientActivityCard on the Lead Profile (Q1.4 lock) without duplicating Oven's HomeownerProfile + ClientSignal state into Rello. Returns per-tenant + per-lead aggregates only; raw event rows stay on Oven. Granted to Rello per Q4.1 lock.",
+    validatedBy: ["the-oven"],
+    grantedTo: [],
   },
 
   // ─── Meetings (Rello inbound — booking surface, cross-app HS → Rello) ─────
