@@ -816,6 +816,41 @@ export declare const PERMISSIONS: {
         readonly validatedBy: readonly ["the-oven"];
         readonly grantedTo: readonly [];
     };
+    readonly PAST_CLIENT_REQUEST_REVIEW: {
+        readonly slug: "past-client:request-review";
+        readonly label: "Past-client review request";
+        readonly description: "The Oven receiver — POST /api/past-clients/[leadId]/request-review per-caller credential. Authorizes Rello-proxy to create a ReviewRequest for an Oven past client (lead-profile 1-click action). Granted to Rello per Q4.1 lock + Q4.5 Lock #1.";
+        readonly validatedBy: readonly ["the-oven"];
+        readonly grantedTo: readonly [];
+    };
+    readonly PAST_CLIENT_START_REVIVAL: {
+        readonly slug: "past-client:start-revival";
+        readonly label: "Past-client revival start";
+        readonly description: "The Oven receiver — POST /api/past-clients/[leadId]/start-revival per-caller credential. Authorizes start of a ColdLeadRevival campaign on an Oven past client (lead-profile 1-click action). Granted to Rello per Q4.1 lock + Q4.5 Lock #1.";
+        readonly validatedBy: readonly ["the-oven"];
+        readonly grantedTo: readonly [];
+    };
+    readonly PAST_CLIENT_HAND_OFF: {
+        readonly slug: "past-client:hand-off";
+        readonly label: "Past-client handoff initiation";
+        readonly description: "The Oven receiver — POST /api/past-clients/[leadId]/hand-off per-caller credential. Authorizes creation of a HandoffEvent for an Oven past client carrying the closing payload (lead-profile 1-click action). Granted to Rello per Q4.1 lock + Q4.5 Lock #1.";
+        readonly validatedBy: readonly ["the-oven"];
+        readonly grantedTo: readonly [];
+    };
+    readonly PAST_CLIENT_SEND_EQUITY_DIGEST: {
+        readonly slug: "past-client:send-equity-digest";
+        readonly label: "Past-client equity digest send";
+        readonly description: "The Oven receiver — POST /api/past-clients/[leadId]/send-equity-digest per-caller credential. Authorizes ad-hoc equity-digest send to an Oven past client; ≥25-day cooldown enforced server-side (lead-profile 1-click action). Granted to Rello per Q4.1 lock + Q4.5 Lock #1.";
+        readonly validatedBy: readonly ["the-oven"];
+        readonly grantedTo: readonly [];
+    };
+    readonly PAST_CLIENT_SEND_HUB_INVITE: {
+        readonly slug: "past-client:send-hub-invite";
+        readonly label: "Past-client hub invite";
+        readonly description: "The Oven receiver — POST /api/past-clients/[leadId]/send-hub-invite per-caller credential. Authorizes HubInvite send via NS journey enrollment for an Oven past client (lead-profile 1-click action). Granted to Rello per Q4.1 lock + Q4.5 Lock #1.";
+        readonly validatedBy: readonly ["the-oven"];
+        readonly grantedTo: readonly [];
+    };
     readonly MEETINGS_WRITE: {
         readonly slug: "meetings:write";
         readonly label: "Write meetings";

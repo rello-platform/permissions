@@ -967,6 +967,49 @@ export const PERMISSIONS = {
         validatedBy: ["the-oven"],
         grantedTo: [],
     },
+    // ─── Past-client lead-profile 1-click actions (Rello → Oven, Q4.5 Lock #1) ─
+    // ANSWERS Q4.5 (T1-Q4-5-AMENDMENT close 2026-05-15) — five per-purpose
+    // permission slugs for the SeePastClientActivityCard 1-click action surface
+    // on the Rello Lead Profile. Same Q4.1 inbound ApiKey row as past-client:read
+    // + engagement-config:write. Each slug gates exactly one POST endpoint on
+    // The Oven, validated by The Oven's requireServiceBearer. grantedTo: []
+    // matches the catalog convention for Rello-as-grantee (provenance in
+    // description only) — see PAST_CLIENT_READ + ENGAGEMENT_CONFIG_WRITE.
+    PAST_CLIENT_REQUEST_REVIEW: {
+        slug: "past-client:request-review",
+        label: "Past-client review request",
+        description: "The Oven receiver — POST /api/past-clients/[leadId]/request-review per-caller credential. Authorizes Rello-proxy to create a ReviewRequest for an Oven past client (lead-profile 1-click action). Granted to Rello per Q4.1 lock + Q4.5 Lock #1.",
+        validatedBy: ["the-oven"],
+        grantedTo: [],
+    },
+    PAST_CLIENT_START_REVIVAL: {
+        slug: "past-client:start-revival",
+        label: "Past-client revival start",
+        description: "The Oven receiver — POST /api/past-clients/[leadId]/start-revival per-caller credential. Authorizes start of a ColdLeadRevival campaign on an Oven past client (lead-profile 1-click action). Granted to Rello per Q4.1 lock + Q4.5 Lock #1.",
+        validatedBy: ["the-oven"],
+        grantedTo: [],
+    },
+    PAST_CLIENT_HAND_OFF: {
+        slug: "past-client:hand-off",
+        label: "Past-client handoff initiation",
+        description: "The Oven receiver — POST /api/past-clients/[leadId]/hand-off per-caller credential. Authorizes creation of a HandoffEvent for an Oven past client carrying the closing payload (lead-profile 1-click action). Granted to Rello per Q4.1 lock + Q4.5 Lock #1.",
+        validatedBy: ["the-oven"],
+        grantedTo: [],
+    },
+    PAST_CLIENT_SEND_EQUITY_DIGEST: {
+        slug: "past-client:send-equity-digest",
+        label: "Past-client equity digest send",
+        description: "The Oven receiver — POST /api/past-clients/[leadId]/send-equity-digest per-caller credential. Authorizes ad-hoc equity-digest send to an Oven past client; ≥25-day cooldown enforced server-side (lead-profile 1-click action). Granted to Rello per Q4.1 lock + Q4.5 Lock #1.",
+        validatedBy: ["the-oven"],
+        grantedTo: [],
+    },
+    PAST_CLIENT_SEND_HUB_INVITE: {
+        slug: "past-client:send-hub-invite",
+        label: "Past-client hub invite",
+        description: "The Oven receiver — POST /api/past-clients/[leadId]/send-hub-invite per-caller credential. Authorizes HubInvite send via NS journey enrollment for an Oven past client (lead-profile 1-click action). Granted to Rello per Q4.1 lock + Q4.5 Lock #1.",
+        validatedBy: ["the-oven"],
+        grantedTo: [],
+    },
     // ─── Meetings (Rello inbound — booking surface, cross-app HS → Rello) ─────
     // RCAL Phase 2 — POST /api/meetings/book is the cross-app booking entry
     // point: HS booking page authors a meeting against a Rello-hosted
