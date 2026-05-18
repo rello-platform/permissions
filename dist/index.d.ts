@@ -1026,6 +1026,13 @@ export declare const PERMISSIONS: {
         readonly validatedBy: readonly ["rello"];
         readonly grantedTo: readonly ["pathfinder-pro", "the-drumbeat"];
     };
+    readonly TENANTS_BOOTSTRAP_READ: {
+        readonly slug: "tenants:bootstrap-read";
+        readonly label: "Read tenant + agents bootstrap payload for receiver-side lazy-provision";
+        readonly description: "Spoke → Rello GET /api/provisioning/tenant/[tenantId]/lazy-bootstrap per-caller credential. Used by receiver-side lazy-provision flows (Oven Path B today; sibling Pattern A-gated spokes per spec Follow-ups §3) to fetch the canonical tenantEnablePayloadSchema-shaped { tenant, agents } payload — identical to what POST /api/provisioning/tenant ships — so spokes can self-heal an unprovisioned-Tenant first-delivery race instead of returning 409 TENANT_NOT_READY. Per SPEC-OVEN-PATH-B-LAZY-PROVISION-RECEIVER-SELF-HEALING (2026-05-18). Validated by Rello's validateApiKey (Path A: Bearer rello_*; SHA-256 hash match advances ApiKey.lastUsedAt; per-pair appSource/targetApp isolation enforced). Topology #1 (Rello-validated, Rello-granted) per API-KEY-LIFECYCLE-README §2.";
+        readonly validatedBy: readonly ["rello"];
+        readonly grantedTo: readonly ["the-oven"];
+    };
 };
 /** Compile-time-checked permission key (e.g., `"NEWSLETTERS_SEND"`). */
 export type PermissionKey = keyof typeof PERMISSIONS;

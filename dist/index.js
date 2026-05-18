@@ -1424,6 +1424,29 @@ export const PERMISSIONS = {
         validatedBy: ["rello"],
         grantedTo: ["pathfinder-pro", "the-drumbeat"],
     },
+    // ─── Cross-app tenant + agents bootstrap fetch (SPEC OVEN-PATH-B-LAZY-PROVISION-RECEIVER-SELF-HEALING) ──
+    // Receiver-side defense-in-depth: when an Oven webhook references an
+    // unprovisioned tenant, Oven calls Rello GET
+    // /api/provisioning/tenant/[tenantId]/lazy-bootstrap to fetch the canonical
+    // tenant + agents payload (same shape POST /api/provisioning/tenant ships),
+    // upserts the Tenant + triggering agent inline, and queues remaining agents
+    // for async backfill. Eliminates the "Pattern A 409 cascade until
+    // provisioning catches up" failure class per the parent recon
+    // CROSS-SPOKE-LEAD-UPDATED-403-CASCADE §3.2 (2786 FAILED 409 deliveries
+    // over 16h13m).
+    //
+    // Surface: Rello GET /api/provisioning/tenant/[tenantId]/lazy-bootstrap.
+    // Validated by Rello's validateApiKey + hasPermission gate. Pre-launch
+    // grantedTo = ["the-oven"] (Phase 1 of the build). Sibling Pattern A-gated
+    // spokes can be added to grantedTo when Path B extends to them per spec
+    // Follow-ups §3.
+    TENANTS_BOOTSTRAP_READ: {
+        slug: "tenants:bootstrap-read",
+        label: "Read tenant + agents bootstrap payload for receiver-side lazy-provision",
+        description: "Spoke → Rello GET /api/provisioning/tenant/[tenantId]/lazy-bootstrap per-caller credential. Used by receiver-side lazy-provision flows (Oven Path B today; sibling Pattern A-gated spokes per spec Follow-ups §3) to fetch the canonical tenantEnablePayloadSchema-shaped { tenant, agents } payload — identical to what POST /api/provisioning/tenant ships — so spokes can self-heal an unprovisioned-Tenant first-delivery race instead of returning 409 TENANT_NOT_READY. Per SPEC-OVEN-PATH-B-LAZY-PROVISION-RECEIVER-SELF-HEALING (2026-05-18). Validated by Rello's validateApiKey (Path A: Bearer rello_*; SHA-256 hash match advances ApiKey.lastUsedAt; per-pair appSource/targetApp isolation enforced). Topology #1 (Rello-validated, Rello-granted) per API-KEY-LIFECYCLE-README §2.",
+        validatedBy: ["rello"],
+        grantedTo: ["the-oven"],
+    },
 };
 /**
  * Frozen list of every canonical permission slug — the universe a write-time
