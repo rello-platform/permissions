@@ -144,6 +144,13 @@ export declare const PERMISSIONS: {
         readonly validatedBy: readonly ["rello"];
         readonly grantedTo: readonly [];
     };
+    readonly ALERT_EVENTS_WRITE: {
+        readonly slug: "alert-events:write";
+        readonly label: "Write AlertEvent (engine + spoke-self-reported ops alerts)";
+        readonly description: "Per-spoke + per-engine writers POST to /api/admin/alert-events to surface ops alerts (schema drift, queue stuck, MLS sync lag, R2 saturation, decision-rate anomaly, etc.) in Platform Admin System Health UI. AlertEvent model at Rello/prisma/schema.prisma:10111; existing read consumers documented in model docstring. First writer added per BUILD-|-WORKSTREAM/PROD-VS-CODE-SCHEMA-DRIFT-DETECTION/ 2026-05-18 (closes Rule M observation that AlertEvent model had zero writers despite UI + helper + GET endpoint shipped).";
+        readonly validatedBy: readonly ["rello"];
+        readonly grantedTo: readonly [];
+    };
     readonly ENGINE_ACCESS: {
         readonly slug: "engine:access";
         readonly label: "Engine access";
