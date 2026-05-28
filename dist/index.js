@@ -887,6 +887,37 @@ export const PERMISSIONS = {
         validatedBy: ["rello"],
         grantedTo: [],
     },
+    // ─── Co-marketing functional co-branding (RELLO II, 2026-05-28) ───────────
+    // Per SPEC-RELLO-II-CO-MARKETING-FUNCTIONAL-CO-BRANDING §4/§6: Rello owns the
+    // canonical per-MloPartner brand-asset payload + the joint-advertising
+    // consent (attestation) state; spoke render is routed-out. These are a
+    // distinct FEATURE surface from the mlo-partner:* proxy-directory CRUD pair
+    // (which gates entity identity CRUD) — three-segment feature:sub-resource:verb
+    // form per the compliance:phrase-rules:read / homeowner:magic-link:issue
+    // precedent. SPEC §4's underscore literals (mlo_partner_branding:*) are
+    // superseded by the platform lowercase-hyphenated slug rule; namespace locked
+    // to `co-marketing:*` by Kelly 2026-05-28 (KA decision on the PR-2 dispatch).
+    CO_MARKETING_BRANDING_READ: {
+        slug: "co-marketing:branding:read",
+        label: "Read co-marketing brand payload",
+        description: "Rello receiver — GET /api/v1/mlo-partners/[id]/branding + GET /api/v1/mlo-partners/[id]/attestation. Read-only render payload (logo/colors/NMLS/license-states/joint-ad-disclosure) + attestation status. Held by spoke render-side outbound keys (newsletter-studio / open-house-hub / the-drumbeat / harvest-home / homeready / the-homestretch / home-scout → rello). Returns 403 when the lender's CoMarketingDisclosureAttestation is not ACTIVE (consent-first render gate, RESPA §8). Granted to spoke pairs in PR-6.",
+        validatedBy: ["rello"],
+        grantedTo: [],
+    },
+    CO_MARKETING_BRANDING_WRITE: {
+        slug: "co-marketing:branding:write",
+        label: "Write co-marketing brand payload",
+        description: "Forward-reserved. No SPEC §4 endpoint consumes this yet — owner brand-asset writes are session-authed (BR/MO/AGENT_OWNER) on /api/admin/mlo-partners/[id]/branding, not ApiKey. Shipped now so a future spoke-suggested brand-change flow can be granted without a package bump. Granted to spoke pairs in PR-6.",
+        validatedBy: ["rello"],
+        grantedTo: [],
+    },
+    CO_MARKETING_ATTESTATION_WRITE: {
+        slug: "co-marketing:attestation:write",
+        label: "Write co-marketing joint-ad attestation",
+        description: "Rello receiver — POST/DELETE /api/v1/mlo-partners/[id]/branding/attest. Lender joint-advertising consent capture + revoke from the HR/HS Guest MLO portal (writes CoMarketingDisclosureAttestation + AuditLog). Additionally gated on a valid GuestMLO session token in the request body. Held by the HR/HS portal outbound keys → rello. Granted to spoke pairs in PR-6.",
+        validatedBy: ["rello"],
+        grantedTo: [],
+    },
     // ─── Content Engine internal verbs (Q7.1-CE-RECONCILIATION Phase 1c) ──────
     // Per SPEC-Q7-1-CE-PERMISSION-SURFACE-RECONCILIATION.md (2026-05-06): the
     // canonical Rello → CE ApiKey mint shape covers both forward-looking

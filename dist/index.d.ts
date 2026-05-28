@@ -767,6 +767,27 @@ export declare const PERMISSIONS: {
         readonly validatedBy: readonly ["rello"];
         readonly grantedTo: readonly [];
     };
+    readonly CO_MARKETING_BRANDING_READ: {
+        readonly slug: "co-marketing:branding:read";
+        readonly label: "Read co-marketing brand payload";
+        readonly description: "Rello receiver — GET /api/v1/mlo-partners/[id]/branding + GET /api/v1/mlo-partners/[id]/attestation. Read-only render payload (logo/colors/NMLS/license-states/joint-ad-disclosure) + attestation status. Held by spoke render-side outbound keys (newsletter-studio / open-house-hub / the-drumbeat / harvest-home / homeready / the-homestretch / home-scout → rello). Returns 403 when the lender's CoMarketingDisclosureAttestation is not ACTIVE (consent-first render gate, RESPA §8). Granted to spoke pairs in PR-6.";
+        readonly validatedBy: readonly ["rello"];
+        readonly grantedTo: readonly [];
+    };
+    readonly CO_MARKETING_BRANDING_WRITE: {
+        readonly slug: "co-marketing:branding:write";
+        readonly label: "Write co-marketing brand payload";
+        readonly description: "Forward-reserved. No SPEC §4 endpoint consumes this yet — owner brand-asset writes are session-authed (BR/MO/AGENT_OWNER) on /api/admin/mlo-partners/[id]/branding, not ApiKey. Shipped now so a future spoke-suggested brand-change flow can be granted without a package bump. Granted to spoke pairs in PR-6.";
+        readonly validatedBy: readonly ["rello"];
+        readonly grantedTo: readonly [];
+    };
+    readonly CO_MARKETING_ATTESTATION_WRITE: {
+        readonly slug: "co-marketing:attestation:write";
+        readonly label: "Write co-marketing joint-ad attestation";
+        readonly description: "Rello receiver — POST/DELETE /api/v1/mlo-partners/[id]/branding/attest. Lender joint-advertising consent capture + revoke from the HR/HS Guest MLO portal (writes CoMarketingDisclosureAttestation + AuditLog). Additionally gated on a valid GuestMLO session token in the request body. Held by the HR/HS portal outbound keys → rello. Granted to spoke pairs in PR-6.";
+        readonly validatedBy: readonly ["rello"];
+        readonly grantedTo: readonly [];
+    };
     readonly QUERY: {
         readonly slug: "query";
         readonly label: "Query Content Engine read routes";
