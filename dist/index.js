@@ -152,6 +152,21 @@ export const PERMISSIONS = {
         validatedBy: ["rello"],
         grantedTo: [],
     },
+    // ─── Canonical cross-app source-event attribution (relloEventId) ──────────
+    SOURCE_EVENTS_WRITE: {
+        slug: "source-events:write",
+        label: "Mint canonical source event (relloEventId)",
+        description: "Spoke → Rello mint of the canonical cross-app origination event. POST /api/events/source idempotently upserts a thin SourceEvent row (== relloEventId) keyed on (tenantId, sourceApp, externalEventId); held by OHH (OPEN_HOUSE_HUB → RELLO) and PFP (PATHFINDER_PRO → RELLO) outbound keys. Distinct from leads:write — minting an attribution event is not a lead write (least-privilege boundary, Kelly-locked 2026-06-01). SPEC-CANONICAL-RELLO-EVENT-ID Phase 1.",
+        validatedBy: ["rello"],
+        grantedTo: [],
+    },
+    SOURCE_EVENTS_READ: {
+        slug: "source-events:read",
+        label: "Resolve canonical source event (relloEventId)",
+        description: "Spoke → Rello resolution of a canonical relloEventId. GET /api/events/source/[relloEventId] returns the thin tenant-scoped metadata (name/date/host/sourceApp/externalEventId). Rello is the single resolution authority; apps do NOT cross-resolve each other's local event rows. SPEC-CANONICAL-RELLO-EVENT-ID Phase 1.",
+        validatedBy: ["rello"],
+        grantedTo: [],
+    },
     // ─── Observability / Platform Admin alerting ─────────────────────────────
     ALERT_EVENTS_WRITE: {
         slug: "alert-events:write",
