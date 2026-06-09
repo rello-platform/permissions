@@ -942,6 +942,13 @@ export declare const PERMISSIONS: {
         readonly validatedBy: readonly ["home-scout"];
         readonly grantedTo: readonly ["the-oven"];
     };
+    readonly OVEN_SERVICE_PROVIDERS_READ: {
+        readonly slug: "oven:service-providers-read";
+        readonly label: "Read Service Providers from The Oven";
+        readonly description: "Home Scout → The Oven GET /api/service-providers?tenantId=<id> per-caller credential. Returns the tenant's active ServiceProvider rows (id, name, category, phone, website, description) ordered by sortOrder then name for the Homeowner Hub trusted-providers panel. Agent-curated, tenant-scoped, read-only over the S2S seam. HHUB Round 2a W3 (Service Providers) — mints/extends the HS → Oven Hub direction. Validated by The Oven's requireServiceBearer.";
+        readonly validatedBy: readonly ["the-oven"];
+        readonly grantedTo: readonly ["home-scout"];
+    };
     readonly MILO_COMPOSE_HOMEOWNER_HUB: {
         readonly slug: "milo:compose-homeowner-hub";
         readonly label: "Compose Homeowner Hub greeting + CTA bodies via Milo";

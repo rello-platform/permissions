@@ -1224,6 +1224,13 @@ export const PERMISSIONS = {
     validatedBy: ["home-scout"],
     grantedTo: ["the-oven"],
   },
+  OVEN_SERVICE_PROVIDERS_READ: {
+    slug: "oven:service-providers-read",
+    label: "Read Service Providers from The Oven",
+    description: "Home Scout → The Oven GET /api/service-providers?tenantId=<id> per-caller credential. Returns the tenant's active ServiceProvider rows (id, name, category, phone, website, description) ordered by sortOrder then name for the Homeowner Hub trusted-providers panel. Agent-curated, tenant-scoped, read-only over the S2S seam. HHUB Round 2a W3 (Service Providers) — mints/extends the HS → Oven Hub direction. Validated by The Oven's requireServiceBearer.",
+    validatedBy: ["the-oven"],
+    grantedTo: ["home-scout"],
+  },
 
   // ─── Milo Compose-Homeowner-Hub (Milo receiver, HHUB Phase 5) ──────────────
   // Per HOMEOWNER-HUB.md § Build Plan Phase 5 — Home Scout's Hub data-assembly
