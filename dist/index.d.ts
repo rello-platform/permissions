@@ -1089,6 +1089,13 @@ export declare const PERMISSIONS: {
         readonly validatedBy: readonly ["rello"];
         readonly grantedTo: readonly ["the-oven"];
     };
+    readonly AUTH_SYNTHETIC_LOGIN: {
+        readonly slug: "auth:synthetic-login";
+        readonly label: "Synthetic Session Login";
+        readonly description: "Mint a one-time, short-TTL OAuthMagicLink (ml_token) for a designated isSyntheticTestUser via POST /api/v1/auth/synthetic-session — the IdP synthetic-session grant for agent build-verification + post-launch synthetic monitoring. Held by exactly ONE revocable platform-service key (RELLO→RELLO). Issues a REAL session through the real magic-link path; gated by isSyntheticTestUser flag + Big Star test-tenant + role ceiling. SPEC-RELLO-SYNTHETIC-SESSION-IDP-CAPABILITY-260610.";
+        readonly validatedBy: readonly ["rello"];
+        readonly grantedTo: readonly [];
+    };
 };
 /** Compile-time-checked permission key (e.g., `"NEWSLETTERS_SEND"`). */
 export type PermissionKey = keyof typeof PERMISSIONS;

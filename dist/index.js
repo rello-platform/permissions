@@ -1528,6 +1528,20 @@ export const PERMISSIONS = {
         validatedBy: ["rello"],
         grantedTo: ["the-oven"],
     },
+    // ─── Auth — synthetic-session IdP grant (SPEC-RELLO-SYNTHETIC-SESSION-IDP-CAPABILITY-260610) ──
+    // Phase 0a of the synthetic-session IdP capability build. Held by exactly ONE
+    // revocable platform-service key (RELLO → RELLO). Mints a one-time, short-TTL
+    // OAuthMagicLink for a designated isSyntheticTestUser so agent build-verification
+    // + post-launch synthetic monitoring can issue a REAL session through the real
+    // magic-link path. Gated by isSyntheticTestUser flag + Big Star test-tenant +
+    // role ceiling. Validated by Rello's validateApiKey.
+    AUTH_SYNTHETIC_LOGIN: {
+        slug: "auth:synthetic-login",
+        label: "Synthetic Session Login",
+        description: "Mint a one-time, short-TTL OAuthMagicLink (ml_token) for a designated isSyntheticTestUser via POST /api/v1/auth/synthetic-session — the IdP synthetic-session grant for agent build-verification + post-launch synthetic monitoring. Held by exactly ONE revocable platform-service key (RELLO→RELLO). Issues a REAL session through the real magic-link path; gated by isSyntheticTestUser flag + Big Star test-tenant + role ceiling. SPEC-RELLO-SYNTHETIC-SESSION-IDP-CAPABILITY-260610.",
+        validatedBy: ["rello"],
+        grantedTo: [],
+    },
 };
 /**
  * Frozen list of every canonical permission slug — the universe a write-time
