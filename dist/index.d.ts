@@ -1012,6 +1012,13 @@ export declare const PERMISSIONS: {
         readonly validatedBy: readonly [];
         readonly grantedTo: readonly [];
     };
+    readonly NOTIFICATIONS_CREATE: {
+        readonly slug: "notifications:create";
+        readonly label: "Create in-app notification";
+        readonly description: "Rello receiver — POST /api/v1/notifications (src/app/api/v1/notifications/route.ts). Spoke → Rello service-to-service creation of an in-app Notification row for an agent (bell/beacon), routed through Rello's internal sendNotification() dispatcher with coalesceKey same-day idempotency. Kept narrow so a compromised key cannot read or mutate leads, settings, or other notification state. Validated by Rello's validateApiKey via requireV1Auth (Path A: Bearer rello_*). Initial caller: Harvest Home saved-search alert in-app delivery.";
+        readonly validatedBy: readonly ["rello"];
+        readonly grantedTo: readonly [];
+    };
     readonly PUBLIC_CHECKOUT_WRITE: {
         readonly slug: "public-checkout:write";
         readonly label: "Initiate public Stripe Checkout session";

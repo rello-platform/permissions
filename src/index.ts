@@ -1392,6 +1392,27 @@ export const PERMISSIONS = {
     grantedTo: [],
   },
 
+  // ─── In-app notification creation (Spoke → Rello, inter-app receiver) ─────
+  // Distinct from notifications:read / notifications:write above (Rello →
+  // spoke notification-SETTINGS proxying): this is the inverse direction —
+  // a spoke creating an in-app Notification ROW for an agent inside Rello's
+  // bell/beacon surfaces. Receiver: Rello POST /api/v1/notifications
+  // (src/app/api/v1/notifications/route.ts) — requireV1Auth + Zod-strict
+  // body + agentId→User existence check + internal sendNotification()
+  // dispatcher (coalesceKey same-day idempotency via the partial unique
+  // index). Per DISCOVERED-PLATFORM-RELLO-NOTIFICATIONS-INTER-APP-ENDPOINT-
+  // MISSING-20260508 + cross-repo walk wave-4b locked endpoint contract
+  // (2026-06-10). Initial caller: Harvest Home discovery saved-search alerts
+  // (LeadAlert.inAppNotifiedAt flip); future: property-watch / call-list
+  // reminders as they launch.
+  NOTIFICATIONS_CREATE: {
+    slug: "notifications:create",
+    label: "Create in-app notification",
+    description: "Rello receiver — POST /api/v1/notifications (src/app/api/v1/notifications/route.ts). Spoke → Rello service-to-service creation of an in-app Notification row for an agent (bell/beacon), routed through Rello's internal sendNotification() dispatcher with coalesceKey same-day idempotency. Kept narrow so a compromised key cannot read or mutate leads, settings, or other notification state. Validated by Rello's validateApiKey via requireV1Auth (Path A: Bearer rello_*). Initial caller: Harvest Home saved-search alert in-app delivery.",
+    validatedBy: ["rello"],
+    grantedTo: [],
+  },
+
   // ─── Public-pricing checkout (Spoke → Rello, CROSS-APP-BILLING-V2 §A3) ────
   // Spoke renders its own public /pricing page; when a visitor clicks "Buy",
   // the spoke POSTs to Rello's hub-side Stripe Checkout session creator on
