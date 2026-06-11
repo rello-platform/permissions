@@ -1662,6 +1662,21 @@ export const PERMISSIONS = {
     validatedBy: ["open-house-hub"],
     grantedTo: ["home-scout"],
   },
+  // ─── OHH tours read (OHH-SHOWINGS P4 — buyer Tour Companion surface) ──
+  // Per CONTRACT-TOUR-COMPANION-PAYLOAD-260611.md (LOCKED 2026-06-11, single-KA
+  // contract per DL4) — Home Scout's consumer-hub Tour Companion sibling routes
+  // read the buyer's tours list + per-tour companion payload from Open House
+  // Hub. PRIVACY LOCK: Showing.accessInstructions (lockbox/entry details) is
+  // agent-only and NEVER crosses this wire; other-party personal names never
+  // appear. Same direction + key as OHH_SELLER_ACTIVITY_READ (appended to the
+  // existing HOME_SCOUT → OPEN_HOUSE_HUB key, no new key minted).
+  OHH_TOURS_READ: {
+    slug: "ohh:tours-read",
+    label: "Read buyer tours from Open House Hub",
+    description: "Home Scout → Open House Hub GET /api/tours/by-lead/[relloLeadId]?tenantId=<relloTenantId> (GetBuyerToursResponse) and GET /api/tours/[tourId]/companion?tenantId=<relloTenantId>&relloLeadId=<relloLeadId> (GetTourCompanionResponse; relloLeadId must match the tour's buyer — fail-closed 404 on mismatch) per-caller credential for the buyer Tour Companion render. Showing.accessInstructions NEVER crosses this wire (agent-only); listingPrice in whole dollars at the edge; CONFIRMED maps to SCHEDULED. Per CONTRACT-TOUR-COMPANION-PAYLOAD-260611.md (OHH-SHOWINGS-AND-TOURS P4). Validated by Open House Hub's requireServiceBearer.",
+    validatedBy: ["open-house-hub"],
+    grantedTo: ["home-scout"],
+  },
 } as const satisfies Readonly<Record<string, PermissionDefinition>>;
 
 /** Compile-time-checked permission key (e.g., `"NEWSLETTERS_SEND"`). */
