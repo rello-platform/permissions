@@ -1103,6 +1103,13 @@ export declare const PERMISSIONS: {
         readonly validatedBy: readonly ["open-house-hub"];
         readonly grantedTo: readonly ["home-scout"];
     };
+    readonly OHH_TOURS_READ: {
+        readonly slug: "ohh:tours-read";
+        readonly label: "Read buyer tours from Open House Hub";
+        readonly description: "Home Scout → Open House Hub GET /api/tours/by-lead/[relloLeadId]?tenantId=<relloTenantId> (GetBuyerToursResponse) and GET /api/tours/[tourId]/companion?tenantId=<relloTenantId>&relloLeadId=<relloLeadId> (GetTourCompanionResponse; relloLeadId must match the tour's buyer — fail-closed 404 on mismatch) per-caller credential for the buyer Tour Companion render. Showing.accessInstructions NEVER crosses this wire (agent-only); listingPrice in whole dollars at the edge; CONFIRMED maps to SCHEDULED. Per CONTRACT-TOUR-COMPANION-PAYLOAD-260611.md (OHH-SHOWINGS-AND-TOURS P4). Validated by Open House Hub's requireServiceBearer.";
+        readonly validatedBy: readonly ["open-house-hub"];
+        readonly grantedTo: readonly ["home-scout"];
+    };
 };
 /** Compile-time-checked permission key (e.g., `"NEWSLETTERS_SEND"`). */
 export type PermissionKey = keyof typeof PERMISSIONS;
