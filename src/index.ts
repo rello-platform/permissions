@@ -1646,6 +1646,22 @@ export const PERMISSIONS = {
     validatedBy: ["rello"],
     grantedTo: [],
   },
+  // ─── OHH seller-activity read (OHH-SHOWINGS P3 — HS ↔ OHH cross-spoke surface) ──
+  // Per CONTRACT-SELLER-ACTIVITY-PAYLOAD-DRAFT-260610.md (LOCKED 2026-06-11,
+  // countersigned by HOMEOWNER-PORTAL-COMPLETION KA) — Home Scout's homeowner
+  // hub data-assembly reads the seller-activity aggregation (listing status +
+  // showing totals + recent showings + buyer feedback + price positioning +
+  // Smart Assistant recommendation) from Open House Hub for the seller-mode
+  // hub render. One aggregation feeds two renders (hub + Report-Engine
+  // showing-activity PDF). Mints the direction home-scout → open-house-hub.
+  // Sibling pattern to OVEN_SERVICE_PROVIDERS_READ (HS → Oven Hub direction).
+  OHH_SELLER_ACTIVITY_READ: {
+    slug: "ohh:seller-activity-read",
+    label: "Read seller activity from Open House Hub",
+    description: "Home Scout → Open House Hub GET /api/seller-activity/[relloLeadId]?tenantId=<relloTenantId> per-caller credential. Returns the LOCKED SellerActivityPayload (listing + showing totals + recent showings capped 10 w/ brokerage-only attribution per AM-1 + feedback + pricePositioning + recommendation; onlineInterest always null from OHH per AM-3, HS merges locally) for the Homeowner Hub seller-mode render and the Report-Engine showing-activity PDF. Keyed by relloLeadId + relloTenantId because the consumer session is leadId-scoped. Per CONTRACT-SELLER-ACTIVITY-PAYLOAD-DRAFT-260610.md (OHH-SHOWINGS-AND-TOURS P3). Validated by Open House Hub's requireServiceBearer.",
+    validatedBy: ["open-house-hub"],
+    grantedTo: ["home-scout"],
+  },
 } as const satisfies Readonly<Record<string, PermissionDefinition>>;
 
 /** Compile-time-checked permission key (e.g., `"NEWSLETTERS_SEND"`). */
