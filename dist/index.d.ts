@@ -1096,6 +1096,13 @@ export declare const PERMISSIONS: {
         readonly validatedBy: readonly ["rello"];
         readonly grantedTo: readonly [];
     };
+    readonly OHH_SELLER_ACTIVITY_READ: {
+        readonly slug: "ohh:seller-activity-read";
+        readonly label: "Read seller activity from Open House Hub";
+        readonly description: "Home Scout → Open House Hub GET /api/seller-activity/[relloLeadId]?tenantId=<relloTenantId> per-caller credential. Returns the LOCKED SellerActivityPayload (listing + showing totals + recent showings capped 10 w/ brokerage-only attribution per AM-1 + feedback + pricePositioning + recommendation; onlineInterest always null from OHH per AM-3, HS merges locally) for the Homeowner Hub seller-mode render and the Report-Engine showing-activity PDF. Keyed by relloLeadId + relloTenantId because the consumer session is leadId-scoped. Per CONTRACT-SELLER-ACTIVITY-PAYLOAD-DRAFT-260610.md (OHH-SHOWINGS-AND-TOURS P3). Validated by Open House Hub's requireServiceBearer.";
+        readonly validatedBy: readonly ["open-house-hub"];
+        readonly grantedTo: readonly ["home-scout"];
+    };
 };
 /** Compile-time-checked permission key (e.g., `"NEWSLETTERS_SEND"`). */
 export type PermissionKey = keyof typeof PERMISSIONS;
