@@ -1061,6 +1061,13 @@ export declare const PERMISSIONS: {
         readonly validatedBy: readonly ["pathfinder-pro"];
         readonly grantedTo: readonly ["rello"];
     };
+    readonly RATE_SHEETS_WRITE: {
+        readonly slug: "rate-sheets:write";
+        readonly label: "Write platform rate-sheet ingestion mutations";
+        readonly description: "Rello → Pathfinder Pro POST/PATCH /api/tenants/[tenantId]/rate-sheets/* operator-action mutation routes per-caller credential. Used by Rello's Platform Admin Interest Rates management surface to fire state-changing rate-sheet ingestion operator actions against PFP's canonical AgentRateSheet pipeline (re-fetch a lender sheet / reset an auto-disable / repoint a sheet URL / retry a dead-lettered extraction / force a snapshot refresh). PFP is canonical owner of AgentRateSheet ingestion per APP-OWNERSHIP-MATRIX:321 + D1 lock 2026-05-13. Distinct from the read-only rate-sheets:read serve path so the operator-mutation surface can be granted/revoked independently. Receiver validates via requireServiceBearer (Path A: Bearer rello_*). Topology #3 (Spoke-validated, Rello-granted) per API-KEY-LIFECYCLE-README §2 — inverse-verb sibling to rate-sheets:read.";
+        readonly validatedBy: readonly ["pathfinder-pro"];
+        readonly grantedTo: readonly ["rello"];
+    };
     readonly RATES_EFFECTIVE_READ: {
         readonly slug: "rates-effective:read";
         readonly label: "Read Rello-aggregated effective rates";
