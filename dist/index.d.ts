@@ -1117,6 +1117,13 @@ export declare const PERMISSIONS: {
         readonly validatedBy: readonly ["open-house-hub"];
         readonly grantedTo: readonly ["home-scout"];
     };
+    readonly OHH_EVENTS_READ: {
+        readonly slug: "ohh:events-read";
+        readonly label: "Read upcoming open houses from Open House Hub";
+        readonly description: "Home Scout → Open House Hub GET /api/events/upcoming?tenantId=<relloTenantId>&agentId=<id>&zip=<zip>&from=<iso> — lead-safe upcoming OpenHouseEvent list for the Upcoming Open Houses + RSVP tool. The agent's own events return regardless; cross-agent area events require OpenHouseEvent.isPubliclyDiscoverable=true. listingPrice in whole dollars at the edge; agent shown as first name + last initial; status ∈ {SCHEDULED, ACTIVE}; eventDate >= now. Validated by Open House Hub's requireServiceBearer.";
+        readonly validatedBy: readonly ["open-house-hub"];
+        readonly grantedTo: readonly ["home-scout"];
+    };
 };
 /** Compile-time-checked permission key (e.g., `"NEWSLETTERS_SEND"`). */
 export type PermissionKey = keyof typeof PERMISSIONS;

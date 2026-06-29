@@ -1704,6 +1704,20 @@ export const PERMISSIONS = {
     validatedBy: ["open-house-hub"],
     grantedTo: ["home-scout"],
   },
+  // ─── OHH events read (RSVP — buyer Upcoming Open Houses surface) ──
+  // Home Scout's consumer "Upcoming Open Houses + RSVP" tool reads the agent's
+  // own + (opt-in) area upcoming open-house events from Open House Hub. Same
+  // direction + key as OHH_TOURS_READ / OHH_SELLER_ACTIVITY_READ (appended to the
+  // existing HOME_SCOUT → OPEN_HOUSE_HUB key, no new key minted). Cross-agent area
+  // events require OpenHouseEvent.isPubliclyDiscoverable=true (per-tenant isolation
+  // lock); the agent's own events return regardless. Lead-safe payload only.
+  OHH_EVENTS_READ: {
+    slug: "ohh:events-read",
+    label: "Read upcoming open houses from Open House Hub",
+    description: "Home Scout → Open House Hub GET /api/events/upcoming?tenantId=<relloTenantId>&agentId=<id>&zip=<zip>&from=<iso> — lead-safe upcoming OpenHouseEvent list for the Upcoming Open Houses + RSVP tool. The agent's own events return regardless; cross-agent area events require OpenHouseEvent.isPubliclyDiscoverable=true. listingPrice in whole dollars at the edge; agent shown as first name + last initial; status ∈ {SCHEDULED, ACTIVE}; eventDate >= now. Validated by Open House Hub's requireServiceBearer.",
+    validatedBy: ["open-house-hub"],
+    grantedTo: ["home-scout"],
+  },
 } as const satisfies Readonly<Record<string, PermissionDefinition>>;
 
 /** Compile-time-checked permission key (e.g., `"NEWSLETTERS_SEND"`). */
