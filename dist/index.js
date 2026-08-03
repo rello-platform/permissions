@@ -1531,6 +1531,24 @@ export const PERMISSIONS = {
         validatedBy: ["rello"],
         grantedTo: ["pathfinder-pro", "the-drumbeat"],
     },
+    // ─── Compliance email-footer read (HR/HS consumer-send disclosure — F11) ──
+    // HomeReady + The Home Stretch dispatch consumer email from their own Mailgun
+    // but fetch the Reg Z §1026.36(g)(1) originator disclosure (NMLS numbers +
+    // firm) from Rello, which owns it. Sibling to compliance:phrase-rules:read /
+    // compliance:scan-rules:read. Defense-in-depth on top of the F11 tenant-
+    // authorization fix: the route also runs verifyTenantAppAccess (an enabled
+    // TenantApp must link the requested tenant to the calling app), so this
+    // permission scopes WHICH keys may call the endpoint, not which tenants they
+    // may reach. grantedTo the two consumer spokes' existing RELLO keys — no new
+    // key minted (a new key needs a new env var on four surfaces, the Harvest
+    // Home silent-outage class).
+    COMPLIANCE_FOOTER_READ: {
+        slug: "compliance:footer:read",
+        label: "Read Rello-rendered consumer-email compliance footer (NMLS disclosure)",
+        description: "HomeReady + The Home Stretch → Rello POST /api/v1/compliance/email-footer. The spoke posts subject references (who occupies each footer slot); Rello resolves each subject's own licence and returns the rendered Reg Z §1026.36(g)(1) disclosure HTML (originator + firm NMLS). Tenant is authorized by verifyTenantAppAccess (an enabled TenantApp row must link the requested tenant to the calling app — F11); this permission additionally scopes which keys may call the endpoint. Validated by Rello's validateApiKey. grantedTo the existing HOME_READY → RELLO and HOME_STRETCH → RELLO keys.",
+        validatedBy: ["rello"],
+        grantedTo: ["home-ready", "home-stretch"],
+    },
     // ─── Cross-app tenant + agents bootstrap fetch (SPEC OVEN-PATH-B-LAZY-PROVISION-RECEIVER-SELF-HEALING) ──
     // Receiver-side defense-in-depth: when an Oven webhook references an
     // unprovisioned tenant, Oven calls Rello GET
