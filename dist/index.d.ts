@@ -1089,6 +1089,13 @@ export declare const PERMISSIONS: {
         readonly validatedBy: readonly ["rello"];
         readonly grantedTo: readonly ["pathfinder-pro", "the-drumbeat"];
     };
+    readonly COMPLIANCE_FOOTER_READ: {
+        readonly slug: "compliance:footer:read";
+        readonly label: "Read Rello-rendered consumer-email compliance footer (NMLS disclosure)";
+        readonly description: "HomeReady + The Home Stretch → Rello POST /api/v1/compliance/email-footer. The spoke posts subject references (who occupies each footer slot); Rello resolves each subject's own licence and returns the rendered Reg Z §1026.36(g)(1) disclosure HTML (originator + firm NMLS). Tenant is authorized by verifyTenantAppAccess (an enabled TenantApp row must link the requested tenant to the calling app — F11); this permission additionally scopes which keys may call the endpoint. Validated by Rello's validateApiKey. grantedTo the existing HOME_READY → RELLO and HOME_STRETCH → RELLO keys.";
+        readonly validatedBy: readonly ["rello"];
+        readonly grantedTo: readonly ["home-ready", "home-stretch"];
+    };
     readonly TENANTS_BOOTSTRAP_READ: {
         readonly slug: "tenants:bootstrap-read";
         readonly label: "Read tenant + agents bootstrap payload for receiver-side lazy-provision";
