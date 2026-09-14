@@ -172,6 +172,13 @@ export declare const PERMISSIONS: {
         readonly validatedBy: readonly ["milo-engine", "property-engine", "content-engine", "report-engine", "journey-engine", "drumbeat-video-engine"];
         readonly grantedTo: readonly [];
     };
+    readonly NURTURE_OUTCOMES_WRITE: {
+        readonly slug: "nurture-outcomes:write";
+        readonly label: "Write nurture outcomes (Rello → Milo /api/outcome)";
+        readonly description: "Rello → Milo Engine POST /api/outcome and POST /api/outcome/delivered: learning outcomes (sent / opened / clicked / replied / converted / complained) and the delivery hop-2 echo that stamps the LeadContentHistory vault row. Milo's outcome-caller gate requires appSource RELLO plus this permission and refuses every other caller with 403 refused_caller. Held by the RELLO → MILO_ENGINE outbound key; validated by Milo Engine.";
+        readonly validatedBy: readonly ["milo-engine"];
+        readonly grantedTo: readonly ["rello"];
+    };
     readonly NEWSLETTERS_SEND: {
         readonly slug: "newsletters:send";
         readonly label: "Send newsletter (per-recipient nurture)";

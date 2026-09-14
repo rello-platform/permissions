@@ -1,7 +1,7 @@
 {
   "name": "@rello-platform/permissions",
-  "version": "0.51.0",
-  "description": "Canonical permission registry for the Rello ecosystem — single source of truth for inter-app permission slugs (Rello + 10 spokes + 6 engines).",
+  "version": "0.52.0",
+  "description": "Canonical permission registry for the Rello ecosystem \u2014 single source of truth for inter-app permission slugs (Rello + 10 spokes + 6 engines).",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "files": [
@@ -16,7 +16,8 @@
     "lint": "eslint .",
     "prepublishOnly": "npm run build",
     "regenerate:validatedBy": "tsx scripts/regenerate-validatedby.ts",
-    "prepare": "git config core.hooksPath .husky || true"
+    "prepare": "git config core.hooksPath .husky || true",
+    "test": "tsx --test src/index.test.ts"
   },
   "dependencies": {
     "@rello-platform/slugs": "github:rello-platform/slugs#v0.3.2"
