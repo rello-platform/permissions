@@ -190,6 +190,26 @@ export const PERMISSIONS = {
         ],
         grantedTo: [],
     },
+    // ─── Milo Engine — nurture outcome posts (Rello → Milo) ──────────────────
+    // Milo #207 gates POST /api/outcome and POST /api/outcome/delivered on the
+    // caller being RELLO AND holding this permission (Milo
+    // `src/lib/outcome-caller-gate.ts`); any other caller is refused with
+    // `403 { outcome: "refused_caller", missingPermission }`. Measured
+    // 2026-09-14: 23 outcome posts parked in Rello's FailedMiloOutcome because
+    // the slug was absent from this registry and therefore from the ApiKey
+    // permissions CHECK — the mint itself was refused by the database. Sibling
+    // to engine:access (which grants the engine cluster) but narrower: it names
+    // the one write that feeds Milo's learning weights and the delivery vault,
+    // so a key that composes cannot also rewrite outcomes without being told to.
+    // grantedTo the existing RELLO → MILO_ENGINE key ("Rello -> Milo",
+    // engine:access + support:write) once Kelly mints it — no new key.
+    NURTURE_OUTCOMES_WRITE: {
+        slug: "nurture-outcomes:write",
+        label: "Write nurture outcomes (Rello → Milo /api/outcome)",
+        description: "Rello → Milo Engine POST /api/outcome and POST /api/outcome/delivered: learning outcomes (sent / opened / clicked / replied / converted / complained) and the delivery hop-2 echo that stamps the LeadContentHistory vault row. Milo's outcome-caller gate requires appSource RELLO plus this permission and refuses every other caller with 403 refused_caller. Held by the RELLO → MILO_ENGINE outbound key; validated by Milo Engine.",
+        validatedBy: ["milo-engine"],
+        grantedTo: ["rello"],
+    },
     // ─── Newsletter Studio (Rello → NS dispatch) ──────────────────────────────
     NEWSLETTERS_SEND: {
         slug: "newsletters:send",
