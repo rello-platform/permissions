@@ -70,3 +70,7 @@ interface PermissionDefinition {
 - `v0.3.0` — populated `validatedBy` after Rello + NS receivers migrate.
 - `v0.4.0` — orphan prune; entries with empty `validatedBy` removed; CHECK constraint applied.
 - `v0.8.0` — Phase 1 #4 of PLATFORM-ADMIN-REBUILD: 22 additive entries — `lifestyle:read` + `lifestyle:write` (Q7.1 CE LocalSpot proxy); `lookups:read` + `listings:read` + `websites:read` (Q7.7 PE/CE per-engine narrows); `signals:read` + `signals:admin` (Q8.6 SignalRulesManager); 15 admin-role slugs (`tenants:{read,write,delete}`, `billing:{read,write}`, `support:{read,write}`, `analytics:read`, `settings:{read,write}`, `system:{read,write}`, `users:{read,write}`, `impersonate`) (Q9.9 retires `/admin/settings/security/page.tsx:18-27` parallel array; Q9.9 lock #2 expands package mission to admin-role permissions alongside existing S2S permissions — `admin:internal` precedent already mixes admin-class + S2S-class in the same registry).
+
+## Contributor setup
+
+After cloning, run `npm run hooks` once to wire the husky hooks (`core.hooksPath .husky`). This used to be the `prepare` script; C-33 (2026-09-16) moved it off the `prepare` name because npm runs a nested, lockfile-less install inside every git dependency whose manifest carries `prepare` (or `build`), and one such install failed two app builds on a registry blip.
