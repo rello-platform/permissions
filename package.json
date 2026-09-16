@@ -1,6 +1,6 @@
 {
   "name": "@rello-platform/permissions",
-  "version": "0.53.0",
+  "version": "0.54.0",
   "description": "Canonical permission registry for the Rello ecosystem — single source of truth for inter-app permission slugs (Rello + 10 spokes + 6 engines).",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -20,7 +20,7 @@
     "test": "tsx --test src/index.test.ts"
   },
   "dependencies": {
-    "@rello-platform/slugs": "github:rello-platform/slugs#v0.3.2"
+    "@rello-platform/slugs": "github:rello-platform/slugs#v0.7.0"
   },
   "devDependencies": {
     "@rello-platform/eslint-config": "github:rello-platform/eslint-config#v0.4.0",
