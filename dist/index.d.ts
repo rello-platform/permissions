@@ -450,7 +450,7 @@ export declare const PERMISSIONS: {
         readonly label: "Write tags";
         readonly description: "Create or update tag records.";
         readonly validatedBy: readonly ["rello"];
-        readonly grantedTo: readonly [];
+        readonly grantedTo: readonly ["harvest-home", "home-ready", "home-scout", "home-stretch", "journey-engine", "market-intel", "newsletter-studio", "open-house-hub", "the-oven"];
     };
     readonly TAGS_DELETE: {
         readonly slug: "tags:delete";
