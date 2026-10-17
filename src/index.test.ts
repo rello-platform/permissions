@@ -21,3 +21,25 @@ test("every registry entry's slug is in ALL_PERMISSION_SLUGS, and no slug is dup
   assert.equal(new Set(slugs).size, slugs.length, "duplicate slug in PERMISSIONS");
   for (const s of slugs) assert.ok(ALL_PERMISSION_SLUGS.includes(s as never), `${s} not derived`);
 });
+
+// #425 (DISCOVERED-RELLO-HH-TYPED-PAIR-MIGRATION-MISSED-TAGS-WRITE-260522):
+// tags:write was granted in production while the registry listed no holder.
+// The active holders measured read-only on 2026-10-16 (public."ApiKey", isActive,
+// unexpired, 'tags:write' = ANY(permissions)): 10 keys across these 9 appSources,
+// every one targeting RELLO.
+test("TAGS_WRITE.grantedTo lists every app that holds tags:write in production", () => {
+  assert.deepEqual(
+    [...PERMISSIONS.TAGS_WRITE.grantedTo].sort(),
+    [
+      "harvest-home",
+      "home-ready",
+      "home-scout",
+      "home-stretch",
+      "journey-engine",
+      "market-intel",
+      "newsletter-studio",
+      "open-house-hub",
+      "the-oven",
+    ],
+  );
+});

@@ -547,7 +547,18 @@ export const PERMISSIONS = {
         label: "Write tags",
         description: "Create or update tag records.",
         validatedBy: ["rello"],
-        grantedTo: [],
+        // Every active holder in production, measured 2026-10-16 (10 keys, all → RELLO).
+        grantedTo: [
+            "harvest-home",
+            "home-ready",
+            "home-scout",
+            "home-stretch",
+            "journey-engine",
+            "market-intel",
+            "newsletter-studio",
+            "open-house-hub",
+            "the-oven",
+        ],
     },
     TAGS_DELETE: {
         slug: "tags:delete",
