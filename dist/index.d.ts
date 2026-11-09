@@ -438,6 +438,27 @@ export declare const PERMISSIONS: {
         readonly validatedBy: readonly ["property-engine"];
         readonly grantedTo: readonly [];
     };
+    readonly LICENSED_AGENTS_READ: {
+        readonly slug: "licensed-agents:read";
+        readonly label: "Read the licensed-agent directory";
+        readonly description: "Property Engine receiver — GET /api/licensed-agents (filtered, cursor-paged), GET /api/licensed-agents/[id], GET /api/licensed-agents/stats and GET /api/licensed-directory/runs. Licensed real estate agents per state with licences, brokerage history and own contact points; platform-shared, no tenant. Held by the Rello → Property Engine key for the Platform Admin Licensed Directory page.";
+        readonly validatedBy: readonly ["property-engine"];
+        readonly grantedTo: readonly ["rello"];
+    };
+    readonly LICENSED_MLOS_READ: {
+        readonly slug: "licensed-mlos:read";
+        readonly label: "Read the licensed-MLO directory";
+        readonly description: "Property Engine receiver — GET /api/licensed-mlos, /api/licensed-mlos/[id] and /api/licensed-mlos/stats (LICENSED-PROFESSIONAL-DIRECTORY slice 7), keyed on NMLS ID. Declared with the agent slug so the set is whole; no route gates on it until slice 7. Held by the Rello → Property Engine key.";
+        readonly validatedBy: readonly ["property-engine"];
+        readonly grantedTo: readonly ["rello"];
+    };
+    readonly LICENSED_DIRECTORY_ADMIN: {
+        readonly slug: "licensed-directory:admin";
+        readonly label: "Administer the licensed directory";
+        readonly description: "Property Engine receiver — directory write actions from Rello Platform Admin: POST /api/licensed-directory/runs (run a source refresh now, slice 3) and the hand-entry / CSV import routes (slice 9). Held by the Rello → Property Engine key; every use is audit-logged on the Rello side.";
+        readonly validatedBy: readonly ["property-engine"];
+        readonly grantedTo: readonly ["rello"];
+    };
     readonly TAGS_READ: {
         readonly slug: "tags:read";
         readonly label: "Read tags";

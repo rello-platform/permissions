@@ -592,6 +592,34 @@ export const PERMISSIONS = {
     grantedTo: [],
   },
 
+  // ─── Licensed Professional Directory (Property Engine receiver) ──────────
+  // LICENSED-PROFESSIONAL-DIRECTORY slice 0 (spec §"Property Engine endpoints").
+  // The directory of licensed real estate agents (and, from slice 7, MLOs) is
+  // platform-shared public licence data with no tenant. Rello's Platform Admin
+  // → Licensed Directory page reads it through the existing RELLO →
+  // PROPERTY_ENGINE key, which carries all three; no new key.
+  LICENSED_AGENTS_READ: {
+    slug: "licensed-agents:read",
+    label: "Read the licensed-agent directory",
+    description: "Property Engine receiver — GET /api/licensed-agents (filtered, cursor-paged), GET /api/licensed-agents/[id], GET /api/licensed-agents/stats and GET /api/licensed-directory/runs. Licensed real estate agents per state with licences, brokerage history and own contact points; platform-shared, no tenant. Held by the Rello → Property Engine key for the Platform Admin Licensed Directory page.",
+    validatedBy: ["property-engine"],
+    grantedTo: ["rello"],
+  },
+  LICENSED_MLOS_READ: {
+    slug: "licensed-mlos:read",
+    label: "Read the licensed-MLO directory",
+    description: "Property Engine receiver — GET /api/licensed-mlos, /api/licensed-mlos/[id] and /api/licensed-mlos/stats (LICENSED-PROFESSIONAL-DIRECTORY slice 7), keyed on NMLS ID. Declared with the agent slug so the set is whole; no route gates on it until slice 7. Held by the Rello → Property Engine key.",
+    validatedBy: ["property-engine"],
+    grantedTo: ["rello"],
+  },
+  LICENSED_DIRECTORY_ADMIN: {
+    slug: "licensed-directory:admin",
+    label: "Administer the licensed directory",
+    description: "Property Engine receiver — directory write actions from Rello Platform Admin: POST /api/licensed-directory/runs (run a source refresh now, slice 3) and the hand-entry / CSV import routes (slice 9). Held by the Rello → Property Engine key; every use is audit-logged on the Rello side.",
+    validatedBy: ["property-engine"],
+    grantedTo: ["rello"],
+  },
+
   // ─── Tags ─────────────────────────────────────────────────────────────────
   TAGS_READ: {
     slug: "tags:read",
