@@ -43,3 +43,25 @@ test("TAGS_WRITE.grantedTo lists every app that holds tags:write in production",
     ],
   );
 });
+
+// LICENSED-PROFESSIONAL-DIRECTORY slice 0 (Platform KA prompt 735): Property
+// Engine's licensed-directory read routes gate on these three slugs, and Rello's
+// existing RELLO → PROPERTY_ENGINE key carries them. licensed-mlos:read is
+// declared now (consumed from slice 7) so the set is whole.
+test("licensed-directory slugs are canonical, validated by property-engine, granted to rello", () => {
+  const expected = {
+    LICENSED_AGENTS_READ: "licensed-agents:read",
+    LICENSED_MLOS_READ: "licensed-mlos:read",
+    LICENSED_DIRECTORY_ADMIN: "licensed-directory:admin",
+  } as const;
+  for (const [key, slug] of Object.entries(expected)) {
+    const def = (PERMISSIONS as Record<string, { slug: string; validatedBy: readonly string[]; grantedTo: readonly string[] }>)[key];
+    assert.ok(def, `${key} missing from PERMISSIONS`);
+    assert.equal(def.slug, slug);
+    assert.deepEqual([...def.validatedBy], ["property-engine"]);
+    assert.deepEqual([...def.grantedTo], ["rello"]);
+    assert.ok(ALL_PERMISSION_SLUGS.includes(slug as never), `${slug} missing from ALL_PERMISSION_SLUGS`);
+    assert.equal(SLUG_TO_KEY[slug as never], key);
+    assert.equal(isPermissionSlug(slug), true);
+  }
+});
