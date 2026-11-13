@@ -399,6 +399,29 @@ export const PERMISSIONS = {
     grantedTo: ["rello"],
   },
 
+  // ─── Growth templates (Rello → NS service routes, a2-155 / K92) ───────────
+  // Rello's Growth house sends its own marketing email through NS, and a design
+  // built in NS's template editor can render it (NS #368). These two receivers
+  // let Rello list the designs the Growth house may use and copy a Rello
+  // Platform design into the Growth house's own template set. Both routes read
+  // only the platform tenant and the Growth house tenant; the copy never writes
+  // the source. Validated by NS's platform-key-validator (ApiKey path); carried
+  // by the existing Rello → Newsletter Studio key once granted (no new key).
+  TEMPLATES_READ: {
+    slug: "templates:read",
+    label: "List Growth-usable designs",
+    description: "NS receiver — GET /api/service/templates?scope=growth. Lists the email designs the Rello Growth house may send with: the Rello Platform designs and the Growth house's own, read from those two tenants only. Held by the Rello → Newsletter Studio key; validated by NS's platform-key-validator (ApiKey path).",
+    validatedBy: ["newsletter-studio"],
+    grantedTo: ["rello"],
+  },
+  TEMPLATES_COPY: {
+    slug: "templates:copy",
+    label: "Copy a design into the Growth house",
+    description: "NS receiver — POST /api/service/templates/{id}/use-for-growth. Copies a Rello Platform design into the Growth house's own template set so its Growth emails can render with it; the source design is never written, and concurrent copies of one design make one row. Held by the Rello → Newsletter Studio key; validated by NS's platform-key-validator (ApiKey path).",
+    validatedBy: ["newsletter-studio"],
+    grantedTo: ["rello"],
+  },
+
   // ─── Agents ───────────────────────────────────────────────────────────────
   AGENTS_READ: {
     slug: "agents:read",

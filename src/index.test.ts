@@ -80,3 +80,25 @@ test("rates:refreshed is canonical, validated by rello, granted to pathfinder-pr
   assert.equal(SLUG_TO_KEY["rates:refreshed" as never], "RATES_REFRESHED");
   assert.equal(isPermissionSlug("rates:refreshed"), true);
 });
+
+// Growth templates (a2-155, K92; grant chain step 1, K75/K80): Newsletter
+// Studio's service routes for Rello's Growth house gate on these two slugs —
+// GET /api/service/templates?scope=growth on templates:read, and
+// POST /api/service/templates/{id}/use-for-growth on templates:copy. NS
+// validates; the Rello → Newsletter Studio key will carry them once granted.
+test("templates:read and templates:copy are canonical, validated by newsletter-studio, granted to rello", () => {
+  const expected = {
+    TEMPLATES_READ: "templates:read",
+    TEMPLATES_COPY: "templates:copy",
+  } as const;
+  for (const [key, slug] of Object.entries(expected)) {
+    const def = (PERMISSIONS as Record<string, { slug: string; validatedBy: readonly string[]; grantedTo: readonly string[] }>)[key];
+    assert.ok(def, `${key} missing from PERMISSIONS`);
+    assert.equal(def.slug, slug);
+    assert.deepEqual([...def.validatedBy], ["newsletter-studio"]);
+    assert.deepEqual([...def.grantedTo], ["rello"]);
+    assert.ok(ALL_PERMISSION_SLUGS.includes(slug as never), `${slug} missing from ALL_PERMISSION_SLUGS`);
+    assert.equal(SLUG_TO_KEY[slug as never], key);
+    assert.equal(isPermissionSlug(slug), true);
+  }
+});
