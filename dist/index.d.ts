@@ -1103,6 +1103,13 @@ export declare const PERMISSIONS: {
         readonly validatedBy: readonly ["rello"];
         readonly grantedTo: readonly ["home-scout"];
     };
+    readonly RATES_REFRESHED: {
+        readonly slug: "rates:refreshed";
+        readonly label: "Report a tenant's rates refreshed";
+        readonly description: "PathfinderPro → Rello POST /api/v1/rates/refreshed: PFP reports that a tenant's borrower-facing rates changed (a lender's own rate sheet moved), and Rello enqueues the `rates.refreshed` webhook to that tenant's subscribed Home Scout endpoints. Idempotent per (relloTenantId, seq). Held by the PathfinderPro → Rello key; validated by Rello's requireV1Auth (ApiKey path).";
+        readonly validatedBy: readonly ["rello"];
+        readonly grantedTo: readonly ["pathfinder-pro"];
+    };
     readonly COMPLIANCE_PHRASE_RULES_READ: {
         readonly slug: "compliance:phrase-rules:read";
         readonly label: "Read Rello FairLendingPhraseRule registry (versioned phrase-library)";

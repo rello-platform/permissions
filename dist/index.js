@@ -1556,6 +1556,23 @@ export const PERMISSIONS = {
         validatedBy: ["rello"],
         grantedTo: ["home-scout"],
     },
+    // ─── Rates refreshed (PFP → Rello → Home Scout, Platform KA prompt 1026) ──
+    // PathfinderPro tells Rello that a tenant's borrower-facing rates changed (a
+    // lender's own sheet moved), and Rello fans the event out to Home Scout as the
+    // `rates.refreshed` webhook so Rate Watch can re-price saved scenarios. The
+    // body carries no rates: { relloTenantId, occurredAt, seq, lenderIds[],
+    // effectiveAt }.
+    //
+    // Surface: Rello POST /api/v1/rates/refreshed, validated by requireV1Auth
+    // (ApiKey table; appSource=PATHFINDER_PRO, targetApp=RELLO; X-Tenant-Id names
+    // the tenant). Topology #1 (Rello-validated, Rello-granted).
+    RATES_REFRESHED: {
+        slug: "rates:refreshed",
+        label: "Report a tenant's rates refreshed",
+        description: "PathfinderPro → Rello POST /api/v1/rates/refreshed: PFP reports that a tenant's borrower-facing rates changed (a lender's own rate sheet moved), and Rello enqueues the `rates.refreshed` webhook to that tenant's subscribed Home Scout endpoints. Idempotent per (relloTenantId, seq). Held by the PathfinderPro → Rello key; validated by Rello's requireV1Auth (ApiKey path).",
+        validatedBy: ["rello"],
+        grantedTo: ["pathfinder-pro"],
+    },
     // ─── Compliance phrase-rules cross-app read (PFP + Drumbeat → Rello, SPEC-PFP-MLO-COMPLIANCE-GATES + SPEC-DRUM-MLO-COMPLIANCE-GATES) ──
     // Per SPEC-PFP-MLO-COMPLIANCE-GATES B-02 + Drumbeat sibling SPEC: Rello owns
     // the canonical FairLendingPhraseRule registry (versioned phrase-library
