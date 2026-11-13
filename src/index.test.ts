@@ -65,3 +65,18 @@ test("licensed-directory slugs are canonical, validated by property-engine, gran
     assert.equal(isPermissionSlug(slug), true);
   }
 });
+
+// GD rates.refreshed (Platform KA prompt 1026): PathfinderPro tells Rello a
+// tenant's borrower-facing rates changed (POST /api/v1/rates/refreshed), and
+// Rello fans it out to Home Scout as the `rates.refreshed` webhook event. Rello
+// validates the slug; the PathfinderPro → Rello key carries it.
+test("rates:refreshed is canonical, validated by rello, granted to pathfinder-pro", () => {
+  const def = (PERMISSIONS as Record<string, { slug: string; validatedBy: readonly string[]; grantedTo: readonly string[] }>).RATES_REFRESHED;
+  assert.ok(def, "RATES_REFRESHED missing from PERMISSIONS");
+  assert.equal(def.slug, "rates:refreshed");
+  assert.deepEqual([...def.validatedBy], ["rello"]);
+  assert.deepEqual([...def.grantedTo], ["pathfinder-pro"]);
+  assert.ok(ALL_PERMISSION_SLUGS.includes("rates:refreshed" as never), "rates:refreshed missing from ALL_PERMISSION_SLUGS");
+  assert.equal(SLUG_TO_KEY["rates:refreshed" as never], "RATES_REFRESHED");
+  assert.equal(isPermissionSlug("rates:refreshed"), true);
+});
