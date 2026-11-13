@@ -102,3 +102,20 @@ test("templates:read and templates:copy are canonical, validated by newsletter-s
     assert.equal(isPermissionSlug(slug), true);
   }
 });
+
+// PFP Gateway G-2 PR-4 (spec §4.5): GET /api/v1/billing/plan-grants gates on
+// billing:plan-grants:read. Rello validates (ApiKey path); only PFP's key is
+// granted it.
+test("billing:plan-grants:read is canonical, validated by rello, granted to pathfinder-pro only", () => {
+  const def = (PERMISSIONS as Record<string, { slug: string; validatedBy: readonly string[]; grantedTo: readonly string[] }>).BILLING_PLAN_GRANTS_READ;
+  assert.ok(def, "BILLING_PLAN_GRANTS_READ missing from PERMISSIONS");
+  assert.equal(def.slug, "billing:plan-grants:read");
+  assert.deepEqual([...def.validatedBy], ["rello"]);
+  assert.deepEqual([...def.grantedTo], ["pathfinder-pro"]);
+  assert.ok(ALL_PERMISSION_SLUGS.includes("billing:plan-grants:read" as never), "missing from ALL_PERMISSION_SLUGS");
+  assert.equal(SLUG_TO_KEY["billing:plan-grants:read" as never], "BILLING_PLAN_GRANTS_READ");
+  assert.equal(isPermissionSlug("billing:plan-grants:read"), true);
+  // The neighbouring admin-role billing slugs are unchanged and granted to no app.
+  assert.equal(isPermissionSlug("billing:plan-grants"), false);
+  assert.deepEqual([...(PERMISSIONS as Record<string, { grantedTo: readonly string[] }>).BILLING_READ.grantedTo], []);
+});

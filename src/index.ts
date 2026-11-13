@@ -969,6 +969,18 @@ export const PERMISSIONS = {
     validatedBy: ["rello"],
     grantedTo: [],
   },
+  // PFP Gateway G-2 PR-4 (spec §4.5): PFP's read-through for a gateway
+  // tenant's plan grants when its PfpPlanGrant row is missing. The route also
+  // requires the caller's appSource to be pathfinder-pro and the X-Tenant-Id to
+  // match the key's tenant (requireV1TenantMatch), so the slug alone is not the
+  // app restriction.
+  BILLING_PLAN_GRANTS_READ: {
+    slug: "billing:plan-grants:read",
+    label: "Read a tenant's plan grants",
+    description: "Rello receiver — GET /api/v1/billing/plan-grants. Returns { rev, grants, planSlug, cyr } from TenantPlanGrantState and the effective Check Your Rate record for the caller's own tenant (cyr null when never held). Granted only to PathfinderPro's key; the route also refuses any caller app other than pathfinder-pro and a mismatched X-Tenant-Id. Validated by Rello's ApiKey path (requireV1Auth).",
+    validatedBy: ["rello"],
+    grantedTo: ["pathfinder-pro"],
+  },
   SUPPORT_READ: {
     slug: "support:read",
     label: "Read support (admin role)",

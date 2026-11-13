@@ -739,6 +739,13 @@ export declare const PERMISSIONS: {
         readonly validatedBy: readonly ["rello"];
         readonly grantedTo: readonly [];
     };
+    readonly BILLING_PLAN_GRANTS_READ: {
+        readonly slug: "billing:plan-grants:read";
+        readonly label: "Read a tenant's plan grants";
+        readonly description: "Rello receiver — GET /api/v1/billing/plan-grants. Returns { rev, grants, planSlug, cyr } from TenantPlanGrantState and the effective Check Your Rate record for the caller's own tenant (cyr null when never held). Granted only to PathfinderPro's key; the route also refuses any caller app other than pathfinder-pro and a mismatched X-Tenant-Id. Validated by Rello's ApiKey path (requireV1Auth).";
+        readonly validatedBy: readonly ["rello"];
+        readonly grantedTo: readonly ["pathfinder-pro"];
+    };
     readonly SUPPORT_READ: {
         readonly slug: "support:read";
         readonly label: "Read support (admin role)";
