@@ -291,6 +291,20 @@ export declare const PERMISSIONS: {
         readonly validatedBy: readonly ["newsletter-studio"];
         readonly grantedTo: readonly ["rello"];
     };
+    readonly TEMPLATES_READ: {
+        readonly slug: "templates:read";
+        readonly label: "List Growth-usable designs";
+        readonly description: "NS receiver — GET /api/service/templates?scope=growth. Lists the email designs the Rello Growth house may send with: the Rello Platform designs and the Growth house's own, read from those two tenants only. Held by the Rello → Newsletter Studio key; validated by NS's platform-key-validator (ApiKey path).";
+        readonly validatedBy: readonly ["newsletter-studio"];
+        readonly grantedTo: readonly ["rello"];
+    };
+    readonly TEMPLATES_COPY: {
+        readonly slug: "templates:copy";
+        readonly label: "Copy a design into the Growth house";
+        readonly description: "NS receiver — POST /api/service/templates/{id}/use-for-growth. Copies a Rello Platform design into the Growth house's own template set so its Growth emails can render with it; the source design is never written, and concurrent copies of one design make one row. Held by the Rello → Newsletter Studio key; validated by NS's platform-key-validator (ApiKey path).";
+        readonly validatedBy: readonly ["newsletter-studio"];
+        readonly grantedTo: readonly ["rello"];
+    };
     readonly AGENTS_READ: {
         readonly slug: "agents:read";
         readonly label: "Read agents";
