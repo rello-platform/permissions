@@ -144,3 +144,23 @@ test("agents:contact:write is canonical, validated by rello, granted to pathfind
   assert.deepEqual([...defs.AGENTS_WRITE.validatedBy], ["rello"]);
   assert.equal(isPermissionSlug("agents:contact"), false);
 });
+
+// PFP Gateway G-RC (spec rev 10.20 §4.12d item 4 "Auth", H-162/K-196): Rello asks
+// Home Scout to price one realtor rate check for ONE loan officer through
+// POST /api/internal/rate-check/price. Home Scout validates (ApiKey path,
+// appSource RELLO, targetApp HOME_SCOUT); only Rello's key is granted it.
+test("rate-check:price is canonical, validated by home-scout, granted to rello only", () => {
+  type Def = { slug: string; label: string; description: string; validatedBy: readonly string[]; grantedTo: readonly string[] };
+  const def = (PERMISSIONS as Record<string, Def>).RATE_CHECK_PRICE;
+  assert.ok(def, "RATE_CHECK_PRICE missing from PERMISSIONS");
+  assert.equal(def.slug, "rate-check:price");
+  assert.equal(def.label, "Price a realtor rate check");
+  assert.match(def.description, /POST \/api\/internal\/rate-check\/price/);
+  assert.match(def.description, /appSource RELLO, targetApp HOME_SCOUT/);
+  assert.deepEqual([...def.validatedBy], ["home-scout"]);
+  assert.deepEqual([...def.grantedTo], ["rello"]);
+  assert.ok(ALL_PERMISSION_SLUGS.includes("rate-check:price" as never), "missing from ALL_PERMISSION_SLUGS");
+  assert.equal(SLUG_TO_KEY["rate-check:price" as never], "RATE_CHECK_PRICE");
+  assert.equal(isPermissionSlug("rate-check:price"), true);
+  assert.equal(isPermissionSlug("rate-check"), false);
+});
