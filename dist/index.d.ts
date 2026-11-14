@@ -319,6 +319,13 @@ export declare const PERMISSIONS: {
         readonly validatedBy: readonly ["rello"];
         readonly grantedTo: readonly [];
     };
+    readonly AGENTS_CONTACT_WRITE: {
+        readonly slug: "agents:contact:write";
+        readonly label: "Write agent contact";
+        readonly description: "PathfinderPro → Rello POST /api/provisioning/agent-contact. Sets or clears ONE agent's phone in the key's own tenant; no other field is writable. Validated by Rello through the ApiKey table.";
+        readonly validatedBy: readonly ["rello"];
+        readonly grantedTo: readonly ["pathfinder-pro"];
+    };
     readonly ARTICLES_SYNC: {
         readonly slug: "articles:sync";
         readonly label: "Sync articles";
