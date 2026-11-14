@@ -119,3 +119,28 @@ test("billing:plan-grants:read is canonical, validated by rello, granted to path
   assert.equal(isPermissionSlug("billing:plan-grants"), false);
   assert.deepEqual([...(PERMISSIONS as Record<string, { grantedTo: readonly string[] }>).BILLING_READ.grantedTo], []);
 });
+
+// PFP Gateway G-2 follow-up (spec rev 10.18, G-4a "the phone field", K-194):
+// PathfinderPro → Rello POST /api/provisioning/agent-contact sets or clears ONE
+// agent's phone. It needs its own narrow slug: the broad agents:write (Rello
+// staff roster writes) must not be widened or reused for it.
+test("agents:contact:write is canonical, validated by rello, granted to pathfinder-pro only; agents:write is unchanged", () => {
+  type Def = { slug: string; label: string; description: string; validatedBy: readonly string[]; grantedTo: readonly string[] };
+  const defs = PERMISSIONS as Record<string, Def>;
+  const def = defs.AGENTS_CONTACT_WRITE;
+  assert.ok(def, "AGENTS_CONTACT_WRITE missing from PERMISSIONS");
+  assert.equal(def.slug, "agents:contact:write");
+  assert.equal(def.label, "Write agent contact");
+  assert.match(def.description, /POST \/api\/provisioning\/agent-contact/);
+  assert.match(def.description, /no other field is writable/);
+  assert.deepEqual([...def.validatedBy], ["rello"]);
+  assert.deepEqual([...def.grantedTo], ["pathfinder-pro"]);
+  assert.ok(ALL_PERMISSION_SLUGS.includes("agents:contact:write" as never), "missing from ALL_PERMISSION_SLUGS");
+  assert.equal(SLUG_TO_KEY["agents:contact:write" as never], "AGENTS_CONTACT_WRITE");
+  assert.equal(isPermissionSlug("agents:contact:write"), true);
+  // The broad roster permission is not widened: same slug, granted to no app.
+  assert.equal(defs.AGENTS_WRITE.slug, "agents:write");
+  assert.deepEqual([...defs.AGENTS_WRITE.grantedTo], []);
+  assert.deepEqual([...defs.AGENTS_WRITE.validatedBy], ["rello"]);
+  assert.equal(isPermissionSlug("agents:contact"), false);
+});

@@ -392,6 +392,16 @@ export const PERMISSIONS = {
         validatedBy: ["rello"],
         grantedTo: [],
     },
+    // PFP Gateway G-2 follow-up (spec G-4a "the phone field", K-194): a narrow
+    // slug for one field, deliberately NOT agents:write (the broad roster
+    // permission Rello staff routes use), so PFP's key can never write a roster.
+    AGENTS_CONTACT_WRITE: {
+        slug: "agents:contact:write",
+        label: "Write agent contact",
+        description: "PathfinderPro → Rello POST /api/provisioning/agent-contact. Sets or clears ONE agent's phone in the key's own tenant; no other field is writable. Validated by Rello through the ApiKey table.",
+        validatedBy: ["rello"],
+        grantedTo: ["pathfinder-pro"],
+    },
     // ─── Articles ─────────────────────────────────────────────────────────────
     ARTICLES_SYNC: {
         slug: "articles:sync",
