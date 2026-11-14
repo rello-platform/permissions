@@ -164,3 +164,49 @@ test("rate-check:price is canonical, validated by home-scout, granted to rello o
   assert.equal(isPermissionSlug("rate-check:price"), true);
   assert.equal(isPermissionSlug("rate-check"), false);
 });
+
+// PFP Gateway G-SETUP + G-A2P (spec SPEC-PFP-GATEWAY.md rev 10.21 §4.12d;
+// KA prompt 1122): PathfinderPro → Rello. setup-charge:write covers the $99
+// one-time setup fee (POST + GET /api/provisioning/setup-charge, GET .../fee);
+// sms:registration:write covers one loan officer's Twilio A2P registration
+// (POST + GET /api/provisioning/sms-registration, POST .../otp). Both are
+// narrow slugs: the admin-role billing:* entries stay granted to no app.
+test("billing:setup-charge:write and sms:registration:write are canonical, validated by rello, granted to pathfinder-pro only; billing:* admin slugs unchanged", () => {
+  type Def = { slug: string; label: string; description: string; validatedBy: readonly string[]; grantedTo: readonly string[] };
+  const defs = PERMISSIONS as Record<string, Def>;
+
+  const charge = defs.BILLING_SETUP_CHARGE_WRITE;
+  assert.ok(charge, "BILLING_SETUP_CHARGE_WRITE missing from PERMISSIONS");
+  assert.equal(charge.slug, "billing:setup-charge:write");
+  assert.equal(charge.label, "Charge a loan officer's setup fee");
+  assert.match(charge.description, /POST \/api\/provisioning\/setup-charge\b/);
+  assert.match(charge.description, /GET \/api\/provisioning\/setup-charge\b/);
+  assert.match(charge.description, /GET \/api\/provisioning\/setup-charge\/fee/);
+  assert.deepEqual([...charge.validatedBy], ["rello"]);
+  assert.deepEqual([...charge.grantedTo], ["pathfinder-pro"]);
+
+  const reg = defs.SMS_REGISTRATION_WRITE;
+  assert.ok(reg, "SMS_REGISTRATION_WRITE missing from PERMISSIONS");
+  assert.equal(reg.slug, "sms:registration:write");
+  assert.equal(reg.label, "Register a loan officer for texting");
+  assert.match(reg.description, /POST \/api\/provisioning\/sms-registration\b/);
+  assert.match(reg.description, /GET \/api\/provisioning\/sms-registration\b/);
+  assert.match(reg.description, /POST \/api\/provisioning\/sms-registration\/otp/);
+  assert.deepEqual([...reg.validatedBy], ["rello"]);
+  assert.deepEqual([...reg.grantedTo], ["pathfinder-pro"]);
+
+  for (const [slug, key] of [
+    ["billing:setup-charge:write", "BILLING_SETUP_CHARGE_WRITE"],
+    ["sms:registration:write", "SMS_REGISTRATION_WRITE"],
+  ] as const) {
+    assert.ok(ALL_PERMISSION_SLUGS.includes(slug as never), `${slug} missing from ALL_PERMISSION_SLUGS`);
+    assert.equal(SLUG_TO_KEY[slug as never], key);
+    assert.equal(isPermissionSlug(slug), true);
+  }
+  assert.equal(isPermissionSlug("billing:setup-charge"), false);
+  assert.equal(isPermissionSlug("sms:registration"), false);
+
+  // The admin-role billing slugs and sms:send are not widened.
+  for (const k of ["BILLING_READ", "BILLING_WRITE", "BILLING_ADMIN"]) assert.deepEqual([...defs[k].grantedTo], []);
+  assert.deepEqual([...defs.SMS_SEND.grantedTo], ["pathfinder-pro"]);
+});

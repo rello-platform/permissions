@@ -620,6 +620,13 @@ export declare const PERMISSIONS: {
         readonly validatedBy: readonly ["rello"];
         readonly grantedTo: readonly ["pathfinder-pro"];
     };
+    readonly SMS_REGISTRATION_WRITE: {
+        readonly slug: "sms:registration:write";
+        readonly label: "Register a loan officer for texting";
+        readonly description: "PathfinderPro → Rello. POST /api/provisioning/sms-registration submits or updates ONE loan officer's A2P 10DLC registration details (tenantId + relloAgentId) in the key's own tenant; GET /api/provisioning/sms-registration reads its state; POST /api/provisioning/sms-registration/otp re-sends a sole proprietor's verification code. Sends no message. Validated by Rello through the ApiKey table.";
+        readonly validatedBy: readonly ["rello"];
+        readonly grantedTo: readonly ["pathfinder-pro"];
+    };
     readonly SOCIAL_READ: {
         readonly slug: "social:read";
         readonly label: "Read social credentials";
@@ -757,6 +764,13 @@ export declare const PERMISSIONS: {
         readonly slug: "billing:plan-grants:read";
         readonly label: "Read a tenant's plan grants";
         readonly description: "Rello receiver — GET /api/v1/billing/plan-grants. Returns { rev, grants, planSlug, cyr } from TenantPlanGrantState and the effective Check Your Rate record for the caller's own tenant (cyr null when never held). Granted only to PathfinderPro's key; the route also refuses any caller app other than pathfinder-pro and a mismatched X-Tenant-Id. Validated by Rello's ApiKey path (requireV1Auth).";
+        readonly validatedBy: readonly ["rello"];
+        readonly grantedTo: readonly ["pathfinder-pro"];
+    };
+    readonly BILLING_SETUP_CHARGE_WRITE: {
+        readonly slug: "billing:setup-charge:write";
+        readonly label: "Charge a loan officer's setup fee";
+        readonly description: "PathfinderPro → Rello. POST /api/provisioning/setup-charge charges the one-time setup fee once for ONE loan officer (tenantId + relloAgentId) in the key's own tenant; GET /api/provisioning/setup-charge reads that charge's state; GET /api/provisioning/setup-charge/fee reads the fee's current amount. Refunds are Rello's own decision, never this caller's. Validated by Rello through the ApiKey table.";
         readonly validatedBy: readonly ["rello"];
         readonly grantedTo: readonly ["pathfinder-pro"];
     };
