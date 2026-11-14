@@ -774,6 +774,13 @@ export declare const PERMISSIONS: {
         readonly validatedBy: readonly ["rello"];
         readonly grantedTo: readonly ["pathfinder-pro"];
     };
+    readonly BILLING_PLAN_SWITCH_WRITE: {
+        readonly slug: "billing:plan-switch:write";
+        readonly label: "Switch a tenant's plan";
+        readonly description: "PathfinderPro → Rello. POST /api/v1/billing/plan-switch switches the key's own tenant to another plan of the same app (target plan, interval, Refi Radar and Check Your Rate keep/drop, idempotency key), crediting unused time; GET /api/v1/billing/plan-switch/preview returns the proration lines that switch would invoice; GET /api/v1/billing/plan-switch/[operationId] reads one switch's state. Never changes another tenant, invoices or refunds. Validated by Rello through the ApiKey table.";
+        readonly validatedBy: readonly ["rello"];
+        readonly grantedTo: readonly ["pathfinder-pro"];
+    };
     readonly SUPPORT_READ: {
         readonly slug: "support:read";
         readonly label: "Read support (admin role)";

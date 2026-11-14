@@ -946,6 +946,18 @@ export const PERMISSIONS = {
         validatedBy: ["rello"],
         grantedTo: ["pathfinder-pro"],
     },
+    // PFP Gateway G-10R (spec SPEC-PFP-GATEWAY.md rev 10.22 §4.10/§6 G-10R; KA
+    // prompt 1116, relay 1132): a gateway tenant's own plan switch with credit.
+    // Deliberately NOT billing:write (the admin-role Platform Admin scope): this
+    // key can move its own tenant between the plans of its own app and nothing
+    // else. Platform Admin's by-hand switch uses a session, not this slug.
+    BILLING_PLAN_SWITCH_WRITE: {
+        slug: "billing:plan-switch:write",
+        label: "Switch a tenant's plan",
+        description: "PathfinderPro → Rello. POST /api/v1/billing/plan-switch switches the key's own tenant to another plan of the same app (target plan, interval, Refi Radar and Check Your Rate keep/drop, idempotency key), crediting unused time; GET /api/v1/billing/plan-switch/preview returns the proration lines that switch would invoice; GET /api/v1/billing/plan-switch/[operationId] reads one switch's state. Never changes another tenant, invoices or refunds. Validated by Rello through the ApiKey table.",
+        validatedBy: ["rello"],
+        grantedTo: ["pathfinder-pro"],
+    },
     SUPPORT_READ: {
         slug: "support:read",
         label: "Read support (admin role)",
