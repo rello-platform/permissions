@@ -806,6 +806,16 @@ export const PERMISSIONS = {
     grantedTo: [],
   },
 
+  // ─── Scout receiver — realtor rate-check pricing (Rello → Scout, PFP Gateway G-RC) ───
+  // Spec SPEC-PFP-GATEWAY.md rev 10.20 §4.12d item 4 "Auth" (H-162, K-196).
+  RATE_CHECK_PRICE: {
+    slug: "rate-check:price",
+    label: "Price a realtor rate check",
+    description: "Rello → Home Scout POST /api/internal/rate-check/price. Asks Home Scout to price one realtor rate check for ONE loan officer (relloTenantId + relloAgentId) through that loan officer's own pricing path; answers priced/unpriced/stale/no_lender/not_licensed/unknown. Validated by Home Scout through Rello's ApiKey table (appSource RELLO, targetApp HOME_SCOUT).",
+    validatedBy: ["home-scout"],
+    grantedTo: ["rello"],
+  },
+
   // ─── SMS (Twilio chokepoint) ──────────────────────────────────────────────
   // Rello is the platform's SMS chokepoint per
   // feedback-vendor-key-chokepoint-per-data-domain — the Twilio account, sender pool,

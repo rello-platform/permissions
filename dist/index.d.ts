@@ -606,6 +606,13 @@ export declare const PERMISSIONS: {
         readonly validatedBy: readonly ["home-scout"];
         readonly grantedTo: readonly [];
     };
+    readonly RATE_CHECK_PRICE: {
+        readonly slug: "rate-check:price";
+        readonly label: "Price a realtor rate check";
+        readonly description: "Rello → Home Scout POST /api/internal/rate-check/price. Asks Home Scout to price one realtor rate check for ONE loan officer (relloTenantId + relloAgentId) through that loan officer's own pricing path; answers priced/unpriced/stale/no_lender/not_licensed/unknown. Validated by Home Scout through Rello's ApiKey table (appSource RELLO, targetApp HOME_SCOUT).";
+        readonly validatedBy: readonly ["home-scout"];
+        readonly grantedTo: readonly ["rello"];
+    };
     readonly SMS_SEND: {
         readonly slug: "sms:send";
         readonly label: "Send transactional SMS via Rello Twilio chokepoint";
