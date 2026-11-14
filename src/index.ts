@@ -835,6 +835,17 @@ export const PERMISSIONS = {
     validatedBy: ["rello"],
     grantedTo: ["pathfinder-pro"],
   },
+  // PFP Gateway G-A2P (spec SPEC-PFP-GATEWAY.md rev 10.21 §4.12d; KA prompt
+  // 1122): Rello registers ONE loan officer for 10DLC texting on its Twilio
+  // account (brand, campaign, messaging service, number). Distinct from
+  // sms:send: holding this slug sends no message.
+  SMS_REGISTRATION_WRITE: {
+    slug: "sms:registration:write",
+    label: "Register a loan officer for texting",
+    description: "PathfinderPro → Rello. POST /api/provisioning/sms-registration submits or updates ONE loan officer's A2P 10DLC registration details (tenantId + relloAgentId) in the key's own tenant; GET /api/provisioning/sms-registration reads its state; POST /api/provisioning/sms-registration/otp re-sends a sole proprietor's verification code. Sends no message. Validated by Rello through the ApiKey table.",
+    validatedBy: ["rello"],
+    grantedTo: ["pathfinder-pro"],
+  },
 
   // ─── Social integrations ──────────────────────────────────────────────────
   SOCIAL_READ: {
@@ -998,6 +1009,17 @@ export const PERMISSIONS = {
     slug: "billing:plan-grants:read",
     label: "Read a tenant's plan grants",
     description: "Rello receiver — GET /api/v1/billing/plan-grants. Returns { rev, grants, planSlug, cyr } from TenantPlanGrantState and the effective Check Your Rate record for the caller's own tenant (cyr null when never held). Granted only to PathfinderPro's key; the route also refuses any caller app other than pathfinder-pro and a mismatched X-Tenant-Id. Validated by Rello's ApiKey path (requireV1Auth).",
+    validatedBy: ["rello"],
+    grantedTo: ["pathfinder-pro"],
+  },
+  // PFP Gateway G-SETUP (spec SPEC-PFP-GATEWAY.md rev 10.21 §4.12d; KA prompt
+  // 1122): the one-time setup fee per loan officer. Deliberately NOT
+  // billing:write (the admin-role Platform Admin scope), so PFP's key can
+  // never touch plans, invoices or refunds beyond this one fee.
+  BILLING_SETUP_CHARGE_WRITE: {
+    slug: "billing:setup-charge:write",
+    label: "Charge a loan officer's setup fee",
+    description: "PathfinderPro → Rello. POST /api/provisioning/setup-charge charges the one-time setup fee once for ONE loan officer (tenantId + relloAgentId) in the key's own tenant; GET /api/provisioning/setup-charge reads that charge's state; GET /api/provisioning/setup-charge/fee reads the fee's current amount. Refunds are Rello's own decision, never this caller's. Validated by Rello through the ApiKey table.",
     validatedBy: ["rello"],
     grantedTo: ["pathfinder-pro"],
   },
