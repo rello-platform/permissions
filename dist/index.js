@@ -402,6 +402,23 @@ export const PERMISSIONS = {
         validatedBy: ["rello"],
         grantedTo: ["pathfinder-pro"],
     },
+    // PFP Gateway X2 (spec rev 10.30 §6 [D30] / G-EXTRAS, D33; KA prompt 1152).
+    // Two narrow roster slugs for PathfinderPro's settings, deliberately NOT
+    // agents:write: each opens only its own routes, in the key's own tenant.
+    AGENTS_LOGINLESS_WRITE: {
+        slug: "agents:loginless:write",
+        label: "Add or remove a no-login loan officer",
+        description: "PathfinderPro → Rello POST /api/provisioning/loginless-agent and POST /api/provisioning/loginless-agent/[agentId]/remove. Adds an extra-signature loan officer (D30): a Rello Agent with no login and no User, within the account's paid extra-signature quantity; remove sets it INACTIVE, never deletes. Validated by Rello through the ApiKey table.",
+        validatedBy: ["rello"],
+        grantedTo: ["pathfinder-pro"],
+    },
+    TEAM_MEMBERS_WRITE: {
+        slug: "team:members:write",
+        label: "Add or remove a team login",
+        description: "PathfinderPro → Rello POST /api/provisioning/team-member, POST /api/provisioning/team-member/[userId]/sign-in-link and POST /api/provisioning/team-member/[userId]/remove. Adds a full Team login (D33: a User and its Agent) within the plan's included users plus the paid extra-login quantity, resends its PathfinderPro sign-in link, or deactivates it (never deletes). Validated by Rello through the ApiKey table.",
+        validatedBy: ["rello"],
+        grantedTo: ["pathfinder-pro"],
+    },
     // ─── Articles ─────────────────────────────────────────────────────────────
     ARTICLES_SYNC: {
         slug: "articles:sync",

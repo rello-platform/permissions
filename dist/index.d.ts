@@ -326,6 +326,20 @@ export declare const PERMISSIONS: {
         readonly validatedBy: readonly ["rello"];
         readonly grantedTo: readonly ["pathfinder-pro"];
     };
+    readonly AGENTS_LOGINLESS_WRITE: {
+        readonly slug: "agents:loginless:write";
+        readonly label: "Add or remove a no-login loan officer";
+        readonly description: "PathfinderPro → Rello POST /api/provisioning/loginless-agent and POST /api/provisioning/loginless-agent/[agentId]/remove. Adds an extra-signature loan officer (D30): a Rello Agent with no login and no User, within the account's paid extra-signature quantity; remove sets it INACTIVE, never deletes. Validated by Rello through the ApiKey table.";
+        readonly validatedBy: readonly ["rello"];
+        readonly grantedTo: readonly ["pathfinder-pro"];
+    };
+    readonly TEAM_MEMBERS_WRITE: {
+        readonly slug: "team:members:write";
+        readonly label: "Add or remove a team login";
+        readonly description: "PathfinderPro → Rello POST /api/provisioning/team-member, POST /api/provisioning/team-member/[userId]/sign-in-link and POST /api/provisioning/team-member/[userId]/remove. Adds a full Team login (D33: a User and its Agent) within the plan's included users plus the paid extra-login quantity, resends its PathfinderPro sign-in link, or deactivates it (never deletes). Validated by Rello through the ApiKey table.";
+        readonly validatedBy: readonly ["rello"];
+        readonly grantedTo: readonly ["pathfinder-pro"];
+    };
     readonly ARTICLES_SYNC: {
         readonly slug: "articles:sync";
         readonly label: "Sync articles";
