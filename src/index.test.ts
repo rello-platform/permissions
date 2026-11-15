@@ -238,3 +238,43 @@ test("billing:plan-switch:write is canonical, validated by rello, granted to pat
   for (const k of ["BILLING_READ", "BILLING_WRITE", "BILLING_ADMIN"]) assert.deepEqual([...defs[k].grantedTo], []);
   for (const k of ["BILLING_PLAN_GRANTS_READ", "BILLING_SETUP_CHARGE_WRITE"]) assert.deepEqual([...defs[k].grantedTo], ["pathfinder-pro"]);
 });
+
+// PFP Gateway X2 (spec SPEC-PFP-GATEWAY.md rev 10.30 §6 [D30], G-EXTRAS / D33;
+// KA prompt 1152, plan a4-1151 ruled): two narrow PathfinderPro → Rello roster
+// slugs. Neither is agents:write (the broad roster permission), which stays
+// granted to no PFP key.
+test("agents:loginless:write and team:members:write are canonical, validated by rello, granted to pathfinder-pro only; agents:write unchanged", () => {
+  type Def = { slug: string; label: string; description: string; validatedBy: readonly string[]; grantedTo: readonly string[] };
+  const defs = PERMISSIONS as Record<string, Def>;
+
+  const la = defs.AGENTS_LOGINLESS_WRITE;
+  assert.ok(la, "AGENTS_LOGINLESS_WRITE missing from PERMISSIONS");
+  assert.equal(la.slug, "agents:loginless:write");
+  assert.equal(la.label, "Add or remove a no-login loan officer");
+  assert.match(la.description, /POST \/api\/provisioning\/loginless-agent\b/);
+  assert.match(la.description, /POST \/api\/provisioning\/loginless-agent\/\[agentId\]\/remove/);
+  assert.deepEqual([...la.validatedBy], ["rello"]);
+  assert.deepEqual([...la.grantedTo], ["pathfinder-pro"]);
+
+  const tm = defs.TEAM_MEMBERS_WRITE;
+  assert.ok(tm, "TEAM_MEMBERS_WRITE missing from PERMISSIONS");
+  assert.equal(tm.slug, "team:members:write");
+  assert.equal(tm.label, "Add or remove a team login");
+  assert.match(tm.description, /POST \/api\/provisioning\/team-member\b/);
+  assert.match(tm.description, /POST \/api\/provisioning\/team-member\/\[userId\]\/sign-in-link/);
+  assert.match(tm.description, /POST \/api\/provisioning\/team-member\/\[userId\]\/remove/);
+  assert.deepEqual([...tm.validatedBy], ["rello"]);
+  assert.deepEqual([...tm.grantedTo], ["pathfinder-pro"]);
+
+  for (const [slug, key] of [["agents:loginless:write", "AGENTS_LOGINLESS_WRITE"], ["team:members:write", "TEAM_MEMBERS_WRITE"]] as const) {
+    assert.ok(ALL_PERMISSION_SLUGS.includes(slug as never), `${slug} missing from ALL_PERMISSION_SLUGS`);
+    assert.equal(SLUG_TO_KEY[slug as never], key);
+    assert.equal(isPermissionSlug(slug), true);
+  }
+  assert.equal(isPermissionSlug("team:members"), false);
+  assert.equal(isPermissionSlug("agents:loginless"), false);
+
+  // The broad roster slug is not widened to PFP; the phone slug is unchanged.
+  assert.equal(defs.AGENTS_WRITE.grantedTo.includes("pathfinder-pro"), false);
+  assert.deepEqual([...defs.AGENTS_CONTACT_WRITE.grantedTo], ["pathfinder-pro"]);
+});
