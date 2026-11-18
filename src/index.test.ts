@@ -278,3 +278,32 @@ test("agents:loginless:write and team:members:write are canonical, validated by 
   assert.equal(defs.AGENTS_WRITE.grantedTo.includes("pathfinder-pro"), false);
   assert.deepEqual([...defs.AGENTS_CONTACT_WRITE.grantedTo], ["pathfinder-pro"]);
 });
+
+// PFP Gateway P-2 (MAP-P2-EMBED-TOKEN-F2-261118; Platform KA prompt 1306): the
+// embed token (PFP mints, HS verifies, at Rello) and F2 (HS asks Rello; PFP's
+// three Rate Watch routes at HS). One slug per route; none is a broad slug.
+test("P-2 embed-token and F2 slugs are canonical, with the right validator and grantee", () => {
+  type Def = { slug: string; label: string; description: string; validatedBy: readonly string[]; grantedTo: readonly string[] };
+  const defs = PERMISSIONS as Record<string, Def>;
+  const want: ReadonlyArray<readonly [string, string, string, string, RegExp]> = [
+    ["EMBED_TOKEN_MINT", "embed-token:mint", "rello", "pathfinder-pro", /POST \/api\/v1\/embed-tokens\b(?!\/)/],
+    ["EMBED_TOKEN_VERIFY", "embed-token:verify", "rello", "home-scout", /POST \/api\/v1\/embed-tokens\/verify\b/],
+    ["TENANT_APPS_READ", "tenant-apps:read", "rello", "home-scout", /GET \/api\/v1\/platform\/tenant-app-access\b/],
+    ["RATE_WATCH_ACTIVE_COUNT_READ", "rate-watch:active-count:read", "home-scout", "pathfinder-pro", /GET \/api\/internal\/rate-watch\/active-count\b/],
+    ["RATE_WATCH_END_AGENT_WRITE", "rate-watch:end-agent:write", "home-scout", "pathfinder-pro", /POST \/api\/internal\/rate-watch\/end-agent\b/],
+    ["RATE_WATCH_END_TENANT_WRITE", "rate-watch:end-tenant:write", "home-scout", "pathfinder-pro", /POST \/api\/internal\/rate-watch\/end-tenant\b/],
+  ];
+  for (const [key, slug, validator, grantee, route] of want) {
+    const d = defs[key];
+    assert.ok(d, `${key} missing from PERMISSIONS`);
+    assert.equal(d.slug, slug);
+    assert.match(d.description, route);
+    assert.deepEqual([...d.validatedBy], [validator], `${key} validatedBy`);
+    assert.deepEqual([...d.grantedTo], [grantee], `${key} grantedTo`);
+    assert.ok(ALL_PERMISSION_SLUGS.includes(slug as never), `${slug} missing from ALL_PERMISSION_SLUGS`);
+    assert.equal(SLUG_TO_KEY[slug as never], key);
+    assert.equal(isPermissionSlug(slug), true);
+  }
+  assert.equal(isPermissionSlug("embed-token"), false);
+  assert.equal(isPermissionSlug("rate-watch:write"), false);
+});
