@@ -800,7 +800,7 @@ export declare const PERMISSIONS: {
         readonly label: "Read billing (admin role)";
         readonly description: "Rello admin-role permission — read-side access to billing/Stripe surfaces via Platform Admin Billing pages.";
         readonly validatedBy: readonly ["rello"];
-        readonly grantedTo: readonly [];
+        readonly grantedTo: readonly ["pathfinder-pro"];
     };
     readonly BILLING_WRITE: {
         readonly slug: "billing:write";

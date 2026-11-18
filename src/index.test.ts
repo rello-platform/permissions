@@ -117,7 +117,8 @@ test("billing:plan-grants:read is canonical, validated by rello, granted to path
   assert.equal(isPermissionSlug("billing:plan-grants:read"), true);
   // The neighbouring admin-role billing slugs are unchanged and granted to no app.
   assert.equal(isPermissionSlug("billing:plan-grants"), false);
-  assert.deepEqual([...(PERMISSIONS as Record<string, { grantedTo: readonly string[] }>).BILLING_READ.grantedTo], []);
+  // billing:read is granted to pathfinder-pro since G-LR Part B (see the test at the end of this file).
+  assert.deepEqual([...(PERMISSIONS as Record<string, { grantedTo: readonly string[] }>).BILLING_READ.grantedTo], ["pathfinder-pro"]);
 });
 
 // PFP Gateway G-2 follow-up (spec rev 10.18, G-4a "the phone field", K-194):
@@ -207,7 +208,8 @@ test("billing:setup-charge:write and sms:registration:write are canonical, valid
   assert.equal(isPermissionSlug("sms:registration"), false);
 
   // The admin-role billing slugs and sms:send are not widened.
-  for (const k of ["BILLING_READ", "BILLING_WRITE", "BILLING_ADMIN"]) assert.deepEqual([...defs[k].grantedTo], []);
+  for (const k of ["BILLING_WRITE", "BILLING_ADMIN"]) assert.deepEqual([...defs[k].grantedTo], []);
+  assert.deepEqual([...defs.BILLING_READ.grantedTo], ["pathfinder-pro"]); // G-LR Part B
   assert.deepEqual([...defs.SMS_SEND.grantedTo], ["pathfinder-pro"]);
 });
 
@@ -235,7 +237,8 @@ test("billing:plan-switch:write is canonical, validated by rello, granted to pat
   assert.equal(isPermissionSlug("billing:plan-switch"), false);
 
   // The admin-role billing slugs are not widened, and the sibling PFP billing slugs are unchanged.
-  for (const k of ["BILLING_READ", "BILLING_WRITE", "BILLING_ADMIN"]) assert.deepEqual([...defs[k].grantedTo], []);
+  for (const k of ["BILLING_WRITE", "BILLING_ADMIN"]) assert.deepEqual([...defs[k].grantedTo], []);
+  assert.deepEqual([...defs.BILLING_READ.grantedTo], ["pathfinder-pro"]); // G-LR Part B
   for (const k of ["BILLING_PLAN_GRANTS_READ", "BILLING_SETUP_CHARGE_WRITE"]) assert.deepEqual([...defs[k].grantedTo], ["pathfinder-pro"]);
 });
 
@@ -306,4 +309,27 @@ test("P-2 embed-token and F2 slugs are canonical, with the right validator and g
   }
   assert.equal(isPermissionSlug("embed-token"), false);
   assert.equal(isPermissionSlug("rate-watch:write"), false);
+});
+
+// PFP Gateway G-LR Part B (Platform KA prompt 1323): PathfinderPro reads Rello's
+// add-on catalog at GET /api/v1/billing/add-ons, which Rello gates on
+// billing:read (Rello #2452). billing:read gains exactly one grantee,
+// pathfinder-pro; Rello still validates it, and billing:write / billing:admin
+// stay granted to no app.
+test("billing:read is validated by rello and granted to pathfinder-pro only; billing:write and billing:admin unchanged", () => {
+  type Def = { slug: string; label: string; description: string; validatedBy: readonly string[]; grantedTo: readonly string[] };
+  const defs = PERMISSIONS as Record<string, Def>;
+  const read = defs.BILLING_READ;
+  assert.ok(read, "BILLING_READ missing from PERMISSIONS");
+  assert.equal(read.slug, "billing:read");
+  assert.equal(read.label, "Read billing (admin role)");
+  assert.deepEqual([...read.validatedBy], ["rello"]);
+  assert.deepEqual([...read.grantedTo], ["pathfinder-pro"]);
+  assert.ok(ALL_PERMISSION_SLUGS.includes("billing:read" as never), "billing:read missing from ALL_PERMISSION_SLUGS");
+  assert.equal(SLUG_TO_KEY["billing:read" as never], "BILLING_READ");
+  assert.equal(isPermissionSlug("billing:read"), true);
+  for (const k of ["BILLING_WRITE", "BILLING_ADMIN"]) {
+    assert.deepEqual([...defs[k].validatedBy], ["rello"], `${k} validatedBy`);
+    assert.deepEqual([...defs[k].grantedTo], [], `${k} grantedTo`);
+  }
 });
