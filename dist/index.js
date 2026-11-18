@@ -419,6 +419,52 @@ export const PERMISSIONS = {
         validatedBy: ["rello"],
         grantedTo: ["pathfinder-pro"],
     },
+    // PFP Gateway P-2 (MAP-P2-EMBED-TOKEN-F2-261118, Platform KA prompt 1306):
+    // the G-6a embed token (PathfinderPro mints, Home Scout verifies, both at
+    // Rello) and F2's tenant check (Home Scout asks Rello whether PathfinderPro
+    // may act for a tenant). Each slug opens one route.
+    EMBED_TOKEN_MINT: {
+        slug: "embed-token:mint",
+        label: "Mint a Home Scout embed token",
+        description: "PathfinderPro → Rello POST /api/v1/embed-tokens. Mints a 30-minute opaque token for ONE agent of the key's own tenant and ONE Home Scout surface (identity editor or rate-widget designer), so that surface opens inside PathfinderPro with no Rello login. Runs requireV1Auth + requireV1TenantMatch. Validated by Rello through the ApiKey table.",
+        validatedBy: ["rello"],
+        grantedTo: ["pathfinder-pro"],
+    },
+    EMBED_TOKEN_VERIFY: {
+        slug: "embed-token:verify",
+        label: "Verify a Home Scout embed token",
+        description: "Home Scout → Rello POST /api/v1/embed-tokens/verify. Answers whether an embed token is still valid and, if so, its tenant, agent and surface scope; re-checks the minting key, the agent and the tenant's apps on every call. Validated by Rello through the ApiKey table.",
+        validatedBy: ["rello"],
+        grantedTo: ["home-scout"],
+    },
+    TENANT_APPS_READ: {
+        slug: "tenant-apps:read",
+        label: "Read whether PathfinderPro may act for a tenant",
+        description: "Home Scout → Rello GET /api/v1/platform/tenant-app-access?tenantId=. Answers servable true/false for a PathfinderPro call to Home Scout on that tenant (tenant live, PathfinderPro and Home Scout enabled); only for a tenant where Home Scout itself is enabled. Validated by Rello through the ApiKey table.",
+        validatedBy: ["rello"],
+        grantedTo: ["home-scout"],
+    },
+    RATE_WATCH_ACTIVE_COUNT_READ: {
+        slug: "rate-watch:active-count:read",
+        label: "Read a tenant's active Rate Watch count",
+        description: "PathfinderPro → Home Scout GET /api/internal/rate-watch/active-count. The tenant comes from X-Tenant-Id and is accepted only when Rello says PathfinderPro may act for it (F2). Validated by Home Scout through Rello's ApiKey table (appSource PATHFINDER_PRO, targetApp HOME_SCOUT).",
+        validatedBy: ["home-scout"],
+        grantedTo: ["pathfinder-pro"],
+    },
+    RATE_WATCH_END_AGENT_WRITE: {
+        slug: "rate-watch:end-agent:write",
+        label: "End one loan officer's Rate Watch",
+        description: "PathfinderPro → Home Scout POST /api/internal/rate-watch/end-agent. Ends the Rate Watch subscriptions of one agent of the tenant (F2 tenant check as above). Validated by Home Scout through Rello's ApiKey table (appSource PATHFINDER_PRO, targetApp HOME_SCOUT).",
+        validatedBy: ["home-scout"],
+        grantedTo: ["pathfinder-pro"],
+    },
+    RATE_WATCH_END_TENANT_WRITE: {
+        slug: "rate-watch:end-tenant:write",
+        label: "End a tenant's Rate Watch",
+        description: "PathfinderPro → Home Scout POST /api/internal/rate-watch/end-tenant. Ends every Rate Watch subscription of the tenant (F2 tenant check as above). Validated by Home Scout through Rello's ApiKey table (appSource PATHFINDER_PRO, targetApp HOME_SCOUT).",
+        validatedBy: ["home-scout"],
+        grantedTo: ["pathfinder-pro"],
+    },
     // ─── Articles ─────────────────────────────────────────────────────────────
     ARTICLES_SYNC: {
         slug: "articles:sync",
