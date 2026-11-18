@@ -970,7 +970,7 @@ export const PERMISSIONS = {
         label: "Read billing (admin role)",
         description: "Rello admin-role permission — read-side access to billing/Stripe surfaces via Platform Admin Billing pages.",
         validatedBy: ["rello"],
-        grantedTo: [],
+        grantedTo: ["pathfinder-pro"],
     },
     BILLING_WRITE: {
         slug: "billing:write",
