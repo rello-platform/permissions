@@ -1021,6 +1021,19 @@ export const PERMISSIONS = {
         validatedBy: ["rello"],
         grantedTo: ["pathfinder-pro"],
     },
+    // PFP Gateway "Match my design" (Platform KA prompt 1419; Kelly D55: a $99
+    // one-time charge per request): a one-time ADD-ON charged to the tenant's saved
+    // card when PathfinderPro asks. Deliberately NOT billing:write (the admin-role
+    // Platform Admin scope) and not billing:setup-charge:write (that one is the
+    // per-officer setup fee, tied to SMS registration): this key can charge one
+    // one-time add-on of its own app to its own tenant, once per request id.
+    BILLING_ADDON_CHARGE_WRITE: {
+        slug: "billing:addon-charge:write",
+        label: "Charge a one-time add-on",
+        description: "PathfinderPro → Rello. POST /api/v1/billing/add-on/charge-once charges one ONE_TIME add-on of the key's own app to the key's own tenant's saved card, once per Idempotency-Key (the amount is the catalog price; a mismatching quoteCents is refused, never charged); GET /api/v1/billing/add-on/charge-once?requestId= reads that request's state. Refunds are Rello's own decision, never this caller's. Validated by Rello through the ApiKey table.",
+        validatedBy: ["rello"],
+        grantedTo: ["pathfinder-pro"],
+    },
     SUPPORT_READ: {
         slug: "support:read",
         label: "Read support (admin role)",

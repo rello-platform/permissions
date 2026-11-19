@@ -837,6 +837,13 @@ export declare const PERMISSIONS: {
         readonly validatedBy: readonly ["rello"];
         readonly grantedTo: readonly ["pathfinder-pro"];
     };
+    readonly BILLING_ADDON_CHARGE_WRITE: {
+        readonly slug: "billing:addon-charge:write";
+        readonly label: "Charge a one-time add-on";
+        readonly description: "PathfinderPro → Rello. POST /api/v1/billing/add-on/charge-once charges one ONE_TIME add-on of the key's own app to the key's own tenant's saved card, once per Idempotency-Key (the amount is the catalog price; a mismatching quoteCents is refused, never charged); GET /api/v1/billing/add-on/charge-once?requestId= reads that request's state. Refunds are Rello's own decision, never this caller's. Validated by Rello through the ApiKey table.";
+        readonly validatedBy: readonly ["rello"];
+        readonly grantedTo: readonly ["pathfinder-pro"];
+    };
     readonly SUPPORT_READ: {
         readonly slug: "support:read";
         readonly label: "Read support (admin role)";

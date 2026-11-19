@@ -333,3 +333,30 @@ test("billing:read is validated by rello and granted to pathfinder-pro only; bil
     assert.deepEqual([...defs[k].grantedTo], [], `${k} grantedTo`);
   }
 });
+
+// PFP Gateway "Match my design" (Platform KA prompt 1419; Kelly D55): PathfinderPro →
+// Rello. One narrow slug covers the one-time add-on charge (POST + GET
+// /api/v1/billing/add-on/charge-once); the admin-role billing:* entries stay
+// granted to no app and the sibling PFP billing slugs are unchanged.
+test("billing:addon-charge:write is canonical, validated by rello, granted to pathfinder-pro only; billing:* admin slugs unchanged", () => {
+  type Def = { slug: string; label: string; description: string; validatedBy: readonly string[]; grantedTo: readonly string[] };
+  const defs = PERMISSIONS as Record<string, Def>;
+
+  const ch = defs.BILLING_ADDON_CHARGE_WRITE;
+  assert.ok(ch, "BILLING_ADDON_CHARGE_WRITE missing from PERMISSIONS");
+  assert.equal(ch.slug, "billing:addon-charge:write");
+  assert.equal(ch.label, "Charge a one-time add-on");
+  assert.match(ch.description, /POST \/api\/v1\/billing\/add-on\/charge-once\b/);
+  assert.match(ch.description, /GET \/api\/v1\/billing\/add-on\/charge-once\b/);
+  assert.deepEqual([...ch.validatedBy], ["rello"]);
+  assert.deepEqual([...ch.grantedTo], ["pathfinder-pro"]);
+
+  assert.ok(ALL_PERMISSION_SLUGS.includes("billing:addon-charge:write" as never), "billing:addon-charge:write missing from ALL_PERMISSION_SLUGS");
+  assert.equal(SLUG_TO_KEY["billing:addon-charge:write" as never], "BILLING_ADDON_CHARGE_WRITE");
+  assert.equal(isPermissionSlug("billing:addon-charge:write"), true);
+  assert.equal(isPermissionSlug("billing:addon-charge"), false);
+
+  // The admin-role billing slugs are not widened (billing:read stays PFP's, G-LR Part B), and the sibling PFP billing slugs are unchanged.
+  for (const k of ["BILLING_WRITE", "BILLING_ADMIN"]) assert.deepEqual([...defs[k].grantedTo], []);
+  for (const k of ["BILLING_READ", "BILLING_PLAN_GRANTS_READ", "BILLING_SETUP_CHARGE_WRITE", "BILLING_PLAN_SWITCH_WRITE"]) assert.deepEqual([...defs[k].grantedTo], ["pathfinder-pro"]);
+});
