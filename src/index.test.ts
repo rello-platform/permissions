@@ -360,3 +360,30 @@ test("billing:addon-charge:write is canonical, validated by rello, granted to pa
   for (const k of ["BILLING_WRITE", "BILLING_ADMIN"]) assert.deepEqual([...defs[k].grantedTo], []);
   for (const k of ["BILLING_READ", "BILLING_PLAN_GRANTS_READ", "BILLING_SETUP_CHARGE_WRITE", "BILLING_PLAN_SWITCH_WRITE"]) assert.deepEqual([...defs[k].grantedTo], ["pathfinder-pro"]);
 });
+
+// PFP Gateway G-10R-2t-A (Platform KA prompt 1451, ruling K11a; Agent 5's build plan a5-1450 §(b)):
+// the once-per-tenant Full PFP plan trial. One narrow slug lets PathfinderPro's key start the trial
+// for its own tenant; the admin-role billing:* entries stay granted to no app and the sibling PFP
+// billing slugs are unchanged.
+test("billing:plan-trial:write is canonical, validated by rello, granted to pathfinder-pro only; billing:* siblings unchanged", () => {
+  type Def = { slug: string; label: string; description: string; validatedBy: readonly string[]; grantedTo: readonly string[] };
+  const defs = PERMISSIONS as Record<string, Def>;
+
+  const pt = defs.BILLING_PLAN_TRIAL_WRITE;
+  assert.ok(pt, "BILLING_PLAN_TRIAL_WRITE missing from PERMISSIONS");
+  assert.equal(pt.slug, "billing:plan-trial:write");
+  assert.equal(pt.description, "Start the once-per-tenant Full PFP plan trial for the caller's tenant");
+  assert.ok(pt.label.length > 0 && pt.label.length < 60, "a short label");
+  assert.deepEqual([...pt.validatedBy], ["rello"]);
+  assert.deepEqual([...pt.grantedTo], ["pathfinder-pro"]);
+
+  assert.ok(ALL_PERMISSION_SLUGS.includes("billing:plan-trial:write" as never), "billing:plan-trial:write missing from ALL_PERMISSION_SLUGS");
+  assert.equal(SLUG_TO_KEY["billing:plan-trial:write" as never], "BILLING_PLAN_TRIAL_WRITE");
+  assert.equal(isPermissionSlug("billing:plan-trial:write"), true);
+  assert.equal(isPermissionSlug("billing:plan-trial"), false);
+  assert.equal(isPermissionSlug("billing:plan-trial:read"), false);
+
+  // The admin-role billing slugs are not widened, and the sibling PFP billing slugs are unchanged.
+  for (const k of ["BILLING_WRITE", "BILLING_ADMIN"]) assert.deepEqual([...defs[k].grantedTo], []);
+  for (const k of ["BILLING_READ", "BILLING_PLAN_GRANTS_READ", "BILLING_SETUP_CHARGE_WRITE", "BILLING_PLAN_SWITCH_WRITE", "BILLING_ADDON_CHARGE_WRITE"]) assert.deepEqual([...defs[k].grantedTo], ["pathfinder-pro"]);
+});
