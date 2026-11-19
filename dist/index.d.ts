@@ -844,6 +844,13 @@ export declare const PERMISSIONS: {
         readonly validatedBy: readonly ["rello"];
         readonly grantedTo: readonly ["pathfinder-pro"];
     };
+    readonly BILLING_PLAN_TRIAL_WRITE: {
+        readonly slug: "billing:plan-trial:write";
+        readonly label: "Start a plan trial";
+        readonly description: "Start the once-per-tenant Full PFP plan trial for the caller's tenant";
+        readonly validatedBy: readonly ["rello"];
+        readonly grantedTo: readonly ["pathfinder-pro"];
+    };
     readonly SUPPORT_READ: {
         readonly slug: "support:read";
         readonly label: "Read support (admin role)";

@@ -1034,6 +1034,17 @@ export const PERMISSIONS = {
         validatedBy: ["rello"],
         grantedTo: ["pathfinder-pro"],
     },
+    // PFP Gateway G-10R-2t-A (Platform KA prompt 1451; ruling K11a): the once-per-tenant Full PFP
+    // plan trial. Deliberately NOT billing:write (the admin-role Platform Admin scope) and not
+    // billing:plan-switch:write (a switch moves a tenant between plans; this starts a trial on the
+    // caller's own tenant, once): this key can start its own tenant's trial and nothing else.
+    BILLING_PLAN_TRIAL_WRITE: {
+        slug: "billing:plan-trial:write",
+        label: "Start a plan trial",
+        description: "Start the once-per-tenant Full PFP plan trial for the caller's tenant",
+        validatedBy: ["rello"],
+        grantedTo: ["pathfinder-pro"],
+    },
     SUPPORT_READ: {
         slug: "support:read",
         label: "Read support (admin role)",
