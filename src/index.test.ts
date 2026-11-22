@@ -425,3 +425,37 @@ test("tracking:write/read/resolve/admin are canonical, described by holder, with
     assert.equal(isPermissionSlug(s), false, `${s} must not be canonical`);
   }
 });
+
+// PFP Gateway U6 (Platform KA ruling 1695): two narrow slugs so PathfinderPro's key can manage its own
+// tenant's add-ons and open the billing portal without billing:write (the admin-role scope, granted to no app).
+test("billing:add-ons:write and billing:portal:write are canonical, validated by rello, granted to pathfinder-pro only; billing:* siblings unchanged", () => {
+  type Def = { slug: string; label: string; description: string; validatedBy: readonly string[]; grantedTo: readonly string[] };
+  const defs = PERMISSIONS as Record<string, Def>;
+
+  const addOns = defs.BILLING_ADD_ONS_WRITE;
+  assert.ok(addOns, "BILLING_ADD_ONS_WRITE missing from PERMISSIONS");
+  assert.equal(addOns.slug, "billing:add-ons:write");
+  assert.equal(addOns.description, "Start, change the quantity of, or end a paid add-on on the caller's own tenant");
+  const portal = defs.BILLING_PORTAL_WRITE;
+  assert.ok(portal, "BILLING_PORTAL_WRITE missing from PERMISSIONS");
+  assert.equal(portal.slug, "billing:portal:write");
+  assert.equal(portal.description, "Open the Stripe billing portal for the caller's own tenant");
+  for (const d of [addOns, portal]) {
+    assert.ok(d.label.length > 0 && d.label.length < 60, "a short label");
+    assert.deepEqual([...d.validatedBy], ["rello"]);
+    assert.deepEqual([...d.grantedTo], ["pathfinder-pro"]);
+  }
+
+  for (const [slug, key] of [["billing:add-ons:write", "BILLING_ADD_ONS_WRITE"], ["billing:portal:write", "BILLING_PORTAL_WRITE"]] as const) {
+    assert.ok(ALL_PERMISSION_SLUGS.includes(slug as never), `${slug} missing from ALL_PERMISSION_SLUGS`);
+    assert.equal(SLUG_TO_KEY[slug as never], key);
+    assert.equal(isPermissionSlug(slug), true);
+  }
+  for (const near of ["billing:add-ons", "billing:add-ons:read", "billing:addons:write", "billing:portal", "billing:portal:read"]) {
+    assert.equal(isPermissionSlug(near), false, near);
+  }
+
+  // The admin-role billing slugs are not widened (the point of the narrow slugs), and the sibling PFP billing slugs are unchanged.
+  for (const k of ["BILLING_WRITE", "BILLING_ADMIN"]) assert.deepEqual([...defs[k].grantedTo], []);
+  for (const k of ["BILLING_READ", "BILLING_PLAN_GRANTS_READ", "BILLING_SETUP_CHARGE_WRITE", "BILLING_PLAN_SWITCH_WRITE", "BILLING_ADDON_CHARGE_WRITE", "BILLING_PLAN_TRIAL_WRITE"]) assert.deepEqual([...defs[k].grantedTo], ["pathfinder-pro"]);
+});

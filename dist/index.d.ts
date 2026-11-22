@@ -851,6 +851,20 @@ export declare const PERMISSIONS: {
         readonly validatedBy: readonly ["rello"];
         readonly grantedTo: readonly ["pathfinder-pro"];
     };
+    readonly BILLING_ADD_ONS_WRITE: {
+        readonly slug: "billing:add-ons:write";
+        readonly label: "Manage paid add-ons";
+        readonly description: "Start, change the quantity of, or end a paid add-on on the caller's own tenant";
+        readonly validatedBy: readonly ["rello"];
+        readonly grantedTo: readonly ["pathfinder-pro"];
+    };
+    readonly BILLING_PORTAL_WRITE: {
+        readonly slug: "billing:portal:write";
+        readonly label: "Open the billing portal";
+        readonly description: "Open the Stripe billing portal for the caller's own tenant";
+        readonly validatedBy: readonly ["rello"];
+        readonly grantedTo: readonly ["pathfinder-pro"];
+    };
     readonly SUPPORT_READ: {
         readonly slug: "support:read";
         readonly label: "Read support (admin role)";

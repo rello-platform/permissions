@@ -1122,6 +1122,28 @@ export const PERMISSIONS = {
     validatedBy: ["rello"],
     grantedTo: ["pathfinder-pro"],
   },
+  // PFP Gateway U6 (Platform KA ruling 1695): the paid add-on start, quantity change and end
+  // (POST /api/v1/billing/add-on, PATCH and DELETE /api/v1/billing/add-on/[addOnId]). Deliberately NOT
+  // billing:write (the admin-role Platform Admin scope, granted to no app, which also opens the
+  // billing portal, settings and subscription): this key can start, change and end add-ons its own
+  // tenant owns, and nothing else. Same shape as billing:plan-switch:write and billing:setup-charge:write.
+  BILLING_ADD_ONS_WRITE: {
+    slug: "billing:add-ons:write",
+    label: "Manage paid add-ons",
+    description: "Start, change the quantity of, or end a paid add-on on the caller's own tenant",
+    validatedBy: ["rello"],
+    grantedTo: ["pathfinder-pro"],
+  },
+  // PFP Gateway U6 (Platform KA ruling 1695): open the Stripe billing portal for the caller's tenant
+  // (POST /api/v1/billing/portal). Deliberately NOT billing:write: PathfinderPro's key does not hold
+  // that admin-role scope, and a portal button must not need it.
+  BILLING_PORTAL_WRITE: {
+    slug: "billing:portal:write",
+    label: "Open the billing portal",
+    description: "Open the Stripe billing portal for the caller's own tenant",
+    validatedBy: ["rello"],
+    grantedTo: ["pathfinder-pro"],
+  },
   SUPPORT_READ: {
     slug: "support:read",
     label: "Read support (admin role)",
