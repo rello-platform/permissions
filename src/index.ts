@@ -1991,6 +1991,42 @@ export const PERMISSIONS = {
     validatedBy: ["open-house-hub"],
     grantedTo: ["home-scout"],
   },
+  // ─── Platform tracking (PLATFORM-TRACKING-SYSTEM §9, §9.2; Platform KA prompt 1613, S2b part 1) ──
+  // The Tracking Engine authenticates every caller against Rello's ApiKey registry
+  // (api-client createPlatformKeyValidator) and reads a caller's tenant ONLY from the
+  // key (ApiKey.tenantId); a missing tenantId is unknown scope and every read is
+  // refused. validatedBy and grantedTo are [] at v0.68.0 on purpose: no receiver
+  // gates on these yet (the engine adopts the validator in S2b part 2; Rello's
+  // resolve/host routes are S4) and no ApiKey row carries them (grants are a §22
+  // KA-approved step in part 2). They fill in as those land.
+  TRACKING_WRITE: {
+    slug: "tracking:write",
+    label: "Send tracking events",
+    description: "App server → Tracking Engine. POST /v1/events sends feature.used, identify and screen.opened events for the key's own app (the key's appSource must equal each event's app). A tenant-scoped key writes only its own tenant; a platform-scope key names each event's tenant from the app's own signed-in session. Held by each app's sender key (appSource=<app>, targetApp=TRACKING_ENGINE). Spoke sender keys hold tracking:write only, never tracking:read. Validated by the Tracking Engine through Rello's ApiKey registry.",
+    validatedBy: [],
+    grantedTo: [],
+  },
+  TRACKING_READ: {
+    slug: "tracking:read",
+    label: "Read tracking timeline and interest",
+    description: "Reads one tenant's visit timeline and interest from the Tracking Engine, under that tenant's row-level security. Held by Growth's read key (scoped to the Growth house tenant) and by Rello's own key(s) into the engine, which are pinned by ApiKey id (PLATFORM_READER_KEY_IDS) and read one named tenant per transaction, each read logged. Never granted to a spoke sender key. A key whose tenant scope is missing is refused (403 TRACKING_SCOPE_MISSING) before any query runs. Validated by the Tracking Engine through Rello's ApiKey registry.",
+    validatedBy: [],
+    grantedTo: [],
+  },
+  TRACKING_RESOLVE: {
+    slug: "tracking:resolve",
+    label: "Resolve tracking tokens and hosts",
+    description: "Tracking Engine → Rello. POST /api/v1/tracking/resolve looks up recipient tokens (with Rello's own consent read) and GET /api/v1/tracking/host maps a host to its tenant. Granted only to the Tracking Engine's own key into Rello, never to an app key. Validated by Rello through the ApiKey table.",
+    validatedBy: [],
+    grantedTo: [],
+  },
+  TRACKING_ADMIN: {
+    slug: "tracking:admin",
+    label: "Administer tracking (replay, weights, reporting)",
+    description: "Tracking Engine administration: replaying raw events, changing interest weights, and platform reporting, which reads every tenant's rows through a separate Postgres role used only by platform reporting. Held by the platform-reporting key only; never by an app sender key or Growth's campaign key. Validated by the Tracking Engine through Rello's ApiKey registry.",
+    validatedBy: [],
+    grantedTo: [],
+  },
 } as const satisfies Readonly<Record<string, PermissionDefinition>>;
 
 /** Compile-time-checked permission key (e.g., `"NEWSLETTERS_SEND"`). */

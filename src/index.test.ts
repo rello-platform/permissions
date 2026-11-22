@@ -387,3 +387,41 @@ test("billing:plan-trial:write is canonical, validated by rello, granted to path
   for (const k of ["BILLING_WRITE", "BILLING_ADMIN"]) assert.deepEqual([...defs[k].grantedTo], []);
   for (const k of ["BILLING_READ", "BILLING_PLAN_GRANTS_READ", "BILLING_SETUP_CHARGE_WRITE", "BILLING_PLAN_SWITCH_WRITE", "BILLING_ADDON_CHARGE_WRITE"]) assert.deepEqual([...defs[k].grantedTo], ["pathfinder-pro"]);
 });
+
+// PLATFORM-TRACKING-SYSTEM S2b part 1 (Platform KA prompt 1613; plan §9, §9.2): the four tracking
+// permissions. resolve is the engine's key into Rello only; spoke sender keys hold write and never
+// read; admin is replay/weights and the reporting role. No receiver gates on them and no key holds
+// them yet, so validatedBy and grantedTo are [] until S2b part 2 / S4 land.
+test("tracking:write/read/resolve/admin are canonical, described by holder, with no receiver or grant yet", () => {
+  type Def = { slug: string; label: string; description: string; validatedBy: readonly string[]; grantedTo: readonly string[] };
+  const defs = PERMISSIONS as Record<string, Def>;
+  const want: Record<string, string> = {
+    TRACKING_WRITE: "tracking:write",
+    TRACKING_READ: "tracking:read",
+    TRACKING_RESOLVE: "tracking:resolve",
+    TRACKING_ADMIN: "tracking:admin",
+  };
+  for (const [key, slug] of Object.entries(want)) {
+    const d = defs[key];
+    assert.ok(d, `${key} missing from PERMISSIONS`);
+    assert.equal(d.slug, slug);
+    assert.ok(d.label.length > 0 && d.label.length < 60, `${key}: a short label`);
+    assert.ok(d.description.length > 40, `${key}: a real description`);
+    assert.deepEqual([...d.validatedBy], [], `${key}: no receiver gates on it yet`);
+    assert.deepEqual([...d.grantedTo], [], `${key}: no ApiKey row carries it yet`);
+    assert.ok(ALL_PERMISSION_SLUGS.includes(slug as never), `${slug} missing from ALL_PERMISSION_SLUGS`);
+    assert.equal(SLUG_TO_KEY[slug as never], key);
+    assert.equal(isPermissionSlug(slug), true);
+  }
+  // Who holds each (plan §9 / §9.2).
+  assert.match(defs.TRACKING_RESOLVE.description, /only to the Tracking Engine's own key into Rello/);
+  assert.match(defs.TRACKING_WRITE.description, /Spoke sender keys hold tracking:write only, never tracking:read/);
+  assert.match(defs.TRACKING_READ.description, /Never granted to a spoke sender key/);
+  assert.match(defs.TRACKING_READ.description, /TRACKING_SCOPE_MISSING/);
+  assert.match(defs.TRACKING_ADMIN.description, /replaying raw events/);
+  assert.match(defs.TRACKING_ADMIN.description, /platform reporting/);
+  // No near-miss slug slips in.
+  for (const s of ["tracking", "tracking:*", "tracking:resolve:write", "tracking:events-write"]) {
+    assert.equal(isPermissionSlug(s), false, `${s} must not be canonical`);
+  }
+});
