@@ -498,12 +498,14 @@ test("HI-03: each new Home Insight slug is canonical, in ALL_PERMISSION_SLUGS, a
   }
 });
 
-test("HI-03: the two slugs the spec says already exist are present and unchanged (verified, not re-added)", () => {
+test("HI-03: the two slugs the spec says already exist are present (verified, not re-added); hub:issue-magic-link also granted to the-oven (HI-21)", () => {
   type Def = { slug: string; validatedBy: readonly string[]; grantedTo: readonly string[] };
   const defs = PERMISSIONS as Record<string, Def>;
   assert.equal(defs.HUB_ISSUE_MAGIC_LINK.slug, "hub:issue-magic-link");
   assert.deepEqual([...defs.HUB_ISSUE_MAGIC_LINK.validatedBy], ["rello"]);
-  assert.deepEqual([...defs.HUB_ISSUE_MAGIC_LINK.grantedTo], ["milo-engine"]);
+  // HI-21 (spec X-08): The Oven becomes a caller of send-hub-link with this permission, so the package
+  // names it beside Milo. validatedBy is unchanged.
+  assert.deepEqual([...defs.HUB_ISSUE_MAGIC_LINK.grantedTo], ["milo-engine", "the-oven"]);
   assert.equal(defs.LICENSED_AGENTS_READ.slug, "licensed-agents:read");
   assert.deepEqual([...defs.LICENSED_AGENTS_READ.validatedBy], ["property-engine"]);
   assert.deepEqual([...defs.LICENSED_AGENTS_READ.grantedTo], ["rello"]);
