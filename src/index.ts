@@ -2049,6 +2049,86 @@ export const PERMISSIONS = {
     validatedBy: [],
     grantedTo: [],
   },
+  // ─── Home Insight (HI-03; spec RELLO-HOME-INSIGHT _SPEC-FEATURE.md §9 HI-03) ──
+  // Every new permission the Home Insight plan needs, in one release. Each route
+  // is a Path A ApiKey route: the receiver resolves the caller through Rello's
+  // ApiKey table and never compares an env secret. validatedBy is [] on purpose
+  // (README: generated from pinned consumers, authors leave it empty); grantedTo
+  // names the caller the spec gives each route, ahead of the grant itself, which
+  // is the owning unit's ApiKey step after the release. Two slugs the spec lists
+  // already exist and are unchanged here: hub:issue-magic-link (HI-21 adds The
+  // Oven as a caller) and licensed-agents:read (Rello → Property Engine).
+  // Part A's home-insight:pages:write is dropped (spec L-3: no PUT route).
+  TENANT_ACCESS_READ: {
+    slug: "tenant:access-read",
+    label: "Read a tenant's resolved access",
+    description: "Read a tenant's resolved Rello access (FULL, or the granted surfaces of a GRANTS_ONLY plan) through Rello GET /api/v1/tenants/{id}/access, for the key's own tenant only.",
+    validatedBy: [],
+    grantedTo: ["harvest-home", "the-oven"],
+  },
+  HOMEOWNER_FIGURES_READ: {
+    slug: "homeowner:figures-read",
+    label: "Read a homeowner's home figures",
+    description: "Home Scout reads a homeowner's home figures (value, equity, loan, each with its source) through Rello GET /api/homeowner/home-figures/{leadId}, for a lead in the key's own tenant.",
+    validatedBy: [],
+    grantedTo: ["home-scout"],
+  },
+  HOMEOWNER_LOAN_CORRECTION_WRITE: {
+    slug: "homeowner:loan-correction-write",
+    label: "Record a homeowner's loan correction",
+    description: "Home Scout posts a homeowner's own loan correction to Rello POST /api/homeowner/loan-corrections, for a lead in the key's own tenant.",
+    validatedBy: [],
+    grantedTo: ["home-scout"],
+  },
+  HOMEOWNER_EMAIL_SETTINGS: {
+    slug: "homeowner:email-settings",
+    label: "Read and change a homeowner's email settings",
+    description: "Home Scout reads and changes a homeowner's monthly email settings and asks for a resubscribe confirmation through Rello /api/homeowner/email-settings/{leadId}, for a lead in the key's own tenant.",
+    validatedBy: [],
+    grantedTo: ["home-scout"],
+  },
+  HOME_INSIGHT_SETUP_FACTS_WRITE: {
+    slug: "home-insight:setup-facts-write",
+    label: "Record a Home Insight setup fact",
+    description: "The Oven posts one agent's Home Insight setup fact (the trusted-pros step) to Rello POST /api/v1/home-insight/setup-facts, for an agent in the key's own tenant.",
+    validatedBy: [],
+    grantedTo: ["the-oven"],
+  },
+  BILLING_METER_CAPS_READ: {
+    slug: "billing:meter-caps-read",
+    label: "Read a tenant's mortgage-data cap",
+    description: "Property Engine reads a tenant's monthly mortgage-data lookup cap, in cents, through Rello GET /api/v1/billing/meter-caps/mortgage-data-lookup.",
+    validatedBy: [],
+    grantedTo: ["property-engine"],
+  },
+  MORTGAGE_DATA_LOOKUP: {
+    slug: "mortgage-data:lookup",
+    label: "Request a mortgage-data lookup",
+    description: "Rello asks Property Engine to look up a lead's mortgage data through POST /api/mortgage-data/lookup, spent against the paying tenant's monthly cap.",
+    validatedBy: [],
+    grantedTo: ["rello"],
+  },
+  HOMEOWNER_MATH_READ: {
+    slug: "homeowner-math:read",
+    label: "Read homeowner math",
+    description: "Rello reads homeowner math (refinance, PMI drop-off, buying power) from PathfinderPro through POST /api/v1/homeowner-math/{refi,pmi-dropoff,buying-power}.",
+    validatedBy: [],
+    grantedTo: ["rello"],
+  },
+  OVEN_SERVICE_PROVIDER_ENGAGEMENT_WRITE: {
+    slug: "oven:service-provider-engagement-write",
+    label: "Record trusted-pro engagement",
+    description: "Home Scout posts homeowners' trusted-pro engagement events, at most 50 per call, to The Oven POST /api/service-providers/engagement.",
+    validatedBy: [],
+    grantedTo: ["home-scout"],
+  },
+  REALTOR_PROSPECTS_CANDIDATES_WRITE: {
+    slug: "realtor-prospects:candidates-write",
+    label: "Send realtor-prospect candidates",
+    description: "Harvest Home posts a batch of realtor-prospect candidates from a homeowner upload to Rello POST /api/v1/realtor-prospects/candidates, idempotent on the batch id.",
+    validatedBy: [],
+    grantedTo: ["harvest-home"],
+  },
 } as const satisfies Readonly<Record<string, PermissionDefinition>>;
 
 /** Compile-time-checked permission key (e.g., `"NEWSLETTERS_SEND"`). */

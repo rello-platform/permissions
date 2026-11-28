@@ -1334,6 +1334,76 @@ export declare const PERMISSIONS: {
         readonly validatedBy: readonly [];
         readonly grantedTo: readonly [];
     };
+    readonly TENANT_ACCESS_READ: {
+        readonly slug: "tenant:access-read";
+        readonly label: "Read a tenant's resolved access";
+        readonly description: "Read a tenant's resolved Rello access (FULL, or the granted surfaces of a GRANTS_ONLY plan) through Rello GET /api/v1/tenants/{id}/access, for the key's own tenant only.";
+        readonly validatedBy: readonly [];
+        readonly grantedTo: readonly ["harvest-home", "the-oven"];
+    };
+    readonly HOMEOWNER_FIGURES_READ: {
+        readonly slug: "homeowner:figures-read";
+        readonly label: "Read a homeowner's home figures";
+        readonly description: "Home Scout reads a homeowner's home figures (value, equity, loan, each with its source) through Rello GET /api/homeowner/home-figures/{leadId}, for a lead in the key's own tenant.";
+        readonly validatedBy: readonly [];
+        readonly grantedTo: readonly ["home-scout"];
+    };
+    readonly HOMEOWNER_LOAN_CORRECTION_WRITE: {
+        readonly slug: "homeowner:loan-correction-write";
+        readonly label: "Record a homeowner's loan correction";
+        readonly description: "Home Scout posts a homeowner's own loan correction to Rello POST /api/homeowner/loan-corrections, for a lead in the key's own tenant.";
+        readonly validatedBy: readonly [];
+        readonly grantedTo: readonly ["home-scout"];
+    };
+    readonly HOMEOWNER_EMAIL_SETTINGS: {
+        readonly slug: "homeowner:email-settings";
+        readonly label: "Read and change a homeowner's email settings";
+        readonly description: "Home Scout reads and changes a homeowner's monthly email settings and asks for a resubscribe confirmation through Rello /api/homeowner/email-settings/{leadId}, for a lead in the key's own tenant.";
+        readonly validatedBy: readonly [];
+        readonly grantedTo: readonly ["home-scout"];
+    };
+    readonly HOME_INSIGHT_SETUP_FACTS_WRITE: {
+        readonly slug: "home-insight:setup-facts-write";
+        readonly label: "Record a Home Insight setup fact";
+        readonly description: "The Oven posts one agent's Home Insight setup fact (the trusted-pros step) to Rello POST /api/v1/home-insight/setup-facts, for an agent in the key's own tenant.";
+        readonly validatedBy: readonly [];
+        readonly grantedTo: readonly ["the-oven"];
+    };
+    readonly BILLING_METER_CAPS_READ: {
+        readonly slug: "billing:meter-caps-read";
+        readonly label: "Read a tenant's mortgage-data cap";
+        readonly description: "Property Engine reads a tenant's monthly mortgage-data lookup cap, in cents, through Rello GET /api/v1/billing/meter-caps/mortgage-data-lookup.";
+        readonly validatedBy: readonly [];
+        readonly grantedTo: readonly ["property-engine"];
+    };
+    readonly MORTGAGE_DATA_LOOKUP: {
+        readonly slug: "mortgage-data:lookup";
+        readonly label: "Request a mortgage-data lookup";
+        readonly description: "Rello asks Property Engine to look up a lead's mortgage data through POST /api/mortgage-data/lookup, spent against the paying tenant's monthly cap.";
+        readonly validatedBy: readonly [];
+        readonly grantedTo: readonly ["rello"];
+    };
+    readonly HOMEOWNER_MATH_READ: {
+        readonly slug: "homeowner-math:read";
+        readonly label: "Read homeowner math";
+        readonly description: "Rello reads homeowner math (refinance, PMI drop-off, buying power) from PathfinderPro through POST /api/v1/homeowner-math/{refi,pmi-dropoff,buying-power}.";
+        readonly validatedBy: readonly [];
+        readonly grantedTo: readonly ["rello"];
+    };
+    readonly OVEN_SERVICE_PROVIDER_ENGAGEMENT_WRITE: {
+        readonly slug: "oven:service-provider-engagement-write";
+        readonly label: "Record trusted-pro engagement";
+        readonly description: "Home Scout posts homeowners' trusted-pro engagement events, at most 50 per call, to The Oven POST /api/service-providers/engagement.";
+        readonly validatedBy: readonly [];
+        readonly grantedTo: readonly ["home-scout"];
+    };
+    readonly REALTOR_PROSPECTS_CANDIDATES_WRITE: {
+        readonly slug: "realtor-prospects:candidates-write";
+        readonly label: "Send realtor-prospect candidates";
+        readonly description: "Harvest Home posts a batch of realtor-prospect candidates from a homeowner upload to Rello POST /api/v1/realtor-prospects/candidates, idempotent on the batch id.";
+        readonly validatedBy: readonly [];
+        readonly grantedTo: readonly ["harvest-home"];
+    };
 };
 /** Compile-time-checked permission key (e.g., `"NEWSLETTERS_SEND"`). */
 export type PermissionKey = keyof typeof PERMISSIONS;
