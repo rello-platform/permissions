@@ -459,3 +459,76 @@ test("billing:add-ons:write and billing:portal:write are canonical, validated by
   for (const k of ["BILLING_WRITE", "BILLING_ADMIN"]) assert.deepEqual([...defs[k].grantedTo], []);
   for (const k of ["BILLING_READ", "BILLING_PLAN_GRANTS_READ", "BILLING_SETUP_CHARGE_WRITE", "BILLING_PLAN_SWITCH_WRITE", "BILLING_ADDON_CHARGE_WRITE", "BILLING_PLAN_TRIAL_WRITE"]) assert.deepEqual([...defs[k].grantedTo], ["pathfinder-pro"]);
 });
+
+// Home Insight HI-03 (spec RELLO-HOME-INSIGHT _SPEC-FEATURE.md §9 HI-03): every new permission slug, one
+// release. validatedBy is [] (README: generated, authors leave it empty); grantedTo is hand-authored from the
+// spec's callers. Two slugs the spec names already exist and are verified unchanged, not re-added.
+// home-insight:pages:write (part A) is dropped by spec L-3: there is no PUT route.
+const HI03_NEW: ReadonlyArray<readonly [slug: string, key: string, grantedTo: readonly string[]]> = [
+  ["tenant:access-read", "TENANT_ACCESS_READ", ["harvest-home", "the-oven"]],
+  ["homeowner:figures-read", "HOMEOWNER_FIGURES_READ", ["home-scout"]],
+  ["homeowner:loan-correction-write", "HOMEOWNER_LOAN_CORRECTION_WRITE", ["home-scout"]],
+  ["homeowner:email-settings", "HOMEOWNER_EMAIL_SETTINGS", ["home-scout"]],
+  ["home-insight:setup-facts-write", "HOME_INSIGHT_SETUP_FACTS_WRITE", ["the-oven"]],
+  ["billing:meter-caps-read", "BILLING_METER_CAPS_READ", ["property-engine"]],
+  ["mortgage-data:lookup", "MORTGAGE_DATA_LOOKUP", ["rello"]],
+  ["homeowner-math:read", "HOMEOWNER_MATH_READ", ["rello"]],
+  ["oven:service-provider-engagement-write", "OVEN_SERVICE_PROVIDER_ENGAGEMENT_WRITE", ["home-scout"]],
+  ["realtor-prospects:candidates-write", "REALTOR_PROSPECTS_CANDIDATES_WRITE", ["harvest-home"]],
+];
+
+test("HI-03: each new Home Insight slug is canonical, in ALL_PERMISSION_SLUGS, and SLUG_TO_KEY round-trips it", () => {
+  type Def = { slug: string; label: string; description: string; validatedBy: readonly string[]; grantedTo: readonly string[] };
+  const defs = PERMISSIONS as Record<string, Def>;
+  assert.equal(HI03_NEW.length, 10);
+  for (const [slug, key, grantedTo] of HI03_NEW) {
+    const def = defs[key];
+    assert.ok(def, `${key} missing from PERMISSIONS`);
+    assert.equal(def.slug, slug);
+    assert.ok(ALL_PERMISSION_SLUGS.includes(slug as never), `${slug} missing from ALL_PERMISSION_SLUGS`);
+    assert.equal(SLUG_TO_KEY[slug as never], key, `SLUG_TO_KEY[${slug}]`);
+    assert.equal(defs[SLUG_TO_KEY[slug as never]].slug, slug, `${slug} does not round-trip`);
+    assert.equal(isPermissionSlug(slug), true, slug);
+    assert.ok(def.label.length > 0 && def.label.length < 60, `${slug}: a short label`);
+    assert.ok(def.description.length > 0 && def.description.length <= 300, `${slug}: a description`);
+    assert.ok(def.description.endsWith("."), `${slug}: the description is a sentence`);
+    assert.ok(!/\.\s+\S/.test(def.description.slice(0, -1)), `${slug}: one sentence`);
+    assert.deepEqual([...def.validatedBy], [], `${slug}: validatedBy is generated, authors leave it empty`);
+    assert.deepEqual([...def.grantedTo], [...grantedTo], `${slug}: grantedTo`);
+  }
+});
+
+test("HI-03: the two slugs the spec says already exist are present (verified, not re-added); hub:issue-magic-link also granted to the-oven (HI-21)", () => {
+  type Def = { slug: string; validatedBy: readonly string[]; grantedTo: readonly string[] };
+  const defs = PERMISSIONS as Record<string, Def>;
+  assert.equal(defs.HUB_ISSUE_MAGIC_LINK.slug, "hub:issue-magic-link");
+  assert.deepEqual([...defs.HUB_ISSUE_MAGIC_LINK.validatedBy], ["rello"]);
+  // HI-21 (spec X-08): The Oven becomes a caller of send-hub-link with this permission, so the package
+  // names it beside Milo. validatedBy is unchanged.
+  assert.deepEqual([...defs.HUB_ISSUE_MAGIC_LINK.grantedTo], ["milo-engine", "the-oven"]);
+  assert.equal(defs.LICENSED_AGENTS_READ.slug, "licensed-agents:read");
+  assert.deepEqual([...defs.LICENSED_AGENTS_READ.validatedBy], ["property-engine"]);
+  assert.deepEqual([...defs.LICENSED_AGENTS_READ.grantedTo], ["rello"]);
+  for (const slug of ["hub:issue-magic-link", "licensed-agents:read"]) {
+    assert.equal(ALL_PERMISSION_SLUGS.filter((s) => s === slug).length, 1, `${slug} appears once`);
+  }
+});
+
+test("HI-03: the dropped and near-miss spellings are not canonical", () => {
+  for (const near of [
+    "home-insight:pages:write", // part A, dropped by spec L-3 (no PUT route)
+    "home-insight:pages-write",
+    "tenant:access:read",
+    "tenants:access-read",
+    "homeowner:figures:read",
+    "homeowner:loan-corrections-write",
+    "homeowner:email-settings-write",
+    "billing:meter-caps:read",
+    "mortgage-data:lookups",
+    "homeowner-math:write",
+    "oven:service-providers-engagement-write",
+    "realtor-prospects:candidates:write",
+  ]) {
+    assert.equal(isPermissionSlug(near), false, near);
+  }
+});
